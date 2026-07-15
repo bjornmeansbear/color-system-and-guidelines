@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!-- saved from url=(0032)file:///private/tmp/palette.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Palette</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace; background: #f5f5f0; padding: 2rem; }
+  h1 { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: #888; margin-bottom: 2rem; }
+  .scales { display: flex; flex-direction: column; gap: 0.25rem; }
+  .scale { display: flex; gap: 0.25rem; align-items: stretch; }
+  .label { width: 5rem; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: #999; display: flex; align-items: center; }
+  .swatch { flex: 1; height: 3.5rem; position: relative; cursor: default; }
+  .swatch:hover .tip { opacity: 1; }
+  .tip {
+    position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+    background: #111; color: #fff; font-size: 0.6rem; padding: 0.25rem 0.4rem;
+    border-radius: 3px; white-space: nowrap; opacity: 0; pointer-events: none;
+    margin-bottom: 4px; z-index: 10;
+  }
+  .step-nums { display: flex; gap: 0.25rem; padding-left: 5.25rem; margin-bottom: 0.5rem; }
+  .step-num { flex: 1; text-align: center; font-size: 0.6rem; color: #bbb; }
+
+  :root {
+    --red-0: rgb(255,222,218); --red-1: rgb(255,207,204); --red-2: rgb(255,185,182);
+    --red-3: rgb(253,155,152); --red-4: rgb(222,116,115); --red-5: rgb(187,74,76);
+    --red-6: rgb(142,42,47);   --red-7: rgb(98,9,21);     --red-8: rgb(57,0,0);
+    --red-9: rgb(31,0,0);
+
+    --orange-0: rgb(255,229,216); --orange-1: rgb(255,215,201); --orange-2: rgb(255,194,179);
+    --orange-3: rgb(240,165,149); --orange-4: rgb(208,128,112); --orange-5: rgb(173,88,72);
+    --orange-6: rgb(130,57,43);   --orange-7: rgb(89,27,17);    --orange-8: rgb(50,0,0);
+    --orange-9: rgb(26,0,0);
+
+    --yellow-0: rgb(254,251,187); --yellow-1: rgb(241,238,171); --yellow-2: rgb(221,218,147);
+    --yellow-3: rgb(195,191,113); --yellow-4: rgb(162,156,67);  --yellow-5: rgb(127,120,0);
+    --yellow-6: rgb(92,85,0);     --yellow-7: rgb(59,52,0);     --yellow-8: rgb(29,22,0);
+    --yellow-9: rgb(11,5,0);
+
+    --green-0: rgb(235,255,217); --green-1: rgb(221,242,202); --green-2: rgb(201,222,181);
+    --green-3: rgb(173,196,151); --green-4: rgb(137,162,113); --green-5: rgb(101,126,73);
+    --green-6: rgb(69,91,44);    --green-7: rgb(39,57,17);    --green-8: rgb(13,27,0);
+    --green-9: rgb(2,8,0);
+
+    --blue-0: rgb(235,251,249); --blue-1: rgb(221,238,236); --blue-2: rgb(201,218,216);
+    --blue-3: rgb(172,191,189); --blue-4: rgb(137,157,155); --blue-5: rgb(100,122,120);
+    --blue-6: rgb(68,87,85);    --blue-7: rgb(39,54,53);    --blue-8: rgb(12,25,24);
+    --blue-9: rgb(1,7,7);
+
+    --purple-0: rgb(255,237,255); --purple-1: rgb(252,224,244); --purple-2: rgb(234,203,225);
+    --purple-3: rgb(208,175,198); --purple-4: rgb(174,140,165); --purple-5: rgb(139,103,130);
+    --purple-6: rgb(102,71,94);   --purple-7: rgb(67,41,60);    --purple-8: rgb(34,14,29);
+    --purple-9: rgb(14,2,11);
+
+    --pink-0: rgb(255,203,232); --pink-1: rgb(255,187,218); --pink-2: rgb(255,163,197);
+    --pink-3: rgb(255,129,169); --pink-4: rgb(250,81,134);  --pink-5: rgb(214,0,97);
+    --pink-6: rgb(164,0,65);    --pink-7: rgb(116,0,37);    --pink-8: rgb(69,0,11);
+    --pink-9: rgb(40,0,1);
+
+    --gray-0: rgb(247,248,238); --gray-1: rgb(234,234,224); --gray-2: rgb(215,215,204);
+    --gray-3: rgb(187,187,176); --gray-4: rgb(153,153,141); --gray-5: rgb(117,117,105);
+    --gray-6: rgb(83,83,72);    --gray-7: rgb(52,51,42);    --gray-8: rgb(23,23,15);
+    --gray-9: rgb(6,6,2);
+  }
+</style>
+</head>
+<body style="overscroll-behavior-x: auto;">
+<h1>Color Scales — OKLCH</h1>
+<div class="scales">
+  <div class="step-nums">
+    <div class="step-num">0</div><div class="step-num">1</div><div class="step-num">2</div>
+    <div class="step-num">3</div><div class="step-num">4</div><div class="step-num">5</div>
+    <div class="step-num">6</div><div class="step-num">7</div><div class="step-num">8</div>
+    <div class="step-num">9</div>
+  </div>
+<div class="scale"><div class="label">red</div><div class="swatch" style="background: rgb(255, 222, 218);"><div class="tip">--red-0<br>rgb(255,222,218)</div></div><div class="swatch" style="background: rgb(255, 207, 204);"><div class="tip">--red-1<br>rgb(255,207,204)</div></div><div class="swatch" style="background: rgb(255, 185, 182);"><div class="tip">--red-2<br>rgb(255,185,182)</div></div><div class="swatch" style="background: rgb(253, 155, 152);"><div class="tip">--red-3<br>rgb(253,155,152)</div></div><div class="swatch" style="background: rgb(222, 116, 115);"><div class="tip">--red-4<br>rgb(222,116,115)</div></div><div class="swatch" style="background: rgb(187, 74, 76);"><div class="tip">--red-5<br>rgb(187,74,76)</div></div><div class="swatch" style="background: rgb(142, 42, 47);"><div class="tip">--red-6<br>rgb(142,42,47)</div></div><div class="swatch" style="background: rgb(98, 9, 21);"><div class="tip">--red-7<br>rgb(98,9,21)</div></div><div class="swatch" style="background: rgb(57, 0, 0);"><div class="tip">--red-8<br>rgb(57,0,0)</div></div><div class="swatch" style="background: rgb(31, 0, 0);"><div class="tip">--red-9<br>rgb(31,0,0)</div></div></div><div class="scale"><div class="label">orange</div><div class="swatch" style="background: rgb(255, 229, 216);"><div class="tip">--orange-0<br>rgb(255,229,216)</div></div><div class="swatch" style="background: rgb(255, 215, 201);"><div class="tip">--orange-1<br>rgb(255,215,201)</div></div><div class="swatch" style="background: rgb(255, 194, 179);"><div class="tip">--orange-2<br>rgb(255,194,179)</div></div><div class="swatch" style="background: rgb(240, 165, 149);"><div class="tip">--orange-3<br>rgb(240,165,149)</div></div><div class="swatch" style="background: rgb(208, 128, 112);"><div class="tip">--orange-4<br>rgb(208,128,112)</div></div><div class="swatch" style="background: rgb(173, 88, 72);"><div class="tip">--orange-5<br>rgb(173,88,72)</div></div><div class="swatch" style="background: rgb(130, 57, 43);"><div class="tip">--orange-6<br>rgb(130,57,43)</div></div><div class="swatch" style="background: rgb(89, 27, 17);"><div class="tip">--orange-7<br>rgb(89,27,17)</div></div><div class="swatch" style="background: rgb(50, 0, 0);"><div class="tip">--orange-8<br>rgb(50,0,0)</div></div><div class="swatch" style="background: rgb(26, 0, 0);"><div class="tip">--orange-9<br>rgb(26,0,0)</div></div></div><div class="scale"><div class="label">yellow</div><div class="swatch" style="background: rgb(254, 251, 187);"><div class="tip">--yellow-0<br>rgb(254,251,187)</div></div><div class="swatch" style="background: rgb(241, 238, 171);"><div class="tip">--yellow-1<br>rgb(241,238,171)</div></div><div class="swatch" style="background: rgb(221, 218, 147);"><div class="tip">--yellow-2<br>rgb(221,218,147)</div></div><div class="swatch" style="background: rgb(195, 191, 113);"><div class="tip">--yellow-3<br>rgb(195,191,113)</div></div><div class="swatch" style="background: rgb(162, 156, 67);"><div class="tip">--yellow-4<br>rgb(162,156,67)</div></div><div class="swatch" style="background: rgb(127, 120, 0);"><div class="tip">--yellow-5<br>rgb(127,120,0)</div></div><div class="swatch" style="background: rgb(92, 85, 0);"><div class="tip">--yellow-6<br>rgb(92,85,0)</div></div><div class="swatch" style="background: rgb(59, 52, 0);"><div class="tip">--yellow-7<br>rgb(59,52,0)</div></div><div class="swatch" style="background: rgb(29, 22, 0);"><div class="tip">--yellow-8<br>rgb(29,22,0)</div></div><div class="swatch" style="background: rgb(11, 5, 0);"><div class="tip">--yellow-9<br>rgb(11,5,0)</div></div></div><div class="scale"><div class="label">green</div><div class="swatch" style="background: rgb(235, 255, 217);"><div class="tip">--green-0<br>rgb(235,255,217)</div></div><div class="swatch" style="background: rgb(221, 242, 202);"><div class="tip">--green-1<br>rgb(221,242,202)</div></div><div class="swatch" style="background: rgb(201, 222, 181);"><div class="tip">--green-2<br>rgb(201,222,181)</div></div><div class="swatch" style="background: rgb(173, 196, 151);"><div class="tip">--green-3<br>rgb(173,196,151)</div></div><div class="swatch" style="background: rgb(137, 162, 113);"><div class="tip">--green-4<br>rgb(137,162,113)</div></div><div class="swatch" style="background: rgb(101, 126, 73);"><div class="tip">--green-5<br>rgb(101,126,73)</div></div><div class="swatch" style="background: rgb(69, 91, 44);"><div class="tip">--green-6<br>rgb(69,91,44)</div></div><div class="swatch" style="background: rgb(39, 57, 17);"><div class="tip">--green-7<br>rgb(39,57,17)</div></div><div class="swatch" style="background: rgb(13, 27, 0);"><div class="tip">--green-8<br>rgb(13,27,0)</div></div><div class="swatch" style="background: rgb(2, 8, 0);"><div class="tip">--green-9<br>rgb(2,8,0)</div></div></div><div class="scale"><div class="label">blue</div><div class="swatch" style="background: rgb(235, 251, 249);"><div class="tip">--blue-0<br>rgb(235,251,249)</div></div><div class="swatch" style="background: rgb(221, 238, 236);"><div class="tip">--blue-1<br>rgb(221,238,236)</div></div><div class="swatch" style="background: rgb(201, 218, 216);"><div class="tip">--blue-2<br>rgb(201,218,216)</div></div><div class="swatch" style="background: rgb(172, 191, 189);"><div class="tip">--blue-3<br>rgb(172,191,189)</div></div><div class="swatch" style="background: rgb(137, 157, 155);"><div class="tip">--blue-4<br>rgb(137,157,155)</div></div><div class="swatch" style="background: rgb(100, 122, 120);"><div class="tip">--blue-5<br>rgb(100,122,120)</div></div><div class="swatch" style="background: rgb(68, 87, 85);"><div class="tip">--blue-6<br>rgb(68,87,85)</div></div><div class="swatch" style="background: rgb(39, 54, 53);"><div class="tip">--blue-7<br>rgb(39,54,53)</div></div><div class="swatch" style="background: rgb(12, 25, 24);"><div class="tip">--blue-8<br>rgb(12,25,24)</div></div><div class="swatch" style="background: rgb(1, 7, 7);"><div class="tip">--blue-9<br>rgb(1,7,7)</div></div></div><div class="scale"><div class="label">purple</div><div class="swatch" style="background: rgb(255, 237, 255);"><div class="tip">--purple-0<br>rgb(255,237,255)</div></div><div class="swatch" style="background: rgb(252, 224, 244);"><div class="tip">--purple-1<br>rgb(252,224,244)</div></div><div class="swatch" style="background: rgb(234, 203, 225);"><div class="tip">--purple-2<br>rgb(234,203,225)</div></div><div class="swatch" style="background: rgb(208, 175, 198);"><div class="tip">--purple-3<br>rgb(208,175,198)</div></div><div class="swatch" style="background: rgb(174, 140, 165);"><div class="tip">--purple-4<br>rgb(174,140,165)</div></div><div class="swatch" style="background: rgb(139, 103, 130);"><div class="tip">--purple-5<br>rgb(139,103,130)</div></div><div class="swatch" style="background: rgb(102, 71, 94);"><div class="tip">--purple-6<br>rgb(102,71,94)</div></div><div class="swatch" style="background: rgb(67, 41, 60);"><div class="tip">--purple-7<br>rgb(67,41,60)</div></div><div class="swatch" style="background: rgb(34, 14, 29);"><div class="tip">--purple-8<br>rgb(34,14,29)</div></div><div class="swatch" style="background: rgb(14, 2, 11);"><div class="tip">--purple-9<br>rgb(14,2,11)</div></div></div><div class="scale"><div class="label">pink</div><div class="swatch" style="background: rgb(255, 203, 232);"><div class="tip">--pink-0<br>rgb(255,203,232)</div></div><div class="swatch" style="background: rgb(255, 187, 218);"><div class="tip">--pink-1<br>rgb(255,187,218)</div></div><div class="swatch" style="background: rgb(255, 163, 197);"><div class="tip">--pink-2<br>rgb(255,163,197)</div></div><div class="swatch" style="background: rgb(255, 129, 169);"><div class="tip">--pink-3<br>rgb(255,129,169)</div></div><div class="swatch" style="background: rgb(250, 81, 134);"><div class="tip">--pink-4<br>rgb(250,81,134)</div></div><div class="swatch" style="background: rgb(214, 0, 97);"><div class="tip">--pink-5<br>rgb(214,0,97)</div></div><div class="swatch" style="background: rgb(164, 0, 65);"><div class="tip">--pink-6<br>rgb(164,0,65)</div></div><div class="swatch" style="background: rgb(116, 0, 37);"><div class="tip">--pink-7<br>rgb(116,0,37)</div></div><div class="swatch" style="background: rgb(69, 0, 11);"><div class="tip">--pink-8<br>rgb(69,0,11)</div></div><div class="swatch" style="background: rgb(40, 0, 1);"><div class="tip">--pink-9<br>rgb(40,0,1)</div></div></div><div class="scale"><div class="label">gray</div><div class="swatch" style="background: rgb(247, 248, 238);"><div class="tip">--gray-0<br>rgb(247,248,238)</div></div><div class="swatch" style="background: rgb(234, 234, 224);"><div class="tip">--gray-1<br>rgb(234,234,224)</div></div><div class="swatch" style="background: rgb(215, 215, 204);"><div class="tip">--gray-2<br>rgb(215,215,204)</div></div><div class="swatch" style="background: rgb(187, 187, 176);"><div class="tip">--gray-3<br>rgb(187,187,176)</div></div><div class="swatch" style="background: rgb(153, 153, 141);"><div class="tip">--gray-4<br>rgb(153,153,141)</div></div><div class="swatch" style="background: rgb(117, 117, 105);"><div class="tip">--gray-5<br>rgb(117,117,105)</div></div><div class="swatch" style="background: rgb(83, 83, 72);"><div class="tip">--gray-6<br>rgb(83,83,72)</div></div><div class="swatch" style="background: rgb(52, 51, 42);"><div class="tip">--gray-7<br>rgb(52,51,42)</div></div><div class="swatch" style="background: rgb(23, 23, 15);"><div class="tip">--gray-8<br>rgb(23,23,15)</div></div><div class="swatch" style="background: rgb(6, 6, 2);"><div class="tip">--gray-9<br>rgb(6,6,2)</div></div></div></div>
+
+<script>
+const scales = {
+  red:    ['rgb(255,222,218)','rgb(255,207,204)','rgb(255,185,182)','rgb(253,155,152)','rgb(222,116,115)','rgb(187,74,76)','rgb(142,42,47)','rgb(98,9,21)','rgb(57,0,0)','rgb(31,0,0)'],
+  orange: ['rgb(255,229,216)','rgb(255,215,201)','rgb(255,194,179)','rgb(240,165,149)','rgb(208,128,112)','rgb(173,88,72)','rgb(130,57,43)','rgb(89,27,17)','rgb(50,0,0)','rgb(26,0,0)'],
+  yellow: ['rgb(254,251,187)','rgb(241,238,171)','rgb(221,218,147)','rgb(195,191,113)','rgb(162,156,67)','rgb(127,120,0)','rgb(92,85,0)','rgb(59,52,0)','rgb(29,22,0)','rgb(11,5,0)'],
+  green:  ['rgb(235,255,217)','rgb(221,242,202)','rgb(201,222,181)','rgb(173,196,151)','rgb(137,162,113)','rgb(101,126,73)','rgb(69,91,44)','rgb(39,57,17)','rgb(13,27,0)','rgb(2,8,0)'],
+  blue:   ['rgb(235,251,249)','rgb(221,238,236)','rgb(201,218,216)','rgb(172,191,189)','rgb(137,157,155)','rgb(100,122,120)','rgb(68,87,85)','rgb(39,54,53)','rgb(12,25,24)','rgb(1,7,7)'],
+  purple: ['rgb(255,237,255)','rgb(252,224,244)','rgb(234,203,225)','rgb(208,175,198)','rgb(174,140,165)','rgb(139,103,130)','rgb(102,71,94)','rgb(67,41,60)','rgb(34,14,29)','rgb(14,2,11)'],
+  pink:   ['rgb(255,203,232)','rgb(255,187,218)','rgb(255,163,197)','rgb(255,129,169)','rgb(250,81,134)','rgb(214,0,97)','rgb(164,0,65)','rgb(116,0,37)','rgb(69,0,11)','rgb(40,0,1)'],
+  gray:   ['rgb(247,248,238)','rgb(234,234,224)','rgb(215,215,204)','rgb(187,187,176)','rgb(153,153,141)','rgb(117,117,105)','rgb(83,83,72)','rgb(52,51,42)','rgb(23,23,15)','rgb(6,6,2)'],
+};
+
+const container = document.querySelector('.scales');
+Object.entries(scales).forEach(([name, steps]) => {
+  const row = document.createElement('div');
+  row.className = 'scale';
+  row.innerHTML = `<div class="label">${name}</div>`;
+  steps.forEach((color, i) => {
+    const sw = document.createElement('div');
+    sw.className = 'swatch';
+    sw.style.background = color;
+    sw.innerHTML = `<div class="tip">--${name}-${i}<br>${color}</div>`;
+    row.appendChild(sw);
+  });
+  container.appendChild(row);
+});
+</script>
+
+
+</body></html>

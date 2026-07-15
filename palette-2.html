@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<!-- saved from url=(0037)file:///private/tmp/palette-docs.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Color Palette</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --page-bg: #f7f7f2;
+    --text: #1a1a14;
+    --muted: #888880;
+    --border: #e0e0d8;
+    --font-mono: 'SF Mono', 'Fira Mono', 'Consolas', monospace;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--page-bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* Layout */
+  .page { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+  header { margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+  header h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.01em; }
+  header p  { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+
+  section { margin-bottom: 4rem; }
+  section > h2 {
+    font-size: 0.65rem; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--muted);
+    margin-bottom: 1.25rem; padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── Scales ── */
+  .scale-row { display: flex; align-items: stretch; gap: 0; margin-bottom: 0.375rem; }
+  .scale-name {
+    width: 5.5rem; font-size: 0.65rem; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--muted);
+    display: flex; align-items: center; flex-shrink: 0;
+  }
+  .scale-swatches { display: flex; flex: 1; gap: 2px; }
+  .swatch {
+    flex: 1; height: 3rem; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    cursor: default;
+  }
+  .swatch:first-child { border-radius: 4px 0 0 4px; }
+  .swatch:last-child  { border-radius: 0 4px 4px 0; }
+  .swatch-label {
+    font-family: var(--font-mono); font-size: 0.5rem; opacity: 0;
+    transition: opacity 0.1s; text-align: center; padding: 2px; line-height: 1.3;
+  }
+  .swatch:hover .swatch-label { opacity: 1; }
+
+  .step-header { display: flex; padding-left: 5.5rem; margin-bottom: 0.4rem; }
+  .step-header span {
+    flex: 1; text-align: center;
+    font-size: 0.55rem; color: var(--muted); font-family: var(--font-mono);
+  }
+
+  /* ── Contrast pairs ── */
+  .pairs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 0.75rem; }
+  .pair {
+    border-radius: 6px; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .pair-preview {
+    height: 5rem; display: flex; align-items: center;
+    justify-content: center; padding: 1rem;
+  }
+  .pair-preview span { font-size: 0.95rem; font-weight: 600; text-align: center; }
+  .pair-meta {
+    padding: 0.5rem 0.6rem;
+    border-top: 1px solid var(--border);
+    background: white;
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+  .pair-names { font-size: 0.6rem; color: var(--muted); font-family: var(--font-mono); }
+  .pair-ratio {
+    font-size: 0.7rem; font-weight: 700; font-family: var(--font-mono);
+  }
+  .badge {
+    display: inline-block; font-size: 0.5rem; font-weight: 700;
+    padding: 1px 4px; border-radius: 3px; margin-left: 4px;
+    vertical-align: middle; letter-spacing: 0.04em;
+  }
+  .aaa  { background: #d4edda; color: #155724; }
+  .aa   { background: #fff3cd; color: #856404; }
+  .fail { background: #f8d7da; color: #721c24; }
+
+  /* ── Tokens ── */
+  .token-table { width: 100%; border-collapse: collapse; }
+  .token-table th {
+    font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); text-align: left; padding: 0.4rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .token-table td {
+    font-size: 0.72rem; padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-dot {
+    width: 1rem; height: 1rem; border-radius: 50%;
+    display: inline-block; margin-right: 0.4rem;
+    vertical-align: middle; border: 1px solid rgba(0,0,0,0.08);
+  }
+  .token-name { font-family: var(--font-mono); font-size: 0.65rem; }
+  .token-value { font-family: var(--font-mono); color: var(--muted); font-size: 0.6rem; }
+  .token-desc { color: var(--muted); }
+
+  /* ── Text samples ── */
+  .samples-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 0.75rem; }
+  .sample {
+    border-radius: 6px; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .sample-body { padding: 1.25rem; min-height: 7rem; }
+  .sample-body h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .sample-body p  { font-size: 0.75rem; line-height: 1.5; opacity: 0.85; }
+  .sample-footer {
+    padding: 0.4rem 0.75rem; background: rgba(255,255,255,0.5);
+    border-top: 1px solid rgba(0,0,0,0.06);
+    font-size: 0.55rem; font-family: var(--font-mono); color: rgba(0,0,0,0.4);
+    display: flex; justify-content: space-between;
+  }
+</style>
+</head>
+<body style="overscroll-behavior-x: auto;">
+<div class="page">
+
+<header>
+  <h1>Color Palette</h1>
+  <p>OKLCH-based scales · 10 steps per hue · WCAG contrast annotations</p>
+</header>
+
+<section id="scales">
+  <h2>Scales</h2>
+  <div class="step-header" id="step-header"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div>
+  <div id="scale-rows"><div class="scale-row"><div class="scale-name">red</div><div class="scale-swatches"><div class="swatch" style="background: rgb(255, 222, 218);"><div class="swatch-label" style="color: rgb(10, 10, 8);">0</div></div><div class="swatch" style="background: rgb(255, 207, 204);"><div class="swatch-label" style="color: rgb(10, 10, 8);">1</div></div><div class="swatch" style="background: rgb(255, 185, 182);"><div class="swatch-label" style="color: rgb(10, 10, 8);">2</div></div><div class="swatch" style="background: rgb(253, 155, 152);"><div class="swatch-label" style="color: rgb(10, 10, 8);">3</div></div><div class="swatch" style="background: rgb(222, 116, 115);"><div class="swatch-label" style="color: rgb(252, 252, 248);">4</div></div><div class="swatch" style="background: rgb(187, 74, 76);"><div class="swatch-label" style="color: rgb(252, 252, 248);">5</div></div><div class="swatch" style="background: rgb(142, 42, 47);"><div class="swatch-label" style="color: rgb(252, 252, 248);">6</div></div><div class="swatch" style="background: rgb(98, 9, 21);"><div class="swatch-label" style="color: rgb(252, 252, 248);">7</div></div><div class="swatch" style="background: rgb(57, 0, 0);"><div class="swatch-label" style="color: rgb(252, 252, 248);">8</div></div><div class="swatch" style="background: rgb(31, 0, 0);"><div class="swatch-label" style="color: rgb(252, 252, 248);">9</div></div></div></div><div class="scale-row"><div class="scale-name">orange</div><div class="scale-swatches"><div class="swatch" style="background: rgb(255, 229, 216);"><div class="swatch-label" style="color: rgb(10, 10, 8);">0</div></div><div class="swatch" style="background: rgb(255, 215, 201);"><div class="swatch-label" style="color: rgb(10, 10, 8);">1</div></div><div class="swatch" style="background: rgb(255, 194, 179);"><div class="swatch-label" style="color: rgb(10, 10, 8);">2</div></div><div class="swatch" style="background: rgb(240, 165, 149);"><div class="swatch-label" style="color: rgb(10, 10, 8);">3</div></div><div class="swatch" style="background: rgb(208, 128, 112);"><div class="swatch-label" style="color: rgb(252, 252, 248);">4</div></div><div class="swatch" style="background: rgb(173, 88, 72);"><div class="swatch-label" style="color: rgb(252, 252, 248);">5</div></div><div class="swatch" style="background: rgb(130, 57, 43);"><div class="swatch-label" style="color: rgb(252, 252, 248);">6</div></div><div class="swatch" style="background: rgb(89, 27, 17);"><div class="swatch-label" style="color: rgb(252, 252, 248);">7</div></div><div class="swatch" style="background: rgb(50, 0, 0);"><div class="swatch-label" style="color: rgb(252, 252, 248);">8</div></div><div class="swatch" style="background: rgb(26, 0, 0);"><div class="swatch-label" style="color: rgb(252, 252, 248);">9</div></div></div></div><div class="scale-row"><div class="scale-name">yellow</div><div class="scale-swatches"><div class="swatch" style="background: rgb(254, 251, 187);"><div class="swatch-label" style="color: rgb(10, 10, 8);">0</div></div><div class="swatch" style="background: rgb(241, 238, 171);"><div class="swatch-label" style="color: rgb(10, 10, 8);">1</div></div><div class="swatch" style="background: rgb(221, 218, 147);"><div class="swatch-label" style="color: rgb(10, 10, 8);">2</div></div><div class="swatch" style="background: rgb(195, 191, 113);"><div class="swatch-label" style="color: rgb(10, 10, 8);">3</div></div><div class="swatch" style="background: rgb(162, 156, 67);"><div class="swatch-label" style="color: rgb(252, 252, 248);">4</div></div><div class="swatch" style="background: rgb(127, 120, 0);"><div class="swatch-label" style="color: rgb(252, 252, 248);">5</div></div><div class="swatch" style="background: rgb(92, 85, 0);"><div class="swatch-label" style="color: rgb(252, 252, 248);">6</div></div><div class="swatch" style="background: rgb(59, 52, 0);"><div class="swatch-label" style="color: rgb(252, 252, 248);">7</div></div><div class="swatch" style="background: rgb(29, 22, 0);"><div class="swatch-label" style="color: rgb(252, 252, 248);">8</div></div><div class="swatch" style="background: rgb(11, 5, 0);"><div class="swatch-label" style="color: rgb(252, 252, 248);">9</div></div></div></div><div class="scale-row"><div class="scale-name">green</div><div class="scale-swatches"><div class="swatch" style="background: rgb(235, 255, 217);"><div class="swatch-label" style="color: rgb(10, 10, 8);">0</div></div><div class="swatch" style="background: rgb(221, 242, 202);"><div class="swatch-label" style="color: rgb(10, 10, 8);">1</div></div><div class="swatch" style="background: rgb(201, 222, 181);"><div class="swatch-label" style="color: rgb(10, 10, 8);">2</div></div><div class="swatch" style="background: rgb(173, 196, 151);"><div class="swatch-label" style="color: rgb(10, 10, 8);">3</div></div><div class="swatch" style="background: rgb(137, 162, 113);"><div class="swatch-label" style="color: rgb(252, 252, 248);">4</div></div><div class="swatch" style="background: rgb(101, 126, 73);"><div class="swatch-label" style="color: rgb(252, 252, 248);">5</div></div><div class="swatch" style="background: rgb(69, 91, 44);"><div class="swatch-label" style="color: rgb(252, 252, 248);">6</div></div><div class="swatch" style="background: rgb(39, 57, 17);"><div class="swatch-label" style="color: rgb(252, 252, 248);">7</div></div><div class="swatch" style="background: rgb(13, 27, 0);"><div class="swatch-label" style="color: rgb(252, 252, 248);">8</div></div><div class="swatch" style="background: rgb(2, 8, 0);"><div class="swatch-label" style="color: rgb(252, 252, 248);">9</div></div></div></div><div class="scale-row"><div class="scale-name">blue</div><div class="scale-swatches"><div class="swatch" style="background: rgb(235, 251, 249);"><div class="swatch-label" style="color: rgb(10, 10, 8);">0</div></div><div class="swatch" style="background: rgb(221, 238, 236);"><div class="swatch-label" style="color: rgb(10, 10, 8);">1</div></div><div class="swatch" style="background: rgb(201, 218, 216);"><div class="swatch-label" style="color: rgb(10, 10, 8);">2</div></div><div class="swatch" style="background: rgb(172, 191, 189);"><div class="swatch-label" style="color: rgb(10, 10, 8);">3</div></div><div class="swatch" style="background: rgb(137, 157, 155);"><div class="swatch-label" style="color: rgb(252, 252, 248);">4</div></div><div class="swatch" style="background: rgb(100, 122, 120);"><div class="swatch-label" style="color: rgb(252, 252, 248);">5</div></div><div class="swatch" style="background: rgb(68, 87, 85);"><div class="swatch-label" style="color: rgb(252, 252, 248);">6</div></div><div class="swatch" style="background: rgb(39, 54, 53);"><div class="swatch-label" style="color: rgb(252, 252, 248);">7</div></div><div class="swatch" style="background: rgb(12, 25, 24);"><div class="swatch-label" style="color: rgb(252, 252, 248);">8</div></div><div class="swatch" style="background: rgb(1, 7, 7);"><div class="swatch-label" style="color: rgb(252, 252, 248);">9</div></div></div></div><div class="scale-row"><div class="scale-name">purple</div><div class="scale-swatches"><div class="swatch" style="background: rgb(255, 237, 255);"><div class="swatch-label" style="color: rgb(10, 10, 8);">0</div></div><div class="swatch" style="background: rgb(252, 224, 244);"><div class="swatch-label" style="color: rgb(10, 10, 8);">1</div></div><div class="swatch" style="background: rgb(234, 203, 225);"><div class="swatch-label" style="color: rgb(10, 10, 8);">2</div></div><div class="swatch" style="background: rgb(208, 175, 198);"><div class="swatch-label" style="color: rgb(10, 10, 8);">3</div></div><div class="swatch" style="background: rgb(174, 140, 165);"><div class="swatch-label" style="color: rgb(252, 252, 248);">4</div></div><div class="swatch" style="background: rgb(139, 103, 130);"><div class="swatch-label" style="color: rgb(252, 252, 248);">5</div></div><div class="swatch" style="background: rgb(102, 71, 94);"><div class="swatch-label" style="color: rgb(252, 252, 248);">6</div></div><div class="swatch" style="background: rgb(67, 41, 60);"><div class="swatch-label" style="color: rgb(252, 252, 248);">7</div></div><div class="swatch" style="background: rgb(34, 14, 29);"><div class="swatch-label" style="color: rgb(252, 252, 248);">8</div></div><div class="swatch" style="background: rgb(14, 2, 11);"><div class="swatch-label" style="color: rgb(252, 252, 248);">9</div></div></div></div><div class="scale-row"><div class="scale-name">pink</div><div class="scale-swatches"><div class="swatch" style="background: rgb(255, 203, 232);"><div class="swatch-label" style="color: rgb(10, 10, 8);">0</div></div><div class="swatch" style="background: rgb(255, 187, 218);"><div class="swatch-label" style="color: rgb(10, 10, 8);">1</div></div><div class="swatch" style="background: rgb(255, 163, 197);"><div class="swatch-label" style="color: rgb(10, 10, 8);">2</div></div><div class="swatch" style="background: rgb(255, 129, 169);"><div class="swatch-label" style="color: rgb(10, 10, 8);">3</div></div><div class="swatch" style="background: rgb(250, 81, 134);"><div class="swatch-label" style="color: rgb(252, 252, 248);">4</div></div><div class="swatch" style="background: rgb(214, 0, 97);"><div class="swatch-label" style="color: rgb(252, 252, 248);">5</div></div><div class="swatch" style="background: rgb(164, 0, 65);"><div class="swatch-label" style="color: rgb(252, 252, 248);">6</div></div><div class="swatch" style="background: rgb(116, 0, 37);"><div class="swatch-label" style="color: rgb(252, 252, 248);">7</div></div><div class="swatch" style="background: rgb(69, 0, 11);"><div class="swatch-label" style="color: rgb(252, 252, 248);">8</div></div><div class="swatch" style="background: rgb(40, 0, 1);"><div class="swatch-label" style="color: rgb(252, 252, 248);">9</div></div></div></div><div class="scale-row"><div class="scale-name">gray</div><div class="scale-swatches"><div class="swatch" style="background: rgb(247, 248, 238);"><div class="swatch-label" style="color: rgb(10, 10, 8);">0</div></div><div class="swatch" style="background: rgb(234, 234, 224);"><div class="swatch-label" style="color: rgb(10, 10, 8);">1</div></div><div class="swatch" style="background: rgb(215, 215, 204);"><div class="swatch-label" style="color: rgb(10, 10, 8);">2</div></div><div class="swatch" style="background: rgb(187, 187, 176);"><div class="swatch-label" style="color: rgb(10, 10, 8);">3</div></div><div class="swatch" style="background: rgb(153, 153, 141);"><div class="swatch-label" style="color: rgb(252, 252, 248);">4</div></div><div class="swatch" style="background: rgb(117, 117, 105);"><div class="swatch-label" style="color: rgb(252, 252, 248);">5</div></div><div class="swatch" style="background: rgb(83, 83, 72);"><div class="swatch-label" style="color: rgb(252, 252, 248);">6</div></div><div class="swatch" style="background: rgb(52, 51, 42);"><div class="swatch-label" style="color: rgb(252, 252, 248);">7</div></div><div class="swatch" style="background: rgb(23, 23, 15);"><div class="swatch-label" style="color: rgb(252, 252, 248);">8</div></div><div class="swatch" style="background: rgb(6, 6, 2);"><div class="swatch-label" style="color: rgb(252, 252, 248);">9</div></div></div></div></div>
+</section>
+
+<section id="contrast">
+  <h2>High-contrast pairs</h2>
+  <div class="pairs-grid" id="pairs-grid"><div class="pair">
+    <div class="pair-preview" style="background:rgb(254,251,187)">
+      <span style="color:rgb(29,22,0)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">yellow-0 / yellow-8</div>
+      <div class="pair-ratio">16.9:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(235,255,217)">
+      <span style="color:rgb(13,27,0)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">green-0 / green-8</div>
+      <div class="pair-ratio">16.9:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(235,251,249)">
+      <span style="color:rgb(12,25,24)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">blue-0 / blue-8</div>
+      <div class="pair-ratio">16.9:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(247,248,238)">
+      <span style="color:rgb(23,23,15)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">gray-0 / gray-8</div>
+      <div class="pair-ratio">16.8:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(255,237,255)">
+      <span style="color:rgb(34,14,29)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">purple-0 / purple-8</div>
+      <div class="pair-ratio">16.4:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(255,229,216)">
+      <span style="color:rgb(50,0,0)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">orange-0 / orange-8</div>
+      <div class="pair-ratio">15.4:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(241,238,171)">
+      <span style="color:rgb(29,22,0)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">yellow-1 / yellow-8</div>
+      <div class="pair-ratio">15.0:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(221,242,202)">
+      <span style="color:rgb(13,27,0)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">green-1 / green-8</div>
+      <div class="pair-ratio">15.0:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(221,238,236)">
+      <span style="color:rgb(12,25,24)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">blue-1 / blue-8</div>
+      <div class="pair-ratio">15.0:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(252,224,244)">
+      <span style="color:rgb(34,14,29)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">purple-1 / purple-8</div>
+      <div class="pair-ratio">14.9:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(234,234,224)">
+      <span style="color:rgb(23,23,15)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">gray-1 / gray-8</div>
+      <div class="pair-ratio">14.9:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(255,222,218)">
+      <span style="color:rgb(57,0,0)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">red-0 / red-8</div>
+      <div class="pair-ratio">14.2:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(255,215,201)">
+      <span style="color:rgb(50,0,0)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">orange-1 / orange-8</div>
+      <div class="pair-ratio">13.9:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(255,207,204)">
+      <span style="color:rgb(57,0,0)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">red-1 / red-8</div>
+      <div class="pair-ratio">12.8:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(235,255,217)">
+      <span style="color:rgb(98,9,21)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">green-0 / red-7</div>
+      <div class="pair-ratio">12.6:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(255,203,232)">
+      <span style="color:rgb(69,0,11)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">pink-0 / pink-8</div>
+      <div class="pair-ratio">11.9:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(247,248,238)">
+      <span style="color:rgb(52,51,42)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">gray-0 / gray-7</div>
+      <div class="pair-ratio">11.9:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(235,251,249)">
+      <span style="color:rgb(39,54,53)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">blue-0 / blue-7</div>
+      <div class="pair-ratio">11.8:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(235,255,217)">
+      <span style="color:rgb(39,57,17)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">green-0 / green-7</div>
+      <div class="pair-ratio">11.8:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(254,251,187)">
+      <span style="color:rgb(59,52,0)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">yellow-0 / yellow-7</div>
+      <div class="pair-ratio">11.8:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(255,237,255)">
+      <span style="color:rgb(67,41,60)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">purple-0 / purple-7</div>
+      <div class="pair-ratio">11.6:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(255,237,255)">
+      <span style="color:rgb(39,57,17)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">purple-0 / green-7</div>
+      <div class="pair-ratio">11.2:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(221,238,236)">
+      <span style="color:rgb(89,27,17)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">blue-1 / orange-7</div>
+      <div class="pair-ratio">11.0:1<span class="badge aaa">AAA</span></div>
+    </div></div><div class="pair">
+    <div class="pair-preview" style="background:rgb(255,229,216)">
+      <span style="color:rgb(89,27,17)">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">orange-0 / orange-7</div>
+      <div class="pair-ratio">11.0:1<span class="badge aaa">AAA</span></div>
+    </div></div></div>
+</section>
+
+<section id="samples">
+  <h2>Text samples</h2>
+  <div class="samples-grid" id="samples-grid"><div class="sample">
+    <div class="sample-body" style="background:rgb(255,222,218);color:rgb(98,9,21)">
+      <h3>Heading text</h3>
+      <p>Body copy sits here — comfortable reading at this scale and weight.</p>
+    </div>
+    <div class="sample-footer">
+      <span>red-0 / red-7</span>
+      <span>10.7:1 AAA</span>
+    </div></div><div class="sample">
+    <div class="sample-body" style="background:rgb(255,229,216);color:rgb(89,27,17)">
+      <h3>Heading text</h3>
+      <p>Body copy sits here — comfortable reading at this scale and weight.</p>
+    </div>
+    <div class="sample-footer">
+      <span>orange-0 / orange-7</span>
+      <span>11.0:1 AAA</span>
+    </div></div><div class="sample">
+    <div class="sample-body" style="background:rgb(241,238,171);color:rgb(59,52,0)">
+      <h3>Heading text</h3>
+      <p>Body copy sits here — comfortable reading at this scale and weight.</p>
+    </div>
+    <div class="sample-footer">
+      <span>yellow-1 / yellow-7</span>
+      <span>10.5:1 AAA</span>
+    </div></div><div class="sample">
+    <div class="sample-body" style="background:rgb(235,255,217);color:rgb(39,57,17)">
+      <h3>Heading text</h3>
+      <p>Body copy sits here — comfortable reading at this scale and weight.</p>
+    </div>
+    <div class="sample-footer">
+      <span>green-0 / green-7</span>
+      <span>11.8:1 AAA</span>
+    </div></div><div class="sample">
+    <div class="sample-body" style="background:rgb(235,251,249);color:rgb(39,54,53)">
+      <h3>Heading text</h3>
+      <p>Body copy sits here — comfortable reading at this scale and weight.</p>
+    </div>
+    <div class="sample-footer">
+      <span>blue-0 / blue-7</span>
+      <span>11.8:1 AAA</span>
+    </div></div><div class="sample">
+    <div class="sample-body" style="background:rgb(255,237,255);color:rgb(67,41,60)">
+      <h3>Heading text</h3>
+      <p>Body copy sits here — comfortable reading at this scale and weight.</p>
+    </div>
+    <div class="sample-footer">
+      <span>purple-0 / purple-7</span>
+      <span>11.6:1 AAA</span>
+    </div></div><div class="sample">
+    <div class="sample-body" style="background:rgb(255,203,232);color:rgb(164,0,65)">
+      <h3>Heading text</h3>
+      <p>Body copy sits here — comfortable reading at this scale and weight.</p>
+    </div>
+    <div class="sample-footer">
+      <span>pink-0 / pink-6</span>
+      <span>5.6:1 AA</span>
+    </div></div><div class="sample">
+    <div class="sample-body" style="background:rgb(247,248,238);color:rgb(23,23,15)">
+      <h3>Heading text</h3>
+      <p>Body copy sits here — comfortable reading at this scale and weight.</p>
+    </div>
+    <div class="sample-footer">
+      <span>gray-0 / gray-8</span>
+      <span>16.8:1 AAA</span>
+    </div></div><div class="sample">
+    <div class="sample-body" style="background:rgb(98,9,21);color:rgb(255,222,218)">
+      <h3>Heading text</h3>
+      <p>Body copy sits here — comfortable reading at this scale and weight.</p>
+    </div>
+    <div class="sample-footer">
+      <span>red-7 / red-0</span>
+      <span>10.7:1 AAA</span>
+    </div></div><div class="sample">
+    <div class="sample-body" style="background:rgb(13,27,0);color:rgb(235,255,217)">
+      <h3>Heading text</h3>
+      <p>Body copy sits here — comfortable reading at this scale and weight.</p>
+    </div>
+    <div class="sample-footer">
+      <span>green-8 / green-0</span>
+      <span>16.9:1 AAA</span>
+    </div></div><div class="sample">
+    <div class="sample-body" style="background:rgb(12,25,24);color:rgb(235,251,249)">
+      <h3>Heading text</h3>
+      <p>Body copy sits here — comfortable reading at this scale and weight.</p>
+    </div>
+    <div class="sample-footer">
+      <span>blue-8 / blue-0</span>
+      <span>16.9:1 AAA</span>
+    </div></div><div class="sample">
+    <div class="sample-body" style="background:rgb(23,23,15);color:rgb(247,248,238)">
+      <h3>Heading text</h3>
+      <p>Body copy sits here — comfortable reading at this scale and weight.</p>
+    </div>
+    <div class="sample-footer">
+      <span>gray-8 / gray-0</span>
+      <span>16.8:1 AAA</span>
+    </div></div></div>
+</section>
+
+<section id="tokens">
+  <h2>Semantic tokens</h2>
+  <table class="token-table">
+    <thead>
+      <tr><th>Token</th><th>Value</th><th>Usage</th></tr>
+    </thead>
+    <tbody id="token-tbody"><tr>
+    <td><span class="token-dot" style="background:rgb(247,248,238)"></span><span class="token-name">--color-bg</span></td>
+    <td><span class="token-value">--gray-0</span></td>
+    <td class="token-desc">Page background</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(234,234,224)"></span><span class="token-name">--color-surface</span></td>
+    <td><span class="token-value">--gray-1</span></td>
+    <td class="token-desc">Card / panel surface</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(215,215,204)"></span><span class="token-name">--color-surface-2</span></td>
+    <td><span class="token-value">--gray-2</span></td>
+    <td class="token-desc">Nested surface, input bg</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(187,187,176)"></span><span class="token-name">--color-border</span></td>
+    <td><span class="token-value">--gray-3</span></td>
+    <td class="token-desc">Dividers, borders</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(23,23,15)"></span><span class="token-name">--color-text</span></td>
+    <td><span class="token-value">--gray-8</span></td>
+    <td class="token-desc">Primary body text</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(117,117,105)"></span><span class="token-name">--color-text-muted</span></td>
+    <td><span class="token-value">--gray-5</span></td>
+    <td class="token-desc">Secondary / caption text</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(153,153,141)"></span><span class="token-name">--color-text-subtle</span></td>
+    <td><span class="token-value">--gray-4</span></td>
+    <td class="token-desc">Placeholder, disabled</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(214,0,97)"></span><span class="token-name">--color-accent</span></td>
+    <td><span class="token-value">--pink-5</span></td>
+    <td class="token-desc">Primary accent / CTA</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(164,0,65)"></span><span class="token-name">--color-accent-hover</span></td>
+    <td><span class="token-value">--pink-6</span></td>
+    <td class="token-desc">Hover / active state</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(255,203,232)"></span><span class="token-name">--color-accent-subtle</span></td>
+    <td><span class="token-value">--pink-0</span></td>
+    <td class="token-desc">Tinted accent background</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(69,91,44)"></span><span class="token-name">--color-success</span></td>
+    <td><span class="token-value">--green-6</span></td>
+    <td class="token-desc">Success state text/icon</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(235,255,217)"></span><span class="token-name">--color-success-bg</span></td>
+    <td><span class="token-value">--green-0</span></td>
+    <td class="token-desc">Success background</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(92,85,0)"></span><span class="token-name">--color-warning</span></td>
+    <td><span class="token-value">--yellow-6</span></td>
+    <td class="token-desc">Warning state text/icon</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(254,251,187)"></span><span class="token-name">--color-warning-bg</span></td>
+    <td><span class="token-value">--yellow-0</span></td>
+    <td class="token-desc">Warning background</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(142,42,47)"></span><span class="token-name">--color-danger</span></td>
+    <td><span class="token-value">--red-6</span></td>
+    <td class="token-desc">Error/danger text/icon</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(255,222,218)"></span><span class="token-name">--color-danger-bg</span></td>
+    <td><span class="token-value">--red-0</span></td>
+    <td class="token-desc">Error background</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(68,87,85)"></span><span class="token-name">--color-info</span></td>
+    <td><span class="token-value">--blue-6</span></td>
+    <td class="token-desc">Info text/icon</td></tr><tr>
+    <td><span class="token-dot" style="background:rgb(235,251,249)"></span><span class="token-name">--color-info-bg</span></td>
+    <td><span class="token-value">--blue-0</span></td>
+    <td class="token-desc">Info background</td></tr></tbody>
+  </table>
+</section>
+
+</div>
+<script>
+// ── Palette data ────────────────────────────────────────────────
+const palette = {
+  red:    ['rgb(255,222,218)','rgb(255,207,204)','rgb(255,185,182)','rgb(253,155,152)','rgb(222,116,115)','rgb(187,74,76)','rgb(142,42,47)','rgb(98,9,21)','rgb(57,0,0)','rgb(31,0,0)'],
+  orange: ['rgb(255,229,216)','rgb(255,215,201)','rgb(255,194,179)','rgb(240,165,149)','rgb(208,128,112)','rgb(173,88,72)','rgb(130,57,43)','rgb(89,27,17)','rgb(50,0,0)','rgb(26,0,0)'],
+  yellow: ['rgb(254,251,187)','rgb(241,238,171)','rgb(221,218,147)','rgb(195,191,113)','rgb(162,156,67)','rgb(127,120,0)','rgb(92,85,0)','rgb(59,52,0)','rgb(29,22,0)','rgb(11,5,0)'],
+  green:  ['rgb(235,255,217)','rgb(221,242,202)','rgb(201,222,181)','rgb(173,196,151)','rgb(137,162,113)','rgb(101,126,73)','rgb(69,91,44)','rgb(39,57,17)','rgb(13,27,0)','rgb(2,8,0)'],
+  blue:   ['rgb(235,251,249)','rgb(221,238,236)','rgb(201,218,216)','rgb(172,191,189)','rgb(137,157,155)','rgb(100,122,120)','rgb(68,87,85)','rgb(39,54,53)','rgb(12,25,24)','rgb(1,7,7)'],
+  purple: ['rgb(255,237,255)','rgb(252,224,244)','rgb(234,203,225)','rgb(208,175,198)','rgb(174,140,165)','rgb(139,103,130)','rgb(102,71,94)','rgb(67,41,60)','rgb(34,14,29)','rgb(14,2,11)'],
+  pink:   ['rgb(255,203,232)','rgb(255,187,218)','rgb(255,163,197)','rgb(255,129,169)','rgb(250,81,134)','rgb(214,0,97)','rgb(164,0,65)','rgb(116,0,37)','rgb(69,0,11)','rgb(40,0,1)'],
+  gray:   ['rgb(247,248,238)','rgb(234,234,224)','rgb(215,215,204)','rgb(187,187,176)','rgb(153,153,141)','rgb(117,117,105)','rgb(83,83,72)','rgb(52,51,42)','rgb(23,23,15)','rgb(6,6,2)'],
+};
+
+// ── Contrast utils ──────────────────────────────────────────────
+function parseRgb(str) {
+  const m = str.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+  return [+m[1], +m[2], +m[3]];
+}
+function toLinear(c) {
+  c /= 255;
+  return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+}
+function luminance(rgb) {
+  const [r,g,b] = rgb.map(toLinear);
+  return 0.2126*r + 0.7152*g + 0.0722*b;
+}
+function contrast(a, b) {
+  const la = luminance(parseRgb(a)), lb = luminance(parseRgb(b));
+  const hi = Math.max(la,lb), lo = Math.min(la,lb);
+  return (hi+0.05)/(lo+0.05);
+}
+function textColor(bg) {
+  const l = luminance(parseRgb(bg));
+  return l > 0.35 ? 'rgb(10,10,8)' : 'rgb(252,252,248)';
+}
+function badge(ratio) {
+  if (ratio >= 7)   return '<span class="badge aaa">AAA</span>';
+  if (ratio >= 4.5) return '<span class="badge aa">AA</span>';
+  return '<span class="badge fail">fail</span>';
+}
+
+// ── Step header ─────────────────────────────────────────────────
+const header = document.getElementById('step-header');
+for (let i=0;i<10;i++) {
+  const s = document.createElement('span'); s.textContent = i;
+  header.appendChild(s);
+}
+
+// ── Scale rows ──────────────────────────────────────────────────
+const scaleContainer = document.getElementById('scale-rows');
+Object.entries(palette).forEach(([name, steps]) => {
+  const row = document.createElement('div');
+  row.className = 'scale-row';
+  const label = document.createElement('div');
+  label.className = 'scale-name'; label.textContent = name;
+  row.appendChild(label);
+  const swatches = document.createElement('div');
+  swatches.className = 'scale-swatches';
+  steps.forEach((color, i) => {
+    const sw = document.createElement('div');
+    sw.className = 'swatch';
+    sw.style.background = color;
+    const lbl = document.createElement('div');
+    lbl.className = 'swatch-label';
+    lbl.style.color = textColor(color);
+    lbl.textContent = i;
+    sw.appendChild(lbl);
+    swatches.appendChild(sw);
+  });
+  row.appendChild(swatches);
+  scaleContainer.appendChild(row);
+});
+
+// ── Contrast pairs ──────────────────────────────────────────────
+// Curated high-contrast pairings: within each hue (light bg, dark fg)
+// and a few cross-hue combos
+const pairs = [];
+Object.entries(palette).forEach(([name, steps]) => {
+  // Within-hue pairs
+  [[0,7],[0,8],[1,7],[1,8],[0,6]].forEach(([li, di]) => {
+    pairs.push({ bg: steps[li], fg: steps[di], bgName: `${name}-${li}`, fgName: `${name}-${di}` });
+  });
+});
+// Cross-hue accent pairs
+const crossPairs = [
+  { bg: palette.yellow[1], fg: palette.purple[7], bgName:'yellow-1', fgName:'purple-7' },
+  { bg: palette.green[0],  fg: palette.red[7],    bgName:'green-0',  fgName:'red-7'    },
+  { bg: palette.pink[0],   fg: palette.blue[7],   bgName:'pink-0',   fgName:'blue-7'   },
+  { bg: palette.blue[1],   fg: palette.orange[7], bgName:'blue-1',   fgName:'orange-7' },
+  { bg: palette.gray[0],   fg: palette.gray[8],   bgName:'gray-0',   fgName:'gray-8'   },
+  { bg: palette.purple[0], fg: palette.green[7],  bgName:'purple-0', fgName:'green-7'  },
+];
+pairs.push(...crossPairs);
+
+// Filter to only passing (≥3:1) and deduplicate; sort by ratio desc
+const seenPairs = new Set();
+const filteredPairs = pairs
+  .map(p => ({ ...p, ratio: contrast(p.bg, p.fg) }))
+  .filter(p => {
+    const key = `${p.bgName}|${p.fgName}`;
+    if (seenPairs.has(key)) return false;
+    seenPairs.add(key);
+    return p.ratio >= 4.5;
+  })
+  .sort((a,b) => b.ratio - a.ratio)
+  .slice(0, 24);
+
+const pairsGrid = document.getElementById('pairs-grid');
+filteredPairs.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'pair';
+  card.innerHTML = `
+    <div class="pair-preview" style="background:${p.bg}">
+      <span style="color:${p.fg}">Aa 0123</span>
+    </div>
+    <div class="pair-meta">
+      <div class="pair-names">${p.bgName} / ${p.fgName}</div>
+      <div class="pair-ratio">${p.ratio.toFixed(1)}:1${badge(p.ratio)}</div>
+    </div>`;
+  pairsGrid.appendChild(card);
+});
+
+// ── Text samples ────────────────────────────────────────────────
+const sampleData = [
+  { name:'red',    bg:0, fg:7 }, { name:'orange', bg:0, fg:7 },
+  { name:'yellow', bg:1, fg:7 }, { name:'green',  bg:0, fg:7 },
+  { name:'blue',   bg:0, fg:7 }, { name:'purple', bg:0, fg:7 },
+  { name:'pink',   bg:0, fg:6 }, { name:'gray',   bg:0, fg:8 },
+  { name:'red',    bg:7, fg:0 }, { name:'green',  bg:8, fg:0 },
+  { name:'blue',   bg:8, fg:0 }, { name:'gray',   bg:8, fg:0 },
+];
+const samplesGrid = document.getElementById('samples-grid');
+sampleData.forEach(({ name, bg, fg }) => {
+  const bgColor = palette[name][bg];
+  const fgColor = palette[name][fg];
+  const ratio = contrast(bgColor, fgColor).toFixed(1);
+  const div = document.createElement('div');
+  div.className = 'sample';
+  div.innerHTML = `
+    <div class="sample-body" style="background:${bgColor};color:${fgColor}">
+      <h3>Heading text</h3>
+      <p>Body copy sits here — comfortable reading at this scale and weight.</p>
+    </div>
+    <div class="sample-footer">
+      <span>${name}-${bg} / ${name}-${fg}</span>
+      <span>${ratio}:1 ${ratio>=7?'AAA':ratio>=4.5?'AA':'fail'}</span>
+    </div>`;
+  samplesGrid.appendChild(div);
+});
+
+// ── Semantic tokens ─────────────────────────────────────────────
+const tokens = [
+  // Backgrounds
+  { token:'--color-bg',          value:'gray-0',   color: palette.gray[0],   desc:'Page background' },
+  { token:'--color-surface',     value:'gray-1',   color: palette.gray[1],   desc:'Card / panel surface' },
+  { token:'--color-surface-2',   value:'gray-2',   color: palette.gray[2],   desc:'Nested surface, input bg' },
+  { token:'--color-border',      value:'gray-3',   color: palette.gray[3],   desc:'Dividers, borders' },
+  // Text
+  { token:'--color-text',        value:'gray-8',   color: palette.gray[8],   desc:'Primary body text' },
+  { token:'--color-text-muted',  value:'gray-5',   color: palette.gray[5],   desc:'Secondary / caption text' },
+  { token:'--color-text-subtle', value:'gray-4',   color: palette.gray[4],   desc:'Placeholder, disabled' },
+  // Accents
+  { token:'--color-accent',      value:'pink-5',   color: palette.pink[5],   desc:'Primary accent / CTA' },
+  { token:'--color-accent-hover',value:'pink-6',   color: palette.pink[6],   desc:'Hover / active state' },
+  { token:'--color-accent-subtle',value:'pink-0',  color: palette.pink[0],   desc:'Tinted accent background' },
+  // Semantic
+  { token:'--color-success',     value:'green-6',  color: palette.green[6],  desc:'Success state text/icon' },
+  { token:'--color-success-bg',  value:'green-0',  color: palette.green[0],  desc:'Success background' },
+  { token:'--color-warning',     value:'yellow-6', color: palette.yellow[6], desc:'Warning state text/icon' },
+  { token:'--color-warning-bg',  value:'yellow-0', color: palette.yellow[0], desc:'Warning background' },
+  { token:'--color-danger',      value:'red-6',    color: palette.red[6],    desc:'Error/danger text/icon' },
+  { token:'--color-danger-bg',   value:'red-0',    color: palette.red[0],    desc:'Error background' },
+  { token:'--color-info',        value:'blue-6',   color: palette.blue[6],   desc:'Info text/icon' },
+  { token:'--color-info-bg',     value:'blue-0',   color: palette.blue[0],   desc:'Info background' },
+];
+
+const tbody = document.getElementById('token-tbody');
+tokens.forEach(({ token, value, color, desc }) => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><span class="token-dot" style="background:${color}"></span><span class="token-name">${token}</span></td>
+    <td><span class="token-value">--${value}</span></td>
+    <td class="token-desc">${desc}</td>`;
+  tbody.appendChild(tr);
+});
+</script>
+
+
+</body></html>

@@ -1,5 +1,23 @@
 # color-system-and-guidelines
-Personal Color system, as well as typography and other image, etc. branding guidelines for all my projects (OOKB, Wjerk, Etc.)
+
+Personal color, layout, and typography system for all my projects (OOKB,
+Wjerk, Etc.) — the shared kit so each new project doesn't reinvent the
+same rules from scratch.
+
+## Quick start
+
+- **`kit.css`** — drop-in stylesheet: the color scale, semantic tokens
+  (`--color-accent`, `--color-text`, etc.), base reset, and the border/
+  button/panel primitives every project reuses. No build step — `<link>`
+  it directly or `@import` it into a framework's stylesheet.
+- **`RULES.md`** — the reasoning behind everything in `kit.css`: why pink
+  is the accent, the contrast bar, typography ethos, image treatment, open
+  questions (motion, image sourcing links) still being worked out.
+
+https://jxnblk.com/blog/color-palette-documentation-for-living-style-guides
+hmmm -> what's this? https://github.com/bjornmeansbear/color-documentation
+
+---
 
 Original OOKB colors:
 

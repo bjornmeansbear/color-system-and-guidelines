@@ -13,6 +13,8 @@ same rules from scratch.
 - **`RULES.md`** — the reasoning behind everything in `kit.css`: why pink
   is the accent, the contrast bar, typography ethos, image treatment, open
   questions (motion, image sourcing links) still being worked out.
+- **`NOTES.md`** — open questions, what's left to do, and a dated
+  changelog. Read this first when picking work back up.
 
 ## References
 

@@ -117,6 +117,26 @@
   --font-display: var(--font-sans);
   --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
 
+  /* ---- type scale ----
+     Baseline-grid, not a ratio scale (see RULES.md "Typography: baseline
+     grid, not a ratio scale"). Line-heights are even multiples of a 6px
+     (0.375rem) unit — 18px, 24px, 30px, 36px, 42px, 54px — and font-sizes
+     are chosen to pair with those rungs; the ratio shrinks as size grows
+     (more leading needed for small text, less for large), same principle
+     as Bringhurst/Lupton baseline grids. Every value is rem so the whole
+     scale rides along if a project changes the root font-size — no
+     variable does that by default here, kept as a documented technique
+     in RULES.md instead. */
+  --text-2xs: 0.75rem;    --leading-2xs: 1.125rem;  /* 12/18 · 1.5  — fine print, timestamps */
+  --text-xs:  0.8125rem;  --leading-xs:  1.125rem;  /* 13/18 · 1.38 — labels, meta */
+  --text-sm:  0.875rem;   --leading-sm:  1.125rem;  /* 14/18 · 1.29 — captions, secondary UI */
+  --text-base:1rem;       --leading-base:1.5rem;    /* 16/24 · 1.5  — body copy, default */
+  --text-md:  1.125rem;   --leading-md:  1.5rem;    /* 18/24 · 1.33 — lead paragraph */
+  --text-lg:  1.375rem;   --leading-lg:  1.875rem;  /* 22/30 · 1.36 — h5 */
+  --text-xl:  1.75rem;    --leading-xl:  2.25rem;   /* 28/36 · 1.29 — h3/h4 */
+  --text-2xl: 2.25rem;    --leading-2xl: 2.625rem;  /* 36/42 · 1.17 — h2 */
+  --text-3xl: 3rem;       --leading-3xl: 3.375rem;  /* 48/54 · 1.13 — h1 */
+
   /* dark mode: deliberately not implemented yet — see RULES.md. Keeping
      color-scheme pinned to light until there's a real system for it. */
   color-scheme: light;
@@ -130,11 +150,36 @@
 html, body {
   margin: 0;
   font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
   background: var(--color-bg);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ---- type scale applied ----
+   Margins sit on the same baseline unit as the type scale (1.5rem = one
+   base line) so vertical rhythm holds across headings and body copy. */
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0 0 1.5rem;
+  font-family: var(--font-display);
+  font-weight: bold;
+}
+
+h1 { font-size: var(--text-3xl); line-height: var(--leading-3xl); }
+h2 { font-size: var(--text-2xl); line-height: var(--leading-2xl); }
+h3 { font-size: var(--text-xl);  line-height: var(--leading-xl); }
+h4 { font-size: var(--text-lg);  line-height: var(--leading-lg); }
+h5 { font-size: var(--text-md);  line-height: var(--leading-md); }
+h6 { font-size: var(--text-base); line-height: var(--leading-base); }
+
+p {
+  font-family: var(--font-sans);
+  font-weight: normal;
+}
+
+small { font-size: var(--text-sm); line-height: var(--leading-sm); }
 
 /* Deliberately visible focus ring — never suppress focus-visible.
    Thick enough to read as part of the design, not a default-browser
@@ -177,7 +222,8 @@ select:focus-visible {
 .panel-footer {
   border-top: 1px solid var(--color-border);
   padding: 1rem 2rem;
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
   color: var(--color-text-muted);
 }
 
@@ -185,7 +231,7 @@ select:focus-visible {
    using elevation to show state. */
 .btn {
   font-family: inherit;
-  font-size: 1rem;
+  font-size: var(--text-base);
   padding: 0.875rem 1.75rem;
   border: 1px solid var(--color-border);
   background: var(--color-bg);
@@ -244,16 +290,21 @@ select:focus-visible {
   border: 2px solid var(--color-text);
 }
 
-/* Meta / caption text */
+/* Meta / caption text
+   Both happened to already match a type-scale rung exactly (0.8125rem →
+   --text-xs, 0.875rem → --text-sm) once the scale existed — repointed at
+   the tokens rather than kept as coincidentally-matching literals. */
 .label-upper {
-  font-size: 0.8125rem;
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--color-text-muted);
 }
 
 .caption-muted {
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
   color: var(--color-text-muted);
   font-style: italic;
 }

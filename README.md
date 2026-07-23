@@ -14,6 +14,31 @@ same rules from scratch.
   is the accent, the contrast bar, typography ethos, image treatment, open
   questions (motion, image sourcing links) still being worked out.
 
+## References
+
+Books and articles behind specific decisions in `kit.css` / `RULES.md` —
+not just further reading, the actual source of a rule:
+
+- **Typography, baseline grid** — Robert Bringhurst, *The Elements of
+  Typographic Style*; Ellen Lupton, *Thinking with Type*. The
+  vertical-rhythm thinking behind the kit's type scale: line-heights land
+  on even multiples of a base unit, font-sizes are chosen to pair with
+  those rungs (not the other way around).
+- **Typography, fluid sizing** — Tim Brown,
+  ["More Meaningful Typography"](https://alistapart.com/article/more-meaningful-typography/)
+  (A List Apart) and
+  [*Flexible Typesetting*](https://abookapart.com/products/flexible-typesetting.html)
+  (A Book Apart). Modular scales, and type that responds fluidly to
+  viewport/container instead of jumping at a fixed breakpoint — same
+  instinct as `kit.css`'s existing `clamp()` use on `.frame-thick`,
+  extended to the type scale's baseline-grid steps.
+- **Accessibility, design process** — Alan Dalton,
+  ["Good designers, bad websites: a proposal"](https://alistapart.com/article/good-designers-bad-websites-a-proposal/)
+  (A List Apart). Accessibility personas + recognition-over-recall as a
+  way to catch accessibility problems while designing, not after —
+  matches RULES.md's rule to check contrast as tokens are chosen, not as
+  a pass at the end.
+
 https://jxnblk.com/blog/color-palette-documentation-for-living-style-guides
 hmmm -> what's this? https://github.com/bjornmeansbear/color-documentation
 

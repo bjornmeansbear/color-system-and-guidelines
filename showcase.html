@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kit.css — type &amp; color showcase</title>
+<link rel="stylesheet" href="kit.css">
+<style>
+  /* Page-only chrome — layout for this reference document itself.
+     Everything it's *showing off* comes from kit.css, not from here. */
+  .page {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 5rem;
+  }
+  @media (min-width: 40rem) {
+    .page { padding: 3rem 2rem 6rem; }
+  }
+
+  .page > header {
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .page > header p {
+    margin-bottom: 0.5rem;
+    font-size: var(--text-md);
+    line-height: var(--leading-md);
+    color: var(--color-text-muted);
+  }
+  .page > header nav {
+    font-size: var(--text-sm);
+  }
+  .page > header nav a {
+    color: var(--color-text);
+  }
+  .page > header nav a:not(:last-child)::after {
+    content: " · ";
+    color: var(--color-text-muted);
+  }
+
+  section { margin-bottom: 4rem; }
+  section > h2 {
+    font-size: var(--text-xs);
+    line-height: var(--leading-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  section > h3 {
+    font-size: var(--text-base);
+    line-height: var(--leading-base);
+    margin: 0 0 1rem;
+  }
+  section > p {
+    color: var(--color-text-muted);
+  }
+
+  /* ---- type specimens ---- */
+  .specimen {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .specimen:last-child { border-bottom: none; }
+  .specimen-meta {
+    flex: none;
+    width: 6.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    line-height: var(--leading-2xs);
+    color: var(--color-text-muted);
+  }
+  .specimen-meta strong {
+    display: block;
+    color: var(--color-text);
+    font-weight: normal;
+    font-size: var(--text-xs);
+  }
+  .specimen-text { flex: 1; min-width: 0; max-width: 34em; }
+
+  /* ---- color pairs ---- */
+  .pair-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: 0.75rem;
+  }
+  .pair {
+    border: 1px solid var(--color-border);
+  }
+  .pair-preview {
+    height: 4.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pair-preview span { font-size: var(--text-md); font-weight: bold; }
+  .pair-meta {
+    border-top: 1px solid var(--color-border);
+    padding: 0.5rem 0.65rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .pair-name {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    line-height: var(--leading-2xs);
+    color: var(--color-text-muted);
+  }
+  .pair-ratio {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: var(--leading-xs);
+    white-space: nowrap;
+  }
+  .badge {
+    display: inline-block;
+    font-size: var(--text-2xs);
+    padding: 0.05em 0.4em;
+    margin-left: 0.35em;
+    border: 1px solid currentColor;
+  }
+  .badge.aaa { color: var(--color-success); background: var(--color-success-bg); }
+  .badge.aa  { color: var(--color-warning); background: var(--color-warning-bg); }
+  .badge.fail{ color: var(--color-danger);  background: var(--color-danger-bg); }
+
+  /* ---- raw scale strip ---- */
+  .scale-row { display: flex; gap: 2px; margin-bottom: 2px; }
+  .scale-row .hue-label {
+    flex: none;
+    width: 5.5rem;
+    display: flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+  }
+  .scale-row .swatch { flex: 1; height: 2rem; }
+  .scale-wrap { overflow-x: auto; padding-bottom: 0.5rem; }
+  .scale-wrap-inner { min-width: 40rem; }
+  .step-header { display: flex; padding-left: 5.5rem; gap: 2px; margin-bottom: 4px; }
+  .step-header span {
+    flex: 1;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+  }
+
+  /* ---- component demos ---- */
+  .demo-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-border);
+    margin-bottom: 1rem;
+  }
+
+  .frame-demo {
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  /* ---- in-practice code comparison ---- */
+  .compare {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: 1fr;
+    margin-bottom: 1.5rem;
+  }
+  @media (min-width: 40rem) {
+    .compare { grid-template-columns: 1fr 1fr; }
+  }
+  .compare > div {
+    border: 1px solid var(--color-border);
+    padding: 1rem;
+  }
+  .compare h4 {
+    margin: 0 0 0.5rem;
+    font-size: var(--text-2xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+  .compare pre {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    line-height: var(--leading-sm);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <p class="label-upper">color-system-and-guidelines</p>
+    <h1>Type &amp; color, in practice</h1>
+    <p>What <code>kit.css</code>'s tokens and primitives actually look like
+      rendered — not just an inventory of values. Every specimen below is
+      live: this page <code>&lt;link&gt;</code>s <code>kit.css</code>
+      directly, the same way any project would.</p>
+    <nav>
+      <a href="README.md">README</a>
+      <a href="RULES.md">RULES</a>
+      <a href="NOTES.md">NOTES</a>
+      <a href="kit.css">kit.css</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="type">
+      <h2>Type</h2>
+
+      <h3>Scale</h3>
+      <p>Baseline-grid steps — line-heights on a 6px/0.375rem grid,
+        font-sizes chosen to pair with them. See RULES.md, "Typography:
+        baseline grid, not a ratio scale."</p>
+
+      <div class="specimen">
+        <div class="specimen-meta"><strong>--text-3xl</strong>48/54 · 1.13</div>
+        <div class="specimen-text" style="font-size:var(--text-3xl); line-height:var(--leading-3xl); font-weight:bold;">Set the strategy</div>
+      </div>
+      <div class="specimen">
+        <div class="specimen-meta"><strong>--text-2xl</strong>36/42 · 1.17</div>
+        <div class="specimen-text" style="font-size:var(--text-2xl); line-height:var(--leading-2xl); font-weight:bold;">Honor thy error as a hidden intention</div>
+      </div>
+      <div class="specimen">
+        <div class="specimen-meta"><strong>--text-xl</strong>28/36 · 1.29</div>
+        <div class="specimen-text" style="font-size:var(--text-xl); line-height:var(--leading-xl); font-weight:bold;">Use an old idea</div>
+      </div>
+      <div class="specimen">
+        <div class="specimen-meta"><strong>--text-lg</strong>22/30 · 1.36</div>
+        <div class="specimen-text" style="font-size:var(--text-lg); line-height:var(--leading-lg);">Emphasize differences</div>
+      </div>
+      <div class="specimen">
+        <div class="specimen-meta"><strong>--text-md</strong>18/24 · 1.33</div>
+        <div class="specimen-text" style="font-size:var(--text-md); line-height:var(--leading-md);">Lead paragraph — slightly larger than body, still comfortable to read across a full measure.</div>
+      </div>
+      <div class="specimen">
+        <div class="specimen-meta"><strong>--text-base</strong>16/24 · 1.5</div>
+        <div class="specimen-text" style="font-size:var(--text-base); line-height:var(--leading-base);">Body copy, the default. 1.5 line-height at this size also happens to be the WCAG 1.4.12 minimum for readable paragraph text — not a coincidence, a constraint that shaped where this step landed.</div>
+      </div>
+      <div class="specimen">
+        <div class="specimen-meta"><strong>--text-sm</strong>14/18 · 1.29</div>
+        <div class="specimen-text" style="font-size:var(--text-sm); line-height:var(--leading-sm);">Captions and secondary UI text — used by <code>.caption-muted</code>.</div>
+      </div>
+      <div class="specimen">
+        <div class="specimen-meta"><strong>--text-xs</strong>13/18 · 1.38</div>
+        <div class="specimen-text" style="font-size:var(--text-xs); line-height:var(--leading-xs);">Labels and meta — used by <code>.label-upper</code>.</div>
+      </div>
+      <div class="specimen">
+        <div class="specimen-meta"><strong>--text-2xs</strong>12/18 · 1.5</div>
+        <div class="specimen-text" style="font-size:var(--text-2xs); line-height:var(--leading-2xs);">Fine print, timestamps.</div>
+      </div>
+
+      <h3 style="margin-top:2.5rem;">Headings, as kit.css sets them</h3>
+      <p>Unstyled beyond what <code>kit.css</code> ships — no per-project
+        overrides applied on this page.</p>
+      <div class="demo-row" style="flex-direction:column; align-items:stretch;">
+        <h1 style="margin-bottom:0.5rem;">Heading one</h1>
+        <h2 style="margin-bottom:0.5rem;">Heading two</h2>
+        <h3 style="margin-bottom:0.5rem;">Heading three</h3>
+        <h4 style="margin-bottom:0.5rem;">Heading four</h4>
+        <h5 style="margin-bottom:0.5rem;">Heading five</h5>
+        <h6 style="margin-bottom:0;">Heading six</h6>
+      </div>
+
+      <h3 style="margin-top:2.5rem;">Fonts</h3>
+      <p><code>--font-sans</code> and <code>--font-display</code> both
+        resolve to the system stack by default — a project earns its own
+        <code>--font-display</code> by self-hosting an open/libre typeface
+        and overriding the variable.</p>
+      <div class="demo-row">
+        <span style="font-family:var(--font-sans);">--font-sans: The quick brown fox</span>
+      </div>
+      <div class="demo-row">
+        <span style="font-family:var(--font-display);">--font-display: The quick brown fox</span>
+      </div>
+    </section>
+
+    <section id="color">
+      <h2>Color</h2>
+
+      <h3>Semantic pairs, with computed contrast</h3>
+      <p>Every ratio below is calculated (WCAG relative-luminance formula),
+        not eyeballed — see RULES.md, "Contrast: high-contrast pairs
+        only, always verified."</p>
+      <div class="pair-grid">
+
+        <div class="pair">
+          <div class="pair-preview" style="background:var(--color-bg); color:var(--color-text);"><span>Aa</span></div>
+          <div class="pair-meta"><span class="pair-name">text / bg</span><span class="pair-ratio">16.9:1<span class="badge aaa">AAA</span></span></div>
+        </div>
+
+        <div class="pair">
+          <div class="pair-preview" style="background:var(--color-bg); color:var(--color-text-muted);"><span>Aa</span></div>
+          <div class="pair-meta"><span class="pair-name">text-muted / bg</span><span class="pair-ratio">7.3:1<span class="badge aaa">AAA</span></span></div>
+        </div>
+
+        <div class="pair">
+          <div class="pair-preview" style="background:var(--color-bg); color:var(--color-accent);"><span>Aa</span></div>
+          <div class="pair-meta"><span class="pair-name">accent / bg</span><span class="pair-ratio">4.9:1<span class="badge aa">AA</span></span></div>
+        </div>
+
+        <div class="pair">
+          <div class="pair-preview" style="background:var(--color-accent); color:var(--color-bg);"><span>Aa</span></div>
+          <div class="pair-meta"><span class="pair-name">bg / accent</span><span class="pair-ratio">4.9:1<span class="badge aa">AA</span></span></div>
+        </div>
+
+        <div class="pair">
+          <div class="pair-preview" style="background:var(--color-accent-hover); color:var(--color-bg);"><span>Aa</span></div>
+          <div class="pair-meta"><span class="pair-name">bg / accent-hover</span><span class="pair-ratio">7.4:1<span class="badge aaa">AAA</span></span></div>
+        </div>
+
+        <div class="pair">
+          <div class="pair-preview" style="background:var(--color-success-bg); color:var(--color-success);"><span>Aa</span></div>
+          <div class="pair-meta"><span class="pair-name">success / success-bg</span><span class="pair-ratio">7.1:1<span class="badge aaa">AAA</span></span></div>
+        </div>
+
+        <div class="pair">
+          <div class="pair-preview" style="background:var(--color-warning-bg); color:var(--color-warning);"><span>Aa</span></div>
+          <div class="pair-meta"><span class="pair-name">warning / warning-bg</span><span class="pair-ratio">7.2:1<span class="badge aaa">AAA</span></span></div>
+        </div>
+
+        <div class="pair">
+          <div class="pair-preview" style="background:var(--color-danger-bg); color:var(--color-danger);"><span>Aa</span></div>
+          <div class="pair-meta"><span class="pair-name">danger / danger-bg</span><span class="pair-ratio">6.6:1<span class="badge aa">AA</span></span></div>
+        </div>
+
+        <div class="pair">
+          <div class="pair-preview" style="background:var(--color-info-bg); color:var(--color-info);"><span>Aa</span></div>
+          <div class="pair-meta"><span class="pair-name">info / info-bg</span><span class="pair-ratio">7.2:1<span class="badge aaa">AAA</span></span></div>
+        </div>
+
+      </div>
+
+      <h3 style="margin-top:2.5rem;">Raw scale</h3>
+      <p>The full 10-step ramp behind every semantic token. Numbers are
+        shown persistently rather than on hover — hover-only labels are a
+        keyboard/touch accessibility gap, so this page doesn't use them.</p>
+      <div class="scale-wrap">
+        <div class="scale-wrap-inner">
+          <div class="step-header"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div>
+          <div class="scale-row"><div class="hue-label">red</div><div class="swatch" style="background:var(--red-0)"></div><div class="swatch" style="background:var(--red-1)"></div><div class="swatch" style="background:var(--red-2)"></div><div class="swatch" style="background:var(--red-3)"></div><div class="swatch" style="background:var(--red-4)"></div><div class="swatch" style="background:var(--red-5)"></div><div class="swatch" style="background:var(--red-6)"></div><div class="swatch" style="background:var(--red-7)"></div><div class="swatch" style="background:var(--red-8)"></div><div class="swatch" style="background:var(--red-9)"></div></div>
+          <div class="scale-row"><div class="hue-label">orange</div><div class="swatch" style="background:var(--orange-0)"></div><div class="swatch" style="background:var(--orange-1)"></div><div class="swatch" style="background:var(--orange-2)"></div><div class="swatch" style="background:var(--orange-3)"></div><div class="swatch" style="background:var(--orange-4)"></div><div class="swatch" style="background:var(--orange-5)"></div><div class="swatch" style="background:var(--orange-6)"></div><div class="swatch" style="background:var(--orange-7)"></div><div class="swatch" style="background:var(--orange-8)"></div><div class="swatch" style="background:var(--orange-9)"></div></div>
+          <div class="scale-row"><div class="hue-label">yellow</div><div class="swatch" style="background:var(--yellow-0)"></div><div class="swatch" style="background:var(--yellow-1)"></div><div class="swatch" style="background:var(--yellow-2)"></div><div class="swatch" style="background:var(--yellow-3)"></div><div class="swatch" style="background:var(--yellow-4)"></div><div class="swatch" style="background:var(--yellow-5)"></div><div class="swatch" style="background:var(--yellow-6)"></div><div class="swatch" style="background:var(--yellow-7)"></div><div class="swatch" style="background:var(--yellow-8)"></div><div class="swatch" style="background:var(--yellow-9)"></div></div>
+          <div class="scale-row"><div class="hue-label">green</div><div class="swatch" style="background:var(--green-0)"></div><div class="swatch" style="background:var(--green-1)"></div><div class="swatch" style="background:var(--green-2)"></div><div class="swatch" style="background:var(--green-3)"></div><div class="swatch" style="background:var(--green-4)"></div><div class="swatch" style="background:var(--green-5)"></div><div class="swatch" style="background:var(--green-6)"></div><div class="swatch" style="background:var(--green-7)"></div><div class="swatch" style="background:var(--green-8)"></div><div class="swatch" style="background:var(--green-9)"></div></div>
+          <div class="scale-row"><div class="hue-label">blue</div><div class="swatch" style="background:var(--blue-0)"></div><div class="swatch" style="background:var(--blue-1)"></div><div class="swatch" style="background:var(--blue-2)"></div><div class="swatch" style="background:var(--blue-3)"></div><div class="swatch" style="background:var(--blue-4)"></div><div class="swatch" style="background:var(--blue-5)"></div><div class="swatch" style="background:var(--blue-6)"></div><div class="swatch" style="background:var(--blue-7)"></div><div class="swatch" style="background:var(--blue-8)"></div><div class="swatch" style="background:var(--blue-9)"></div></div>
+          <div class="scale-row"><div class="hue-label">purple</div><div class="swatch" style="background:var(--purple-0)"></div><div class="swatch" style="background:var(--purple-1)"></div><div class="swatch" style="background:var(--purple-2)"></div><div class="swatch" style="background:var(--purple-3)"></div><div class="swatch" style="background:var(--purple-4)"></div><div class="swatch" style="background:var(--purple-5)"></div><div class="swatch" style="background:var(--purple-6)"></div><div class="swatch" style="background:var(--purple-7)"></div><div class="swatch" style="background:var(--purple-8)"></div><div class="swatch" style="background:var(--purple-9)"></div></div>
+          <div class="scale-row"><div class="hue-label">pink (accent)</div><div class="swatch" style="background:var(--pink-0)"></div><div class="swatch" style="background:var(--pink-1)"></div><div class="swatch" style="background:var(--pink-2)"></div><div class="swatch" style="background:var(--pink-3)"></div><div class="swatch" style="background:var(--pink-4)"></div><div class="swatch" style="background:var(--pink-5)"></div><div class="swatch" style="background:var(--pink-6)"></div><div class="swatch" style="background:var(--pink-7)"></div><div class="swatch" style="background:var(--pink-8)"></div><div class="swatch" style="background:var(--pink-9)"></div></div>
+          <div class="scale-row"><div class="hue-label">brown</div><div class="swatch" style="background:var(--brown-0)"></div><div class="swatch" style="background:var(--brown-1)"></div><div class="swatch" style="background:var(--brown-2)"></div><div class="swatch" style="background:var(--brown-3)"></div><div class="swatch" style="background:var(--brown-4)"></div><div class="swatch" style="background:var(--brown-5)"></div><div class="swatch" style="background:var(--brown-6)"></div><div class="swatch" style="background:var(--brown-7)"></div><div class="swatch" style="background:var(--brown-8)"></div><div class="swatch" style="background:var(--brown-9)"></div></div>
+          <div class="scale-row"><div class="hue-label">gray</div><div class="swatch" style="background:var(--gray-0)"></div><div class="swatch" style="background:var(--gray-1)"></div><div class="swatch" style="background:var(--gray-2)"></div><div class="swatch" style="background:var(--gray-3)"></div><div class="swatch" style="background:var(--gray-4)"></div><div class="swatch" style="background:var(--gray-5)"></div><div class="swatch" style="background:var(--gray-6)"></div><div class="swatch" style="background:var(--gray-7)"></div><div class="swatch" style="background:var(--gray-8)"></div><div class="swatch" style="background:var(--gray-9)"></div></div>
+          <div class="scale-row"><div class="hue-label">dark-gray</div><div class="swatch" style="background:var(--dark-gray-0)"></div><div class="swatch" style="background:var(--dark-gray-1)"></div><div class="swatch" style="background:var(--dark-gray-2)"></div><div class="swatch" style="background:var(--dark-gray-3)"></div><div class="swatch" style="background:var(--dark-gray-4)"></div><div class="swatch" style="background:var(--dark-gray-5)"></div><div class="swatch" style="background:var(--dark-gray-6)"></div><div class="swatch" style="background:var(--dark-gray-7)"></div><div class="swatch" style="background:var(--dark-gray-8)"></div><div class="swatch" style="background:var(--dark-gray-9)"></div></div>
+          <div class="scale-row"><div class="hue-label">light-gray</div><div class="swatch" style="background:var(--light-gray-0)"></div><div class="swatch" style="background:var(--light-gray-1)"></div><div class="swatch" style="background:var(--light-gray-2)"></div><div class="swatch" style="background:var(--light-gray-3)"></div><div class="swatch" style="background:var(--light-gray-4)"></div><div class="swatch" style="background:var(--light-gray-5)"></div><div class="swatch" style="background:var(--light-gray-6)"></div><div class="swatch" style="background:var(--light-gray-7)"></div><div class="swatch" style="background:var(--light-gray-8)"></div><div class="swatch" style="background:var(--light-gray-9)"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="components">
+      <h2>Components</h2>
+
+      <h3>Buttons</h3>
+      <div class="demo-row">
+        <button class="btn">Default</button>
+        <button class="btn" disabled>Disabled</button>
+        <button class="btn btn-accent">Accent</button>
+      </div>
+      <p>Press and hold (or Tab + Space) to see the invert-on-press state —
+        no elevation, no hover-glow, per RULES.md "Structure: rules, not
+        chrome."</p>
+
+      <h3 style="margin-top:2rem;">Tag / pill</h3>
+      <div class="demo-row">
+        <span class="tag">status</span>
+        <span class="tag">in progress</span>
+      </div>
+      <p>The one deliberate <code>border-radius</code> exception in the
+        kit — badge scale only, not panels or buttons.</p>
+
+      <h3 style="margin-top:2rem;">Panel</h3>
+      <div class="panel" style="margin-bottom:1.5rem;">
+        <div class="panel-header">Panel header</div>
+        <div class="panel-body">
+          <p style="margin:0;">Panel body copy sits at <code>--text-base</code>
+            with no extra styling — it inherits straight from <code>body</code>.</p>
+        </div>
+        <div class="panel-footer">Panel footer, set in --text-sm</div>
+      </div>
+
+      <h3 style="margin-top:2rem;">Divider</h3>
+      <p style="margin-bottom:0;">Above the rule.</p>
+      <hr class="divider">
+      <p>Below the rule.</p>
+
+      <h3 style="margin-top:2rem;">Frames</h3>
+      <div class="frame-demo frame-thick">.frame-thick</div>
+      <div class="frame-demo frame-thin">.frame-thin</div>
+
+      <h3 style="margin-top:2rem;">Focus</h3>
+      <p>Tab through the controls on this page — the accent-colored ring
+        is deliberately thick and never suppressed.</p>
+      <div class="demo-row">
+        <a href="#type">A focusable link</a>
+        <input type="text" placeholder="A focusable input" style="font-family:inherit; font-size:var(--text-base); padding:0.5rem; border:1px solid var(--color-border);">
+      </div>
+    </section>
+
+    <section id="in-practice">
+      <h2>Seen in the wild — oblique</h2>
+      <p><code>Code/oblique</code> is the one project so far actually
+        drawing on this system, though it doesn't <code>&lt;link&gt;</code>
+        <code>kit.css</code> directly — it independently arrived at
+        equivalent primitives under its own <code>os.css</code>. Side by
+        side:</p>
+
+      <div class="compare">
+        <div>
+          <h4>kit.css</h4>
+          <pre>.frame-thick {
+  border: clamp(0.75rem, 4vw, 2rem)
+    solid var(--color-frame);
+}
+.frame-thin {
+  border: 2px solid var(--color-text);
+}</pre>
+        </div>
+        <div>
+          <h4>oblique's os.css</h4>
+          <pre>.cool-border.thick {
+  border: clamp(.75rem, 4vw, 2rem)
+    solid var(--color-frame);
+}
+.cool-border.thin {
+  border: 2px solid var(--color-text);
+  /* + inset via top/right/bottom/left */
+}</pre>
+        </div>
+      </div>
+
+      <div class="compare">
+        <div>
+          <h4>kit.css</h4>
+          <pre>.tag {
+  border: 1px solid var(--color-accent);
+  border-radius: 999px;
+  padding: 0.2em 0.9em;
+}</pre>
+        </div>
+        <div>
+          <h4>oblique's os.css</h4>
+          <pre>p.altview a {
+  border: 1px solid var(--color-accent);
+  border-radius: 999px;
+  padding: .5rem 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}</pre>
+        </div>
+      </div>
+
+      <div class="compare">
+        <div>
+          <h4>kit.css</h4>
+          <pre>--font-display: var(--font-sans);
+/* a project earns its own by
+   self-hosting an OFL typeface */</pre>
+        </div>
+        <div>
+          <h4>oblique's os.css</h4>
+          <pre>@font-face {
+  font-family: 'Basteleur'; /* OFL-1.1 */
+  src: url('fonts/Basteleur-Bold.woff2')
+    format('woff2');
+}
+/* used for the strategy card only —
+   Sligoil Micro (also OFL) everywhere else */</pre>
+        </div>
+      </div>
+
+      <p>Not shown live on this page — the font files live in oblique's
+        own repo, not here. The point isn't to reproduce oblique, it's
+        that the same shapes (frame, pill, "earn your own display font")
+        showed up independently, which is the evidence this kit is
+        describing a real shared instinct and not inventing rules nobody
+        was already following.</p>
+    </section>
+
+  </main>
+
+  <footer style="border-top:1px solid var(--color-border); padding-top:1.5rem;">
+    <p class="caption-muted">Contrast ratios computed via the WCAG
+      relative-luminance formula against the exact <code>rgb()</code>
+      values in <code>kit.css</code> — see NOTES.md changelog for when
+      this page was generated.</p>
+  </footer>
+
+</div>
+</body>
+</html>

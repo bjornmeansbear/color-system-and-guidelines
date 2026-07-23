@@ -15,6 +15,10 @@ same rules from scratch.
   questions (motion, image sourcing links) still being worked out.
 - **`NOTES.md`** — open questions, what's left to do, and a dated
   changelog. Read this first when picking work back up.
+- **`showcase.html`** — `kit.css`'s type scale, color tokens, and
+  components rendered live (it `<link>`s `kit.css` directly), plus a
+  side-by-side of how `Code/oblique` independently arrived at equivalent
+  primitives. Open it in a browser to see the kit applied, not just listed.
 
 ## References
 

@@ -8,10 +8,13 @@ before starting a session, not just written to at the end of one.
 
 - **Consolidate the palette HTML files.** `palette-1.html`, `palette-2.html`,
   and `palette-docs.html` read as three sequential drafts of the same
-  living-style-guide page, not three distinct tools. Collapse into one
-  canonical reference page — and have it visualize the type scale
-  (`--text-*`/`--leading-*`) alongside the color swatches/contrast pairs,
-  not just color.
+  living-style-guide page, not three distinct tools. `showcase.html` (added
+  2026-07-23) covers the "applied, in practice" half of this — type/color
+  tokens rendered as real components, not an abstract inventory — but the
+  three palette files still duplicate each other and haven't been folded
+  in or retired. Decide: merge their swatch/contrast-pair inventory into
+  `showcase.html`, or keep the two kinds of document (inventory vs.
+  applied) separate on purpose?
 - **`.panel-header`'s font-size (`1.25rem`) doesn't land on a type-scale
   rung** — it sits between `--text-md` (1.125rem) and `--text-lg`
   (1.375rem). Left alone rather than silently resized (see RULES.md
@@ -35,6 +38,13 @@ before starting a session, not just written to at the end of one.
 ## Changelog
 
 ### 2026-07-23
+- Added `showcase.html` — a live reference page (`<link>`s `kit.css`
+  directly) showing the type scale, semantic color pairs with computed
+  WCAG contrast ratios, the raw 10-step color ramps, and components
+  (`.btn`, `.tag`, `.panel`, `.divider`, `.frame-thick`/`.frame-thin`,
+  focus states), plus a side-by-side of `Code/oblique`'s independently-
+  arrived-at equivalents (`.cool-border`, pill link, self-hosted
+  display font).
 - Added a baseline-grid type scale to `kit.css` (`--text-2xs` through
   `--text-3xl`, paired `--leading-*` line-heights on a 6px/0.375rem grid) —
   see RULES.md "Typography: baseline grid, not a ratio scale."

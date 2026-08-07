@@ -290,6 +290,15 @@ select:focus-visible {
   border: 2px solid var(--color-text);
 }
 
+/* Rotated accent — a stamp/callout/heading knocked a few degrees off
+   horizontal, not a page-wide treatment. Override --tilt per element to
+   vary within the usual 7–12deg trope range. */
+.tilt {
+  --tilt: 9deg;
+  display: inline-block;
+  transform: rotate(var(--tilt));
+}
+
 /* Meta / caption text
    Both happened to already match a type-scale rung exactly (0.8125rem →
    --text-xs, 0.875rem → --text-sm) once the scale existed — repointed at

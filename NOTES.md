@@ -6,6 +6,27 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **Find/build a libre Friz Quadrata alternative.** Friz Quadrata is a
+  longtime personal pick but proprietary, so it's deliberately excluded
+  from the shared typeface roster (RULES.md "Typography: the roster").
+  Worth hunting for an existing OFL-licensed lookalike before considering
+  a from-scratch libre remake.
+- **Typeface roster is a dated snapshot.** The list in RULES.md
+  ("Typography: the roster" — League Gothic, Avara, Gentium, Cormorant
+  Garamond, Libre Franklin, Libre Clarendon, League Mono, Space Mono,
+  Space Grotesk, Work Sans) was last revisited ~2018 per Kristian; treat
+  it as a starting shortlist, not a closed list — revise as current
+  preferences get confirmed.
+- **"The four freedoms; but for signs on substrates?"** — half-formed
+  idea from `Personal tropes.txt`: applying FSF-style software-freedom
+  thinking (run/study/share/modify) to physical signage/materials rather
+  than fonts or code. Not a rule yet — needs to be worked out into an
+  actual position before it belongs in RULES.md.
+- **`.tilt` utility just added, unused so far.** kit.css now has a
+  rotation utility (`--tilt`, default 9deg) for the "type rotated 7–12deg
+  as an accent" trope (RULES.md "Typography: rotation as an accent") —
+  no project uses it yet; worth trying on a real element to see if the
+  default angle/approach holds up.
 - **Consolidate the palette HTML files.** `palette-1.html`, `palette-2.html`,
   and `palette-docs.html` read as three sequential drafts of the same
   living-style-guide page, not three distinct tools. `showcase.html` (added
@@ -36,6 +57,20 @@ before starting a session, not just written to at the end of one.
   layer is structured to support it later, just not built yet.
 
 ## Changelog
+
+### 2026-08-07
+- Folded `Personal tropes.txt` into the system: added "Ethos: do more with
+  less," "Color: yellowish-gray background, dark brown line work" (already
+  the kit.css default, now documented as deliberate), "Typography: the
+  roster" (named libre typeface shortlist), "Typography: rotation as an
+  accent," and an Images "Style" note on Victorian etchings — all in
+  RULES.md.
+- Added `.tilt` utility to `kit.css` for the rotation-as-accent trope.
+- Left Friz Quadrata out of the shared roster (proprietary, conflicts with
+  the open/libre rule) — see open questions for the libre-alternative
+  idea.
+- Left "the four freedoms, but for signs on substrates" as an open
+  question rather than a rule — not developed enough yet to assert.
 
 ### 2026-07-23
 - Added `showcase.html` — a live reference page (`<link>`s `kit.css`

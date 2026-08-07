@@ -7,6 +7,16 @@ say why. This document changes as the kit changes — rename, restructure,
 and rewrite sections freely as more projects get folded in (ookb.co,
 oblique.ookb.co, wjerk.shop, whatever's next). Nothing here is precious.
 
+## Ethos: do more with less
+
+The governing instinct behind every rule below: solid rules instead of
+shadows, a handful of tokens instead of an open-ended palette, one accent
+color instead of a rotating cast. Restraint is the style.
+
+Same instinct as the `bjorn-voice` skill's writing rules — compress,
+don't shrink; cut color that does no conceptual work. One ethos, two
+mediums.
+
 ## Scope note: the ookb.co / wjerk.shop family
 
 Projects sit under two domain families — `ookb.co` (+ subdomains like
@@ -53,6 +63,16 @@ subversion, and unmistakably "mine" across every past pass at this palette.
 Projects can still override `--color-accent` for a specific reason, but
 pink is the answer unless there's one.
 
+## Color: yellowish-gray background, dark brown line work
+
+The default bg/text pairing (`--color-bg: var(--gray-0)`, `--color-text:
+var(--brown-8)`) isn't an arbitrary landing spot — a warm, slightly
+yellowish-gray ground with dark brown line work on top is a recurring
+personal trope independent of this kit, and the semantic tokens already
+encode it as the default rather than plain black-on-white. Projects can
+still override it, same as the accent, but this pairing is the answer
+unless there's a specific reason to change it.
+
 ## Typography: open/libre first, system default when low-energy
 
 The ethos, not a fixed typeface: every font used is either an open/libre
@@ -68,6 +88,28 @@ self-hosting an OFL typeface and overriding the variable, the way oblique
 does. Not every project needs a --font-display override — system-sans-only
 (onething, a.wjerk.shop, bjornpaedia) is a legitimate, common outcome, not
 a fallback to feel bad about.
+
+## Typography: the roster
+
+The recurring libre picks reached for across past projects, kept here as
+a starting shortlist rather than starting the license/pairing search from
+zero each time: League Gothic, Avara, Gentium, Cormorant Garamond, Libre
+Franklin, Libre Clarendon, League Mono, Space Mono, Space Grotesk, Work
+Sans. This list is a personal snapshot, last revisited ~2018 — expect it
+to get pruned and added to as preferences move on; see NOTES.md.
+
+Friz Quadrata, a longtime personal pick, deliberately stays off this
+list — it's proprietary, so it can't be self-hosted or shared across
+projects the way the open/libre rule above requires. Kept as an
+occasional personal choice outside the shared kit.
+
+## Typography: rotation as an accent
+
+Type (and occasionally other elements) rotated a few degrees off
+horizontal — typically 7–12deg — is a recurring personal trope, used as a
+deliberate accent on a specific element: a stamp, a callout, a heading.
+Not yet wired into `kit.css` as a reusable utility; see `.tilt` there for
+the starting point.
 
 ## Typography: baseline grid, not a ratio scale
 
@@ -111,6 +153,11 @@ resized, but worth a deliberate call later on which rung it should snap
 to.
 
 ## Images
+
+**Style**: Victorian etchings are a recurring source material — their
+linework pairs naturally with the "dark brown line work on a warm ground"
+color trope above, and they're public domain more often than not, which
+also serves the sourcing preference below.
 
 **Treatment**: bitmaps get tinted or color-overlaid into the page rather
 than dropped in as an untouched rectangle — a.wjerk.shop uses

@@ -63,38 +63,51 @@ dependency in a room you do not control.
 
 ## Search order
 
-Fixed by RULES.md, and it stops as soon as it has enough:
+**One channel per deck.** A deck names its own are.na research channel and
+everything in it is a candidate — channel membership is the curation:
 
-1. **Your are.na** — already collected, already vetted. `GET /v3/search` with
-   `user_id`, so it is one request against everything you have saved rather
-   than a walk over a configured channel list. Needs `ARENA_ACCESS_TOKEN`;
-   without one the source is skipped and the cascade falls through. Token is
-   read from `.env` in this repo, then `chair-ness`, then `sentence-a-day` —
-   commented lines are skipped, since those files keep an old read-only token
-   commented above the live one.
+```html
+<meta name="commons-channel" content="lecture-mending-nets">
+```
 
-   **Expect your own blocks to fail the size filter.** are.na saves whatever
-   the source page served, so a 150x150 Flickr thumbnail is common. Searching
-   "mending" returns Sorolla's *Mending the Nets* — the actual painting from
-   the deck — at 150px. That is still the most useful result on the sheet: it
-   tells you which artwork you already chose, and the museum sources can then
-   find it at a printable size.
-2. **Art Institute of Chicago** — one request, real relevance ranking, reports
-   dimensions, IIIF sizing.
-3. **The Met** — good ranking on `q` alone. Note the quirk handled in
-   `sources.py`: adding `medium=` / `isPublicDomain=` / `hasImages=` alongside
-   the query *destroys* the ranking (`q=kitchen` filtered leads with a Saint
-   Jerome; unfiltered it leads with "Kitchen Scene"). So the query goes in
-   clean and public-domain is tested per object. The Met also rate-limits
-   bursts — hence 4 workers and a backoff.
-4. **Cleveland** — CC0 flag, good print-size derivatives.
-5. **Wikimedia Commons, last** — Commons search matches keywords, not objects.
-   It returns a recording studio for *Aeron*. Treat every result as unverified.
+That channel holds the 21 blocks behind "On Mending" (18 of them printable).
+The cascade below only tops it up.
 
-Every candidate is filtered to public domain and ≥2000px **before it reaches
-your eye**. Unknown size fails closed. Where an API does not report dimensions
-the file's JPEG/PNG header is probed by streaming only the first few KB —
-`sources.probe_size`.
+1. **The deck's channel**, unfiltered.
+2. **The rest of your are.na** — `/v3/search` with `user_id`, one request
+   against everything you have saved. Needs `ARENA_ACCESS_TOKEN`, read from
+   this repo's `.env`, then `chair-ness`, then `sentence-a-day`, skipping
+   commented lines.
+3. **Wikimedia Commons.**
+4. **AIC, the Met, Cleveland.**
+
+**Route by query shape.** Measured, not assumed:
+
+| you are searching for | use | why |
+|---|---|---|
+| a concept — "ordinary labor" | museum APIs | curated subject metadata; Commons returns a recording studio for *Aeron* |
+| a named artist or work — "Sorolla mending nets" | Commons | museums only hold their own; AIC returns its Homers for every European painter |
+
+The American museum APIs are a depth source, not a breadth source. They found
+none of Sorolla, Mønsted, Israëls, Avercamp or Kuniyoshi — all of whom are in
+the Mending deck, and all of whom Commons has.
+
+**Undersized are.na hits survive as leads.** are.na saves what the source page
+served, so his own blocks are often 150px thumbnails. Sorolla's *Mending the
+Nets* comes back at 150×150 — the actual painting from the deck. It is kept,
+marked "already yours · too small to project", and the other sources find a
+printable copy.
+
+Every candidate is filtered to public domain and ≥2000px before it reaches your
+eye. Unknown size fails closed. Where an API does not report dimensions the
+JPEG/PNG header is probed by streaming a few KB — `sources.probe_size`.
+
+Two API quirks handled rather than papered over: the Met's ranking collapses
+when `medium=` / `isPublicDomain=` accompany the query (`q=kitchen` filtered
+leads with a Saint Jerome; unfiltered it leads with "Kitchen Scene"), and AIC
+ignores the top-level `q` once an Elasticsearch body is supplied, so the
+keyword goes inside the bool or the material filter returns the same rows for
+every subject.
 
 ## Config
 

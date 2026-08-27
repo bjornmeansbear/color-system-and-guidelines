@@ -152,6 +152,40 @@ def arena_user_id():
     return _ARENA["user_id"]
 
 
+def arena_channel(slug, query=None, limit=100):
+    """Every image in one channel — a deck's own research channel.
+
+    He keeps one channel per deck (`lecture-mending-nets` for "On Mending":
+    21 blocks of Homer, Sorolla, Israels, Avercamp, Monsted, Kuniyoshi). When
+    a deck names its channel, that channel *is* the family and it should be
+    searched before anything else.
+    """
+    tok = arena_token()
+    hdr = {"Authorization": "Bearer " + tok} if tok else None
+    try:
+        d = _get(f"https://api.are.na/v3/channels/{slug}/contents?per={limit}", hdr)
+    except Exception:
+        return []
+    out = []
+    for b in (d.get("contents") or d.get("data") or []):
+        img = b.get("image") or {}
+        if not img.get("src"):
+            continue
+        src = b.get("source") or {}
+        title = _plain(b.get("title")) or "(untitled)"
+        if query and not any(t in title.lower()
+                             for t in re.split(r"\W+", query.lower()) if len(t) > 3):
+            pass  # channel membership is the filter; keep everything
+        out.append(Candidate(
+            source="arena", id=str(b.get("id")), title=title, artist="", date="",
+            license="check the source",
+            credit=_plain(b.get("description")) or src.get("url") or "",
+            page_url=src.get("url") or f"https://www.are.na/block/{b.get('id')}",
+            thumb_url=((img.get("medium") or {}).get("src")) or img["src"],
+            full_url=img["src"], width=None, height=None))
+    return out
+
+
 def arena(query, limit=25, **_):
     """Search everything he has already collected, across every channel.
 
@@ -358,8 +392,18 @@ def cleveland(query, limit=25):
 # ---------------------------------------------------------- Wikimedia Commons
 
 def wikimedia(query, limit=25):
-    """Last resort. Commons search matches keywords, not objects — it will
-    return a recording studio for 'Aeron'. Treat every result as unverified."""
+    """The breadth source, and the only one that finds most of what he uses.
+
+    The US museum APIs can only return what they own, which is a real bias:
+    searching AIC for Sorolla, Monsted, Israels, Avercamp or Kuniyoshi returns
+    its own Winslow Homers every time. Commons aggregates across collections
+    and has all of them.
+
+    The precision caveat still holds and is about *concepts*, not artists.
+    Searching a concept ("ordinary labor") matches catalogue keywords and
+    returns junk — a recording studio for "Aeron". Searching a named artwork or
+    artist ("Sorolla mending nets") is where Commons is unbeatable. Route
+    accordingly: concepts to the museums, names to Commons."""
     d = _get(_qs("https://commons.wikimedia.org/w/api.php",
                  action="query", format="json", generator="search",
                  gsrsearch=f"{query} filetype:bitmap", gsrlimit=limit,
@@ -431,12 +475,14 @@ class Material:
 
 CASCADE = [
     ("are.na", lambda q, ch, mat: arena(q)),
+    # Commons before the museum APIs for named artists/artworks: it aggregates
+    # across collections where the museum APIs only hold their own.
+    ("wikimedia", lambda q, ch, mat: wikimedia(q)),
     # AIC before the Met: one request, real relevance ranking, and it reports
     # dimensions so most candidates need no header probe.
     ("aic", lambda q, ch, mat: aic(q, material=mat)),
     ("met", lambda q, ch, mat: met(q, material=mat)),
     ("cleveland", lambda q, ch, mat: cleveland(q)),
-    ("wikimedia", lambda q, ch, mat: wikimedia(q)),
 ]
 
 

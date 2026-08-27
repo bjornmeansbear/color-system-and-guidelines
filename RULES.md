@@ -460,26 +460,52 @@ per-slide for an already-dark image, and recompute: 0.70 drops to
 
 ## Presentations: sourcing, in this order
 
-Machine narrows, you choose, machine writes the credit line. The
-metaphorical judgement is the part that does not automate; reducing four
-million public-domain objects to forty worth flipping through is the part
-that does.
+Machine narrows, you choose, machine writes the credit line. The metaphorical
+judgement is the part that does not automate; reducing four million
+public-domain objects to forty worth flipping through is the part that does.
 
-1. **Your own are.na channels first** — already collected, already
-   vetted, credit metadata already attached. (This is the Images
-   "Sourcing" rule above, now with a defined order.)
-2. **Museum open-access APIs.** The three needing no key: the Met
-   (`collectionapi.metmuseum.org`, `isPublicDomain`), the Art Institute
-   of Chicago (`api.artic.edu`, `is_public_domain`, IIIF sizing), and
-   Cleveland (`openaccess-api.clevelandart.org`, `share_license_status:
-   CC0`). Rijksmuseum, Smithsonian, and Harvard work too but want a free
-   key.
-3. **Wikimedia Commons last**, with the scepticism `chair-ness`'s
-   `commons-verified.md` already documents — Commons search matches
-   keywords, not objects, and returns a recording studio for *Aeron*.
+**One are.na channel per deck.** The established practice, and it is the image
+family made concrete: `are.na/kristian-bjornard/lecture-mending-nets` holds the
+21 blocks behind "On Mending" — four Homers, Sorolla, Israëls, Avercamp,
+Mønsted, Kuniyoshi, Utamaro, Myrer, Collins. Collect into the channel while
+drafting; the deck names it and everything in it is a candidate. The cascade
+below only tops that up.
 
-Filter candidates to public-domain and ≥2000px before they reach your
-eye: RULES.md caps upscale at 2.5x, and a projector eats resolution.
+1. **The deck's own channel**, if it has one. Everything in it, no filtering —
+   channel membership *is* the curation.
+2. **The rest of your are.na** — `GET /v3/search` with `user_id` searches
+   everything you have ever saved in one request.
+3. **Wikimedia Commons** — for a named artist or artwork, this is the one that
+   works. See the routing rule below.
+4. **Museum open-access APIs** — the Met (`collectionapi.metmuseum.org`), the
+   Art Institute of Chicago (`api.artic.edu`), Cleveland
+   (`openaccess-api.clevelandart.org`). No key needed. Best metadata, reliable
+   high resolution, real subject indexing.
+
+**Route by what you are searching for, not by source quality.** This is the
+correction that matters, and it was measured:
+
+- **A concept** ("ordinary labor in a working interior") goes to the museum
+  APIs. They have curated subject metadata. Commons matches raw catalogue
+  keywords and returns a recording studio for *Aeron*.
+- **A named artist or artwork** ("Sorolla mending nets") goes to Commons. The
+  museum APIs can only return what they own, which is a severe bias:
+  searching AIC for Sorolla, Mønsted, Israëls, Avercamp or Kuniyoshi returns
+  its own Winslow Homers every single time. Commons aggregates across
+  collections and holds all of them.
+
+The practical consequence is that the American museum APIs are close to
+useless for the European and Japanese painting this work actually reaches for.
+They are a depth source, not a breadth source.
+
+**An are.na hit that is too small to project is still the best row on the
+sheet.** are.na saves whatever the source page served, so a 150px Flickr
+thumbnail is common — searching "mending" returns Sorolla's *Mending the Nets*
+at 150×150. Do not discard it. It names an artwork already chosen; the other
+sources then find a printable copy. Keep it visible and mark it as a lead.
+
+Filter candidates to public domain and ≥2000px before they reach your eye:
+RULES.md caps upscale at 2.5x, and a projector eats resolution.
 
 ## Presentations: local files, never hotlinks
 

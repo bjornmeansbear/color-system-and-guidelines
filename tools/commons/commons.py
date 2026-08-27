@@ -52,7 +52,7 @@ FIELDS = ["slot", "deck", "source", "id", "title", "artist", "date", "license",
           "credit", "page_url", "full_url", "local_path", "width", "height"]
 
 META_RE = re.compile(
-    r'<meta\s+name="commons-(stake|themes|material)"\s+content="([^"]*)"\s*/?>')
+    r'<meta\s+name="commons-(stake|themes|material|channel)"\s+content="([^"]*)"\s*/?>')
 
 SLOT_RE = re.compile(r"<(?P<tag>section|div)\b(?P<attrs>[^>]*\bdata-img\s*=[^>]*)>")
 
@@ -77,7 +77,7 @@ def read_deck_brief(deck):
     text = pathlib.Path(deck).read_text()
     d = {k: html.unescape(v) for k, v in META_RE.findall(text)}
     return {"stake": d.get("stake", ""), "themes": d.get("themes", ""),
-            "material": d.get("material", "")}
+            "material": d.get("material", ""), "channel": d.get("channel", "")}
 
 
 def read_slots(deck):
@@ -159,8 +159,20 @@ def _search_to_sheet(query, slot, deck, want, only, brief=None):
     print(f"searching: {full}")
     if mat:
         print(f"  material: {mat}")
-    cands = sources.search(full, channels=CHANNELS, want=want, only=only,
-                           material=mat)
+    cands = []
+    if brief.get("channel"):
+        # The deck's own research channel is the family. Everything in it is a
+        # candidate; the cascade only tops up from there.
+        cands = sources.arena_channel(brief["channel"])
+        sources.fill_sizes(cands)
+        for c in cands:
+            c["lead"] = not sources.big_enough(c)
+        print(f"  channel    {len(cands)} from are.na/{brief['channel']}")
+    if len(cands) < want:
+        seen = {c.key for c in cands}
+        more = sources.search(full, channels=CHANNELS, want=want - len(cands),
+                              only=only, material=mat)
+        cands += [c for c in more if c.key not in seen]
     if not cands:
         print("  nothing survived the filters (public domain + "
               f"≥{sources.MIN_PX}px). Try a broader brief.")
@@ -207,6 +219,7 @@ def cmd_brief(args):
     print(f"stake     {b['stake'] or '—'}")
     print(f"themes    {b['themes'] or '—'}")
     print(f"material  {sources.Material(b['material']) if b['material'] else '—'}")
+    print(f"channel   {'are.na/' + b['channel'] if b['channel'] else '—'}")
     return 0
 
 

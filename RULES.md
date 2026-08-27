@@ -342,13 +342,26 @@ and you pick **one**:
   (1910), Munch (1917) — and the slide text takes its vocabulary straight from
   them: *soil, field, tending, cultivating*. As in "Mending," the pictures
   supply the words.
-- **Period.** "On Making Stuff" is the reverse: seven unrelated subjects — the
-  Louvre copyists, a raft, a tiger engraving, a blackboard, a Munch — held
-  together by falling in a roughly fifty-year band around 1864–1915.
+- **Period.** Everything inside one era. Note that this axis has not actually
+  been used deliberately yet — see the "or don't declare one" note below.
 - **Kind.** All paintings, all prints, all etchings. Coarser, and it does
   double duty: it is also a noise filter, because keyword searches otherwise
   return vessels, daggers and reliquaries whose catalogue text merely mentions
   the word.
+
+**Or declare no axis at all.** "On Making Stuff" was built with one rule —
+everything public domain — and then image chosen per slide for what looked
+right against that slide's aphorism. Its images do land inside a roughly
+1864–1915 band (the Louvre copyists, a raft, a tiger engraving, a blackboard, a
+Munch), but that band was **emergent, not chosen**: the product of taste
+converging, not a constraint applied. Worth knowing so the coherence is not
+mistaken for a rule that was followed.
+
+This is a legitimate second mode, and for a short deck it may be the better
+one. Declaring an axis up front buys guaranteed coherence and costs you the
+best per-slide match; choosing per slide buys the best match and leaves
+coherence to your eye. What is *not* available is declaring two axes — that
+returns nothing (below).
 
 **When the prose braids two metaphors, the deck commits the images to one.**
 The Spring 2026 remarks run threads and agriculture together — threads staged

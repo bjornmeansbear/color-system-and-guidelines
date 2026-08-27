@@ -203,6 +203,168 @@ as the medium, not as a flourish. It carries two obligations. Honour
 stripping it out. And scale dwell time to content length: a 30-character
 line and a 270-character passage do not need the same time on screen.
 
+## Presentations: the slide is not the script
+
+Written from a measurement pass on `~/Code/lectureScripts/
+lecture-design-thinking/di200-wk1-deck.html` (67 slides) — every number
+below comes from that deck. Expect this section to get revised against a
+wider sample; see NOTES.md.
+
+A lecture is two documents. The script carries the argument; the deck does
+not. That lecture's script already exists as
+`di200-wk1-reading-script.md` (45KB), which means every explanatory
+paragraph on a slide is duplicated prose — the deck holding the speaker's
+job and competing with the speaker to do it.
+
+**A slide holds what speech cannot.** Four things read better in the eye
+than in the ear, and a slide gets one of them:
+
+- a name — `Emic` / `Etic`, `Research`, `Extraction`
+- a list, parallel and scannable, no item longer than a line
+- a comparison, because contrast is spatial and speech is linear
+- a line worth quoting, sized to be read from the back of the room
+
+**A slide never explains itself.** If a line only makes sense with the
+sentence beneath it, that is a paragraph with a headline. Cut to the line
+that stands alone, or drop it and say it out loud instead.
+
+## Presentations: plain, aphoristic, unexplaining
+
+The register is the same instinct as the `bjorn-voice` skill, one notch
+harsher — the medium removes the need to argue at all. Name things, list
+them, set them against each other. Nothing superfluous, no explanation,
+no qualification.
+
+This is a rule about protecting something already present, not installing
+something new. Across that deck's 29 `.lead` lines and 31 headings, 72%
+already run 13 words or under, and those are uniformly the strong ones:
+"Consent is not transitive." "You cannot code a vibe." "Photograph both.
+The photographs are identical." The break in the data is clean — under
+~13 words the lines land, over it they turn into argument. The five
+weakest leads are all 23–27 words.
+
+So the failure mode is dilution, not absence. **The aphorism should be
+the whole slide, not the headline on top of a paragraph.** The worst
+slide in that deck (111 words, two `.rows` entries on Leonardo and the
+Bauhaus) contains the line that should have been the entire slide —
+"That is prototyping as a curriculum" — demoted to an inline `.accent`
+span inside the explanation.
+
+## Presentations: density, and the shrink tell
+
+Big type, little on it. Keywords, aphorisms, comparisons; bulleted lists
+are good. Not tons of explanatory text.
+
+Measured, that deck runs a median of ~58 words per slide, and 13 slides
+exceed 75 (worst: 113, 111, 108). Only 8 slides fall under 25 words and 7
+of those are section openers — so the slides built as slides sit almost
+uniformly at paragraph density. A working ceiling of ~25 words, or ~40
+for a bulleted comparison, matches the lines that work; the exact number
+is not settled yet (NOTES.md).
+
+The ceiling is a symptom, though, not the rule. Past roughly that length
+what is on screen is *structurally* the wrong thing — explanation, which
+belongs to the mouth.
+
+**Never shrink type to fit.** That deck carries 10 inline
+`style="font-size:1.9cqw"` / `2.1cqw` overrides, each one a slide whose
+text did not fit at the sheet's own scale. Every one marks a slide that
+should have been split. The type scale is the instrument that tells you a
+slide is over-full — spending it to hide the overflow destroys the only
+warning the system gives.
+
+## Presentations: a closed set of layouts
+
+One deck should not read as five decks interleaved. That deck runs five
+unrelated layout modes with no stated rule for which a given slide takes:
+`.rows` (year/description table, 11 uses), `.cols`/`.col.ruled` (6),
+`ul`/`ul.tight` (16), `.lead` statement slides (16), and
+`blockquote.big`.
+
+The rule is a small closed set of named archetypes, each with a stated
+trigger — this kind of content takes this layout. **Which archetypes
+belong in the set is not decided yet**; it needs a wider sample than one
+deck. See NOTES.md.
+
+## Presentations: imagery
+
+Public-domain painting and artwork as full-bleed slide backgrounds,
+chosen for a metaphorical relationship to the content, is a deliberate
+personal move — treat it as the default ambition for opener/beat slides,
+not a decoration to add if there is time. Extends the Images section
+above; the sourcing, treatment, and sizing rules there all apply.
+
+**Slots carry intent, not filenames.** A hardcoded
+`style="--img:url('images/beat-history.jpg')"` cannot say what the image
+is *for*, so it can neither be searched against nor prompt you. Slides
+declare a slot and a brief instead:
+
+```html
+data-img="beat-history"
+data-img-brief="an older lineage — surveying, notebooks, workshop labor"
+```
+
+**The working build is loud; the presentation build is silent.** An
+unfilled slot must be conspicuous on the desk — slot name and brief,
+rendered in accent — and must fall back silently to the flat ground when
+projected. Never show a TODO to a room. That deck's `images/README.md`
+gets the second half right and the first half backwards: missing files
+fall back quietly and the credit line sits commented out, so the system
+is silent about its own gaps. All five of its beat images are still
+missing, which is what that silence buys.
+
+**Every background image carries a credit line** — source, collection,
+year, licence — written at pick time, not deferred.
+
+**Scrim and verify against the worst case.** Contrast over an image
+cannot be eyeballed, because the image is not knowable in advance.
+`di200-wk1`'s beat slides are the model: a `brown-8` scrim at
+`--scrim: 0.80`, computed against a hypothetical pure-white photograph —
+`gray-0` text at 9.03:1, `gray-1` at 7.98:1, `pink-2` at 5.20:1. Real
+photographs run darker, so actual contrast only improves. Dial the scrim
+per-slide for an already-dark image, and recompute: 0.70 drops to
+6.29/3.62, AA but not AAA.
+
+## Presentations: sourcing, in this order
+
+Machine narrows, you choose, machine writes the credit line. The
+metaphorical judgement is the part that does not automate; reducing four
+million public-domain objects to forty worth flipping through is the part
+that does.
+
+1. **Your own are.na channels first** — already collected, already
+   vetted, credit metadata already attached. (This is the Images
+   "Sourcing" rule above, now with a defined order.)
+2. **Museum open-access APIs.** The three needing no key: the Met
+   (`collectionapi.metmuseum.org`, `isPublicDomain`), the Art Institute
+   of Chicago (`api.artic.edu`, `is_public_domain`, IIIF sizing), and
+   Cleveland (`openaccess-api.clevelandart.org`, `share_license_status:
+   CC0`). Rijksmuseum, Smithsonian, and Harvard work too but want a free
+   key.
+3. **Wikimedia Commons last**, with the scepticism `chair-ness`'s
+   `commons-verified.md` already documents — Commons search matches
+   keywords, not objects, and returns a recording studio for *Aeron*.
+
+Filter candidates to public-domain and ≥2000px before they reach your
+eye: RULES.md caps upscale at 2.5x, and a projector eats resolution.
+
+## Presentations: local files, never hotlinks
+
+A projected deck references local image files. Network is not a runtime
+dependency in a room you do not control. `chair-ness` already models the
+split — one manifest, two builds: `slideshow.html` resolves 247 local
+`images/` paths, `slideshow-web.html` hotlinks are.na's CDN and ships no
+local files.
+
+Image caches stay out of git. `chair-ness` gitignores `images/`,
+`links/`, and `vitra/`, holding 423 images and 348MB on disk against a
+5.5MB `.git`. The canonical record is the are.na channel plus a
+`manifest.csv` — id, title, source URL, licence, `image_url_large`,
+`local_path`.
+
+The cache should be shared across projects rather than living inside one
+of them; where it lives is an open question (NOTES.md).
+
 ## Dark mode
 
 The palette is settled and measured. It needs no new colors: the dark

@@ -27,6 +27,49 @@ before starting a session, not just written to at the end of one.
   as an accent" trope (RULES.md "Typography: rotation as an accent") —
   no project uses it yet; worth trying on a real element to see if the
   default angle/approach holds up.
+- **Slide word ceiling is provisional.** RULES.md "Presentations:
+  density, and the shrink tell" records the measured facts (median ~58
+  words/slide in `di200-wk1`; the strong lines break clean at ~13 words)
+  and proposes ~25 words, or ~40 for a bulleted comparison. Not confirmed
+  by Kristian yet. A number is falsifiable where a shape rule ("one idea,
+  one screen") is not, which is the argument for keeping it numeric —
+  but the number itself should be checked against the deck archive below
+  before it hardens.
+- **The layout archetype set is undecided.** RULES.md "Presentations: a
+  closed set of layouts" asserts there should be a small closed set with
+  stated triggers, but not which archetypes are in it — one deck is too
+  thin a sample. `di200-wk1` runs five modes (`.rows`, `.cols`, `ul`,
+  `.lead`, `blockquote.big`) with no rule for choosing. Decide against
+  the deck archive.
+- **Deck archive pending.** Kristian is selecting ~8 favourite decks
+  (Figma exports and old PDFs) as evidence for the Presentations rules —
+  PDFs, one per deck, year in the filename, with a note on which he'd
+  actually defend. To extract: layout archetypes and how many recur,
+  words per slide over time, image treatment, type-size clustering, and
+  whether the aphoristic register is consistent or grown into. Until
+  this lands, every Presentations rule rests on a single deck.
+- **Where the shared image cache lives.** RULES.md "Presentations: local
+  files, never hotlinks" says the cache should be shared across projects
+  rather than nested in one, but not where. `~/Media/commons/<channel-
+  slug>/` was proposed (outside any repo, backed up, symlinked or
+  build-resolved into each project). Kristian's call.
+- **Do museum picks get pushed back to are.na?** The sourcing cascade
+  searches are.na first, then museum APIs. If a museum pick is written
+  back into an are.na channel, step 1 compounds — every choice makes the
+  next search better, which is the whole argument for a single library.
+  If it only lands in a local manifest, the fifth deck re-searches the
+  Met from scratch. Leaning yes (push); the cost is channel sprawl, which
+  is a naming problem rather than a real one.
+- **are.na auth needs sorting.** `chair-ness/.env` has an
+  `ARENA_ACCESS_TOKEN` key but reading its value came back empty, and
+  unauthenticated v2 search reports `authenticated: false`. `arena_add.py`
+  also looks in `~/Code/sentence-a-day/.env`. Public channel reads work
+  without auth (v3 `/channels/{slug}/contents`); searching your own
+  channels and writing blocks do not.
+- **`lectureScripts` git bloat is SVG, not images.** Its 115MB `.git` is
+  524MB of `SampleSlides/CC-SSS-*.svg` in history (~3.4MB each), not
+  photography. Worth knowing before anyone "fixes" image storage there —
+  the images were never the problem.
 - **Consolidate the palette HTML files.** `palette-1.html`, `palette-2.html`,
   and `palette-docs.html` read as three sequential drafts of the same
   living-style-guide page, not three distinct tools. `showcase.html` (added
@@ -60,6 +103,61 @@ before starting a session, not just written to at the end of one.
   that need it.
 
 ## Changelog
+
+### 2026-08-27
+
+- **RULES.md gained eight `## Presentations:` sections** — the first
+  medium-specific block in the document, covering decks, projected
+  slideshows, and render-to-PDF work. Everything in web layout so far had
+  assumed a scrolling page; a fixed-aspect slide read in a room is a
+  different constraint.
+
+  The governing rule is **the slide is not the script**. A lecture is two
+  documents and the deck is not the one carrying the argument — most
+  explanatory prose on a slide is already written in the script file
+  beside it. A slide gets only what reads better in the eye than the ear:
+  a name, a list, a comparison, or a line worth quoting.
+
+  Measured from `~/Code/lectureScripts/lecture-design-thinking/
+  di200-wk1-deck.html`, 67 slides. Median ~58 words per slide; 13 slides
+  over 75. The useful finding was the opposite of expected: **the
+  aphoristic voice is already there** — 72% of that deck's `.lead` lines
+  and headings run 13 words or under, and those are the strong ones
+  ("Consent is not transitive", "You cannot code a vibe"). The failure is
+  dilution, not absence, so the rule protects something present rather
+  than installing something new.
+
+  The best diagnostic to come out of it: **never shrink type to fit.**
+  That deck carries 10 inline `font-size` overrides below its own scale,
+  and every one marks a slide that should have been split. Spending the
+  type scale to hide overflow destroys the only warning the system gives.
+
+- **Image slots replace hardcoded filenames.** A slide declares
+  `data-img` plus a `data-img-brief` describing what the image is *for*,
+  so the slot can be searched against and can prompt you. Paired with a
+  loud/silent build split: unfilled slots are conspicuous on the desk and
+  silent when projected.
+
+  This came out of noticing that `di200-wk1`'s five beat images are still
+  missing while its `images/README.md` explicitly designs for silence —
+  quiet fallback, credit line commented out. Correct for the podium,
+  wrong for the desk, and the reason the gap persisted.
+
+- **Sourcing gained a defined order**: are.na channels first, then the
+  three no-key museum APIs (Met, Art Institute of Chicago, Cleveland),
+  then Wikimedia Commons last. The Images "Sourcing" rule already said to
+  check are.na first; this makes it a cascade and fills in the museum
+  half, which the old list (photography-weighted — FSA, Flickr Commons)
+  did not cover for paintings.
+
+  The division of labour: machine narrows, you choose, machine writes the
+  credit line. Metaphorical judgement does not automate; filtering four
+  million objects to forty does.
+
+- **Local files, never hotlinks, for anything projected** — network is not
+  a runtime dependency in a room you do not control. `chair-ness` already
+  models the two-build split from one manifest, and gitignores its caches
+  (423 images, 348MB on disk, 5.5MB `.git`).
 
 ### 2026-08-26
 

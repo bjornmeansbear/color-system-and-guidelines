@@ -171,6 +171,23 @@ imagery — flickr.com/commons, unsplash.com, and other sources TK. Also
 check the relevant are.na channel(s) for already-collected material before
 sourcing new images. *(Links pending — add here once supplied.)*
 
+**Sizing**: `object-fit: contain` fills the box it is given and nothing
+more. `max-width`/`max-height` let that box shrink to the image's natural
+size, so a small image sits small in the middle of the frame. Pin the box —
+`width: 100%; height: 100%` — and contain scales up into it.
+
+Cap the upscale. Read each image's real pixel dimensions at build time and
+cap around 2.5x; a 150px source blown up to fill a projector is mush. Set a
+minimum source size and drop what falls under it.
+
+**Type over images**: put it on an opaque block. Never straight on the
+photo, never on a gradient scrim. You cannot know what is behind it — half
+the chair-ness images are museum shots on white, where light type
+disappears. An opaque block holds its ratio whatever the image does.
+
+Anchor that block to a corner, a full edge, or dead centre. A panel at an
+arbitrary offset reads as a rendering tear rather than a layer.
+
 ## Motion
 
 Not part of the base kit — `kit.css` ships no animation utilities.
@@ -180,13 +197,52 @@ kind of one-off, not a pattern to reuse elsewhere. This may change as more
 projects need it, but the starting rule is: ignore motion unless a
 specific idea calls for it.
 
-## Dark mode — deferred
+Auto-advancing media is the exception — a slideshow left running is motion
+as the medium, not as a flourish. It carries two obligations. Honour
+`prefers-reduced-motion: reduce`, slowing the thing down rather than
+stripping it out. And scale dwell time to content length: a 30-character
+line and a 270-character passage do not need the same time on screen.
 
-Not implemented. `color-scheme: light` is pinned in `kit.css` for now.
-The semantic token layer (`--color-bg`, `--color-text`, etc., all
-indirected through the raw scale) is already structured so dark mode could
-be added later without a rewrite — just not a priority until the
-light-mode system is solid across more projects.
+## Dark mode
+
+The palette is settled and measured. It needs no new colors: the dark
+pairing is the same brown scale with its ends swapped. `--brown-9` is the
+ground, `--brown-0` the text. Pink stays the one accent, at `--pink-3`
+rather than the light mode's `--pink-5`.
+
+Measured against `--brown-9`:
+
+| Token | Role | Ratio |
+|---|---|---|
+| `--brown-0` | primary text | 18.81:1 |
+| `--brown-3` | secondary, captions | 10.49:1 |
+| `--pink-3` | accent | 8.67:1 |
+| `--brown-4` | tertiary, hints | 7.06:1 |
+
+`--brown-4` is the floor. `--brown-5` drops to 4.36:1 — that fails AAA and
+fails AA for normal text. It reads as a usable gray on screen and isn't
+one. Nothing dimmer than brown-4 carries text a reader has to read.
+
+The ground is `--brown-9`, not black. Black loses the warmth the light mode
+is built on.
+
+The semantic layer maps straight across, so wiring this up is a token flip
+and not a rewrite:
+
+| Semantic token | Light | Dark |
+|---|---|---|
+| `--color-bg` | `--gray-0` | `--brown-9` |
+| `--color-text` | `--brown-8` | `--brown-0` |
+| `--color-text-muted` | `--gray-6` | `--brown-3` |
+| `--color-text-subtle` | `--gray-6` | `--brown-4` |
+| `--color-accent` | `--pink-5` | `--pink-3` |
+
+`kit.css` still pins `color-scheme: light` and does not ship the flip yet.
+The open question was never which colors — it was whether to spend the
+complexity. The colors are now answered.
+
+First built and contrast-checked for the chair-ness exhibition slideshow
+(`~/Code/chair-ness`), projected dark in a gallery.
 
 ## Layout: mobile-first, two breakpoints
 

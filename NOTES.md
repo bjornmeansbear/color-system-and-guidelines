@@ -53,10 +53,39 @@ before starting a session, not just written to at the end of one.
   pending).
 - **Motion** — intentionally out of scope per RULES.md; revisit only if a
   specific project idea calls for it, not as a system default.
-- **Dark mode** — deliberately deferred per RULES.md; the semantic token
-  layer is structured to support it later, just not built yet.
+- **Dark mode — colors answered, not yet wired.** RULES.md now carries the
+  measured dark palette and the light→dark semantic token mapping. What's
+  left is a decision, not a design: whether to ship the flip in `kit.css`
+  (which still pins `color-scheme: light`) or keep leaving it to projects
+  that need it.
 
 ## Changelog
+
+### 2026-08-26
+
+- **Dark mode moved from deferred to specified.** The chair-ness exhibition
+  slideshow (`~/Code/chair-ness`) needed a dark treatment for gallery
+  projection, so the palette got built and contrast-checked for real rather
+  than in the abstract. It turned out to need no new colors — it is the
+  brown scale with its ends swapped, `--brown-9` ground and `--brown-0`
+  text, with `--pink-3` as the accent in place of light mode's `--pink-5`.
+  RULES.md "Dark mode" now carries the measured ratios and the semantic
+  token mapping.
+
+  The useful finding: `--brown-4` (7.06:1) is the dimmest rung that still
+  clears AAA on `--brown-9`. `--brown-5` looks like a usable gray and is
+  not — 4.36:1, which fails AA for normal text. That is exactly the kind of
+  "muted" tone RULES.md "Contrast" warns about.
+
+- **Images gained "Sizing" and "Type over images."** Both came out of the
+  same project. The sizing one is a genuine trap: `object-fit: contain`
+  only fills the box it is given, so `max-width`/`max-height` leave small
+  images floating at natural size. The type rule is a contrast requirement
+  — light type over photographs of unknown content cannot be verified, so
+  it goes on an opaque block.
+
+- **Motion gained an exception for auto-advancing media**, with the
+  `prefers-reduced-motion` obligation and length-scaled dwell time.
 
 ### 2026-08-07
 - Folded `Personal tropes.txt` into the system: added "Ethos: do more with

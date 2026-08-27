@@ -158,6 +158,25 @@ def arena_channels(slugs, query, per_channel=200):
     return out
 
 
+STOPWORDS = set("""a an the and or but of in on at to for with from by as is are
+was were be been being it its this that these those you your our their his her
+they them we us not no than then so such very more most other another some any
+each into over under about between through during before after above below out
+up down off again further once here there all both few own same only own""".split())
+
+
+def content_words(phrase):
+    """The searchable nouns inside a sentence, longest first."""
+    words = [w for w in re.split(r"[^A-Za-z-]+", phrase.lower())
+             if len(w) > 3 and w not in STOPWORDS]
+    seen, out = set(), []
+    for w in sorted(words, key=len, reverse=True):
+        if w not in seen:
+            seen.add(w)
+            out.append(w)
+    return out[:5]
+
+
 def _plain(v):
     if isinstance(v, dict):
         return v.get("plain") or v.get("markdown") or ""
@@ -321,6 +340,11 @@ def search(query, channels=(), want=40, only=None, verbose=True):
     better than one long metaphorical sentence.
     """
     terms = [t.strip() for t in query.split(",") if t.strip()] or [query]
+    if len(terms) == 1 and len(terms[0].split()) > 3:
+        # A metaphorical brief sent whole matches nothing useful — keyword APIs
+        # want a short concrete noun. Falling back to its content words is
+        # cruder than real terms but far better than the sentence.
+        terms = content_words(terms[0]) or terms
     found, seen = [], set()
     for name, fn in CASCADE:
         if only and name not in only:

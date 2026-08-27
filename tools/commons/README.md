@@ -23,6 +23,11 @@ intent instead:
          data-img-terms="surveying, workshop, notebook, apprentice">
 ```
 
+**The brief is yours. The terms are not yours to write.** Translating a
+metaphor into concrete nouns is the machine's job — being asked for keywords
+inverts the whole premise. Leave `data-img-terms` off and the brief's content
+words are searched instead; fill it in when you want a better search than that.
+
 **The brief is for you. The terms are for the machine.** Museum APIs match a
 short concrete noun, not a metaphor — searching the brief verbatim returns
 *The Death of Socrates* for "ordinary labor in a working interior". Terms are

@@ -294,6 +294,21 @@ personal move — treat it as the default ambition for opener/beat slides,
 not a decoration to add if there is time. Extends the Images section
 above; the sourcing, treatment, and sizing rules there all apply.
 
+**Find the imagery while drafting, not after.** The metaphor runs both ways —
+a found image feeds the writing as often as the writing selects the image. A
+2026 set of faculty remarks about fixing what could be fixed that year was
+illustrated with paintings of fishermen and women mending nets, and the nets
+then pulled their own vocabulary into the prose: repair, collective, patient,
+something torn that people take back out tomorrow. Treated as a final
+illustration pass, that exchange cannot happen.
+
+**The brief is yours; the search terms are not.** A slot carries the metaphor
+in the writer's own words. Translating it into the concrete nouns a keyword
+API can match is the machine's job — a metaphorical brief searched verbatim
+returns nothing useful ("ordinary labor in a working interior" returns *The
+Death of Socrates*). Keep the two in separate fields so the original is never
+flattened into keywords.
+
 **Slots carry intent, not filenames.** A hardcoded
 `style="--img:url('images/beat-history.jpg')"` cannot say what the image
 is *for*, so it can neither be searched against nor prompt you. Slides

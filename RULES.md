@@ -154,6 +154,12 @@ to.
 
 ## Images
 
+**Winslow Homer recurs.** He appears in all three 2026 decks — *Mending the
+Nets* (1882), *Art Students and Copyists in the Louvre Gallery* (1864),
+*Blackboard* (1877), *The Veteran in a New Field* (1865). Working people,
+plain light, no rhetoric. Worth checking him first when a brief involves labour,
+attention, or instruction.
+
 **Style**: Victorian etchings are a recurring source material — their
 linework pairs naturally with the "dark brown line work on a warm ground"
 color trope above, and they're public domain more often than not, which
@@ -252,26 +258,93 @@ span inside the explanation.
 
 ## Presentations: density, and the shrink tell
 
-Big type, little on it. Keywords, aphorisms, comparisons; bulleted lists
-are good. Not tons of explanatory text.
+Big type, little on it. Keywords, aphorisms, comparisons; bulleted lists are
+good. Not tons of explanatory text.
 
-Measured, that deck runs a median of ~58 words per slide, and 13 slides
-exceed 75 (worst: 113, 111, 108). Only 8 slides fall under 25 words and 7
-of those are section openers — so the slides built as slides sit almost
-uniformly at paragraph density. A working ceiling of ~25 words, or ~40
-for a bulleted comparison, matches the lines that work; the exact number
-is not settled yet (NOTES.md).
+**The working ceiling is under ten words.** Measured across two decks he built
+and stands behind — "On Mending" (FEC, 2026) and "On Making Stuff"
+(convocation, 2026) — the content slides run **two to six words**, median about
+five. "A person can mend alone …" "Twenty questions." "Everything is material."
+"You need practice." Nothing in either deck argues; every slide names.
 
-The ceiling is a symptom, though, not the rule. Past roughly that length
-what is on screen is *structurally* the wrong thing — explanation, which
-belongs to the mouth.
+`di200-wk1-deck.html` runs a median of ~58 words across 67 slides, with 13 over
+75. It is the outlier, not the norm — a lecture deck that absorbed its own
+script. The rules in this section were first written from it, which means they
+were calibrated against the weakest example. Treat ~10 words as the target and
+25 as the outer bound for a bulleted comparison, not the other way round.
 
-**Never shrink type to fit.** That deck carries 10 inline
-`style="font-size:1.9cqw"` / `2.1cqw` overrides, each one a slide whose
-text did not fit at the sheet's own scale. Every one marks a slide that
-should have been split. The type scale is the instrument that tells you a
-slide is over-full — spending it to hide the overflow destroys the only
-warning the system gives.
+The count is a symptom rather than the rule. Past roughly that length what is
+on screen is *structurally* the wrong thing — explanation, which belongs to the
+mouth.
+
+**Never shrink type to fit.** `di200-wk1` carries 10 inline
+`style="font-size:1.9cqw"` / `2.1cqw` overrides, each one a slide whose text
+did not fit at the sheet's own scale. Every one marks a slide that should have
+been split. The type scale is the instrument that tells you a slide is
+over-full — spending it to hide the overflow destroys the only warning the
+system gives.
+
+## Presentations: the deck is the essay's pull-quotes
+
+Both 2026 decks have the same architecture, and it is the practical form of
+"the slide is not the script."
+
+Write the prose first. Then pull its aphorisms — the lines that already stand
+alone — and give each one a slide and an image. "On Mending" is six fragments
+lifted almost verbatim from the FEC remarks: *Making gets excitement;
+Maintenance gets nothing … · A person can mend alone … · Returning to the same
+knots … · Where to help with the mending … · A big net takes many hands …*
+
+Two consequences worth stating. The deck cannot hold explanation because the
+explanation is still in the essay, where it belongs. And the aphorisms get
+written under prose conditions — with an argument around them to earn them —
+rather than being invented to fill a slide.
+
+One dense slide per deck is fine when it is genuinely informational (the
+Faculty Assembly dates), and it should look like the exception it is.
+
+**The title is a formula.** A short abstract noun phrase, then a parenthetical
+gloss in plain speech, usually opening "or,". All three 2026 decks:
+
+- **On Mending** *(What's left to fix so we get back to what matters)*
+- **On Making Stuff** *(or, why nobody will just tell you if something's good)*
+- **Loose Threads** *(or, Make Hay While Society Crumbles Around Us)*
+
+The noun phrase carries the metaphor; the parenthetical says the thing
+straight, and is where the humour goes. Neither half works alone — the abstract
+title without the gloss is a mood, the gloss without the title is a memo.
+
+Punctuation carries register. "On Mending" trails five of six fragments on an
+ellipsis — the work is ongoing, nothing is closed. "On Making Stuff" ends every
+line on a full stop — these are claims made to new students. Same author, same
+year, opposite mark, deliberate.
+
+## Presentations: one axis of visual coherence, not two
+
+A deck needs its images to read as a family. There are three ways to get one,
+and you pick **one**:
+
+- **Subject.** "On Mending" is seven paintings of people mending nets, spanning
+  Avercamp (1634), Homer (1882), Mønsted (1891), Sorolla (1902), Myrer (1954)
+  and Collins. Wildly different centuries, palettes and styles; one object.
+  `chair-ness` is the same move at archive scale — all chairs, any era, any
+  photographic style.
+  "Loose Threads" is the same move on a different object: five paintings of
+  harvest and haymaking — Stubbs (1785), Homer (1865), Ancher (1905), Hodler
+  (1910), Munch (1917) — and the slide text takes its vocabulary straight from
+  them: *soil, field, tending, cultivating*. As in "Mending," the pictures
+  supply the words.
+- **Period.** "On Making Stuff" is the reverse: seven unrelated subjects — the
+  Louvre copyists, a raft, a tiger engraving, a blackboard, a Munch — held
+  together by falling in a roughly fifty-year band around 1864–1915.
+- **Kind.** All paintings, all prints, all etchings. Coarser, and it does
+  double duty: it is also a noise filter, because keyword searches otherwise
+  return vessels, daggers and reliquaries whose catalogue text merely mentions
+  the word.
+
+**Combining axes over-constrains to nothing.** Measured: "chair" filtered to
+Victorian etchings returns zero usable results, where either constraint alone
+returns plenty. Pick the axis, then let everything else vary.
 
 ## Presentations: a closed set of layouts
 

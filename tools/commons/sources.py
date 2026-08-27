@@ -185,7 +185,7 @@ def _plain(v):
 
 # ----------------------------------------------------------------------- Met
 
-def met(query, limit=15):
+def met(query, limit=15, material=None):
     """The Met's search ranks well on `q` alone and badly with filters added.
 
     Sending medium= / isPublicDomain= / hasImages= alongside the query returns
@@ -193,8 +193,13 @@ def met(query, limit=15):
     Jerome and portraits, without them it leads with "Kitchen Scene". So the
     query goes in clean and the public-domain test happens per object below.
     """
+    extra = {}
+    if material and material.medium:
+        extra["medium"] = material.medium.title() + "s"
+    if material and material.years:
+        extra["dateBegin"], extra["dateEnd"] = material.years
     s = _get(_qs("https://collectionapi.metmuseum.org/public/collection/v1/search",
-                 q=query))
+                 q=query, **extra))
     ids = (s.get("objectIDs") or [])[:limit]
 
     def one(oid):
@@ -235,11 +240,53 @@ def met(query, limit=15):
 
 # ----------------------------------------------------- Art Institute Chicago
 
-def aic(query, limit=25):
+def aic(query, limit=25, material=None):
+    """`material` is a Material() — medium keyword and/or a year range.
+
+    AIC accepts a full Elasticsearch body on POST, which is the only way to
+    hold a deck to one visual family (all etchings, all 19th century) instead
+    of five unrelated pictures.
+    """
+    if material and material:
+        # The top-level `q` is ignored once a bool query is supplied, so the
+        # keyword has to go inside the bool or the filter returns the same
+        # rows for every subject.
+        must = [{"term": {"is_public_domain": True}},
+                {"multi_match": {
+                    "query": query,
+                    "fields": ["title^3", "term_titles^2", "subject_titles^2",
+                               "artist_title", "description"]}}]
+        if material.kind:
+            must.append({"match_phrase": {"artwork_type_title": material.kind}})
+        if material.medium:
+            must.append({"match": {"medium_display": material.medium}})
+        if material.years:
+            lo, hi = material.years
+            must.append({"range": {"date_end": {"gte": lo, "lte": hi}}})
+        body = {"query": {"bool": {"must": must}},
+                "fields": "id,title,artist_title,date_display,is_public_domain,"
+                          "image_id,thumbnail".split(",") if False else
+                          ["id", "title", "artist_title", "date_display",
+                           "is_public_domain", "image_id", "thumbnail"],
+                "limit": limit}
+        req = urllib.request.Request(
+            "https://api.artic.edu/api/v1/artworks/search",
+            data=json.dumps(body).encode(),
+            headers={**UA, "Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+            return _aic_rows(json.load(r))
+    return _aic_plain(query, limit)
+
+
+def _aic_plain(query, limit=25):
     d = _get(_qs("https://api.artic.edu/api/v1/artworks/search",
                  q=query, limit=limit,
                  fields="id,title,artist_title,date_display,is_public_domain,"
                         "image_id,thumbnail"))
+    return _aic_rows(d)
+
+
+def _aic_rows(d):
     iiif = d.get("config", {}).get("iiif_url", "https://www.artic.edu/iiif/2")
     out = []
     for a in d.get("data", []):
@@ -321,18 +368,61 @@ def wikimedia(query, limit=25):
     return out
 
 
+KINDS = {"painting": "Painting", "paintings": "Painting",
+         "print": "Print", "prints": "Print",
+         "drawing": "Drawing", "drawings": "Drawing",
+         "photograph": "Photograph", "photographs": "Photograph",
+         "textile": "Textile", "textiles": "Textile"}
+
+
+class Material:
+    """A deck-level constraint. Three grades, coarse to fine:
+
+        "paintings"                  every image is a painting
+        "etching"                    every image is an etching
+        "etching; 1837-1901"         ...and Victorian
+
+    The coarse grade matters more than it looks: without it, searches return
+    vessels, daggers and reliquaries whose catalogue text merely mentions the
+    keyword. "paintings" is both a look and a noise filter.
+    """
+
+    def __init__(self, spec=""):
+        self.medium, self.years, self.kind = None, None, None
+        for part in (spec or "").split(";"):
+            part = part.strip()
+            if not part:
+                continue
+            m = re.fullmatch(r"(\d{3,4})\s*[-–]\s*(\d{3,4})", part)
+            if m:
+                self.years = (int(m.group(1)), int(m.group(2)))
+            elif part.lower() in KINDS:
+                self.kind = KINDS[part.lower()]
+            else:
+                self.medium = part
+
+    def __bool__(self):
+        return bool(self.medium or self.years or self.kind)
+
+    def __repr__(self):
+        bits = [b for b in (self.kind, self.medium) if b]
+        if self.years:
+            bits.append(f"{self.years[0]}\u2013{self.years[1]}")
+        return "; ".join(bits) or "(none)"
+
+
 CASCADE = [
-    ("are.na", lambda q, ch: arena_channels(ch, q)),
+    ("are.na", lambda q, ch, mat: arena_channels(ch, q)),
     # AIC before the Met: one request, real relevance ranking, and it reports
     # dimensions so most candidates need no header probe.
-    ("aic", lambda q, ch: aic(q)),
-    ("met", lambda q, ch: met(q)),
-    ("cleveland", lambda q, ch: cleveland(q)),
-    ("wikimedia", lambda q, ch: wikimedia(q)),
+    ("aic", lambda q, ch, mat: aic(q, material=mat)),
+    ("met", lambda q, ch, mat: met(q, material=mat)),
+    ("cleveland", lambda q, ch, mat: cleveland(q)),
+    ("wikimedia", lambda q, ch, mat: wikimedia(q)),
 ]
 
 
-def search(query, channels=(), want=40, only=None, verbose=True):
+def search(query, channels=(), want=40, only=None, verbose=True, material=None):
     """Run the cascade in RULES.md order, stopping once `want` is satisfied.
 
     `query` may be several comma-separated terms. Each is searched separately
@@ -352,7 +442,7 @@ def search(query, channels=(), want=40, only=None, verbose=True):
         try:
             got = []
             for t in terms:
-                got += fn(t, list(channels))
+                got += fn(t, list(channels), material)
         except Exception as e:
             if verbose:
                 print(f"  {name:10s} failed: {e}")

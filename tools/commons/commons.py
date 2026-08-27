@@ -13,6 +13,7 @@ The brief is for you; the terms are for the machine. Keyword APIs match a short
 concrete noun, not a metaphor. Without terms, the brief is used as the query.
 
 Commands
+    brief   DECK                     the deck-level stake, themes, and material
     slots   DECK                     what is declared, what is still empty
     fill    DECK [SLOT]              search each empty slot, open a contact sheet
     search  QUERY                    ad-hoc cascade, contact sheet, no deck needed
@@ -50,6 +51,9 @@ CHANNELS = [s.strip() for s in os.environ.get("COMMONS_CHANNELS", "chair-ness").
 FIELDS = ["slot", "deck", "source", "id", "title", "artist", "date", "license",
           "credit", "page_url", "full_url", "local_path", "width", "height"]
 
+META_RE = re.compile(
+    r'<meta\s+name="commons-(stake|themes|material)"\s+content="([^"]*)"\s*/?>')
+
 SLOT_RE = re.compile(r"<(?P<tag>section|div)\b(?P<attrs>[^>]*\bdata-img\s*=[^>]*)>")
 
 
@@ -58,6 +62,22 @@ SLOT_RE = re.compile(r"<(?P<tag>section|div)\b(?P<attrs>[^>]*\bdata-img\s*=[^>]*
 def attr(attrs, name):
     m = re.search(rf'{name}\s*=\s*"([^"]*)"', attrs)
     return html.unescape(m.group(1)) if m else None
+
+
+def read_deck_brief(deck):
+    """Deck-level declaration — the stake, the themes, the material family.
+
+        <meta name="commons-stake"    content="the sentence that answers 'so what'">
+        <meta name="commons-themes"   content="noticing, attention, the overlooked">
+        <meta name="commons-material" content="etching; 1837-1901">
+
+    Slot searches inherit all three, which is what makes a deck's images read
+    as one family rather than five unrelated pictures.
+    """
+    text = pathlib.Path(deck).read_text()
+    d = {k: html.unescape(v) for k, v in META_RE.findall(text)}
+    return {"stake": d.get("stake", ""), "themes": d.get("themes", ""),
+            "material": d.get("material", "")}
 
 
 def read_slots(deck):
@@ -131,9 +151,16 @@ def cmd_slots(args):
     return 0
 
 
-def _search_to_sheet(query, slot, deck, want, only):
-    print(f"searching: {query}")
-    cands = sources.search(query, channels=CHANNELS, want=want, only=only)
+def _search_to_sheet(query, slot, deck, want, only, brief=None):
+    brief = brief or {"themes": "", "material": ""}
+    mat = sources.Material(brief.get("material", ""))
+    themes = brief.get("themes", "")
+    full = ", ".join(t for t in (themes, query) if t)
+    print(f"searching: {full}")
+    if mat:
+        print(f"  material: {mat}")
+    cands = sources.search(full, channels=CHANNELS, want=want, only=only,
+                           material=mat)
     if not cands:
         print("  nothing survived the filters (public domain + "
               f"≥{sources.MIN_PX}px). Try a broader brief.")
@@ -147,13 +174,14 @@ def _search_to_sheet(query, slot, deck, want, only):
 
 def cmd_fill(args):
     _, slots = read_slots(args.deck)
+    brief = read_deck_brief(args.deck)
     todo = [s for s in slots if not s["file"] and (not args.slot or s["slot"] == args.slot)]
     if not todo:
         print("Nothing to fill.")
         return 0
     for s in todo:
         query = args.terms or s["terms"] or s["brief"] or s["slot"].replace("-", " ")
-        out = _search_to_sheet(query, s["slot"], args.deck, args.n, args.only)
+        out = _search_to_sheet(query, s["slot"], args.deck, args.n, args.only, brief)
         if out and not args.no_open:
             open_file(out)
     return 0
@@ -164,6 +192,21 @@ def cmd_search(args):
                            args.deck or ".", args.n, args.only)
     if out and not args.no_open:
         open_file(out)
+    return 0
+
+
+def cmd_brief(args):
+    b = read_deck_brief(args.deck)
+    if not any(b.values()):
+        print("No deck brief. Add to <head>:\n"
+              '  <meta name="commons-stake"    content="the sentence that answers '
+              "'so what'\">\n"
+              '  <meta name="commons-themes"   content="two or three metaphors">\n'
+              '  <meta name="commons-material" content="etching; 1837-1901">')
+        return 1
+    print(f"stake     {b['stake'] or '—'}")
+    print(f"themes    {b['themes'] or '—'}")
+    print(f"material  {sources.Material(b['material']) if b['material'] else '—'}")
     return 0
 
 
@@ -280,6 +323,7 @@ def main():
                         "(comma-separated; each searched separately)")
 
     a = sub.add_parser("slots"); a.add_argument("deck"); a.set_defaults(fn=cmd_slots)
+    g = sub.add_parser("brief"); g.add_argument("deck"); g.set_defaults(fn=cmd_brief)
     b = sub.add_parser("fill"); b.add_argument("deck"); b.add_argument("slot", nargs="?")
     common(b); b.set_defaults(fn=cmd_fill)
     c = sub.add_parser("search"); c.add_argument("query"); c.add_argument("--deck")

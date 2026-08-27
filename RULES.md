@@ -329,6 +329,13 @@ year, opposite mark, deliberate.
 
 ## Presentations: one axis of visual coherence, not two
 
+**Start by looking for a metaphor that can carry the whole arc.** That is the
+preferred shape, not one option among several: a single figure, declared up
+front, running from the title through every slide to the landing. "On Mending"
+and "Loose Threads" both work this way and both are stronger for it. Reach for
+the per-slide mode below only when no such figure presents itself — it is the
+fallback, not the alternative.
+
 A deck needs its images to read as a family. There are three ways to get one,
 and you pick **one**:
 
@@ -349,7 +356,8 @@ and you pick **one**:
   return vessels, daggers and reliquaries whose catalogue text merely mentions
   the word.
 
-**Or declare no axis at all.** "On Making Stuff" was built with one rule —
+**The fallback: declare no axis at all.** "On Making Stuff" was built with one
+rule —
 everything public domain — and then image chosen per slide for what looked
 right against that slide's aphorism. Its images do land inside a roughly
 1864–1915 band (the Louvre copyists, a raft, a tiger engraving, a blackboard, a
@@ -357,10 +365,10 @@ Munch), but that band was **emergent, not chosen**: the product of taste
 converging, not a constraint applied. Worth knowing so the coherence is not
 mistaken for a rule that was followed.
 
-This is a legitimate second mode, and for a short deck it may be the better
-one. Declaring an axis up front buys guaranteed coherence and costs you the
-best per-slide match; choosing per slide buys the best match and leaves
-coherence to your eye. What is *not* available is declaring two axes — that
+This is a legitimate mode when no arc-spanning metaphor is available. Declaring
+an axis buys guaranteed coherence and costs you the best per-slide match;
+choosing per slide buys the match and leaves coherence to your eye. Prefer the
+declared axis. What is *not* available either way is declaring two axes — that
 returns nothing (below).
 
 **When the prose braids two metaphors, the deck commits the images to one.**

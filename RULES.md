@@ -261,17 +261,25 @@ span inside the explanation.
 Big type, little on it. Keywords, aphorisms, comparisons; bulleted lists are
 good. Not tons of explanatory text.
 
-**The working ceiling is under ten words.** Measured across two decks he built
-and stands behind — "On Mending" (FEC, 2026) and "On Making Stuff"
-(convocation, 2026) — the content slides run **two to six words**, median about
-five. "A person can mend alone …" "Twenty questions." "Everything is material."
-"You need practice." Nothing in either deck argues; every slide names.
+**Short remarks: under ten words a slide.** Measured across three decks he
+built and stands behind — "On Mending," "On Making Stuff," and "Loose Threads,"
+all 2026 — the content slides run **two to eight words**, median about five.
+"A person can mend alone …" "Twenty questions." "Everything is material."
+"You need practice." Nothing in these decks argues; every slide names.
 
-`di200-wk1-deck.html` runs a median of ~58 words across 67 slides, with 13 over
-75. It is the outlier, not the norm — a lecture deck that absorbed its own
-script. The rules in this section were first written from it, which means they
-were calibrated against the weakest example. Treat ~10 words as the target and
-25 as the outer bound for a bulleted comparison, not the other way round.
+These are **five-to-ten-minute ceremonial talks**: convocation, a faculty
+assembly opening. Five to seven slides, one aphorism each, one image each.
+That is a form, and its density rule is not transferable by itself.
+
+**A long lecture is a different form and its number is not yet known.**
+`di200-wk1-deck.html` is 67 slides for a full class session, at a median of ~58
+words with 13 slides over 75. It is too dense — the 10 inline font-size
+overrides prove that independently, and the explanatory prose is duplicated in
+its own script file — but "too dense" is not the same as "should be five
+words." A lecture has to carry definitions, comparisons, citations, and a
+timeline, and it earns more per slide than a seven-slide address does. The
+right ceiling for it will come from lecture decks he stands behind, which do
+not exist in this sample yet. See NOTES.md.
 
 The count is a symptom rather than the rule. Past roughly that length what is
 on screen is *structurally* the wrong thing — explanation, which belongs to the
@@ -341,6 +349,14 @@ and you pick **one**:
   double duty: it is also a noise filter, because keyword searches otherwise
   return vessels, daggers and reliquaries whose catalogue text merely mentions
   the word.
+
+**When the prose braids two metaphors, the deck commits the images to one.**
+The Spring 2026 remarks run threads and agriculture together — threads staged
+as a failure in the opening, agriculture saturating everything after. The deck
+keeps both in its title (*Loose Threads (or, Make Hay While Society Crumbles
+Around Us)*) and gives every one of its five images to harvest alone. The title
+can hold the ambiguity; the pictures cannot, because a set of images is read
+all at once and two figures in it reads as indecision.
 
 **Combining axes over-constrains to nothing.** Measured: "chair" filtered to
 Victorian etchings returns zero usable results, where either constraint alone

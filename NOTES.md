@@ -27,6 +27,16 @@ before starting a session, not just written to at the end of one.
   as an accent" trope (RULES.md "Typography: rotation as an accent") —
   no project uses it yet; worth trying on a real element to see if the
   default angle/approach holds up.
+- **Two deck forms, and only one is measured.** The short ceremonial talk
+  (5–10 minutes, 5–7 slides, one aphorism and one image each) is now well
+  evidenced — "On Mending," "On Making Stuff," "Loose Threads," all 2026, all
+  two to eight words a slide. The long lecture deck is not. `di200-wk1` is 67
+  slides at a median of ~58 words and is clearly too dense, but a lecture
+  legitimately carries definitions, comparisons, citations and a timeline that
+  a seven-slide address does not. Kristian has said longer lecture decks are
+  coming; do not set that ceiling until one he stands behind exists. The
+  form-independent rules (never shrink type to fit; the slide is not the
+  script; one axis of visual coherence) apply to both.
 - **Slide word ceiling is provisional.** RULES.md "Presentations:
   density, and the shrink tell" records the measured facts (median ~58
   words/slide in `di200-wk1`; the strong lines break clean at ~13 words)
@@ -103,6 +113,38 @@ before starting a session, not just written to at the end of one.
   that need it.
 
 ## Changelog
+
+### 2026-08-27 (later)
+
+- **Three decks arrived and recalibrated the density rule, then a fourth fact
+  rescoped it.** "On Mending," "On Making Stuff," and "Loose Threads" (all
+  2026, all shared as Google Slides) run two to eight words a slide against
+  `di200-wk1`'s median of 58. But these are five-to-ten-minute ceremonial
+  talks, not lectures — so the number is now scoped to that form and the
+  lecture ceiling is deliberately left open rather than guessed at.
+
+- **The deck is the essay's pull-quotes.** All three lift their slide text
+  nearly verbatim from prose written first. "On Mending" is six fragments from
+  the FEC remarks; "Loose Threads" takes four of five slides straight from its
+  own text. This is the practical mechanism behind "the slide is not the
+  script" — the explanation stays in the essay because the essay still exists.
+
+- **One axis of visual coherence, never two.** Subject ("On Mending": seven
+  painters of nets, 1634–1954; `chair-ness`: all chairs, any style), period
+  ("On Making Stuff": unrelated subjects inside 1864–1915), or kind (all
+  paintings — which is also a noise filter, since keyword searches otherwise
+  return vessels and daggers). Measured: "chair" plus Victorian etchings
+  returns zero usable results where either alone returns plenty.
+
+- **The title is a formula** — abstract noun phrase plus a plain-speech
+  parenthetical, usually opening "or,". All three follow it.
+
+- **`bjorn-voice` gained the saturated metaphor register.** The restrained
+  ratio was derived from "Mending" and stated as universal; "Loose Threads"
+  saturates instead — twenty-odd agricultural touches — and is the one he likes
+  best. Saturation needs three things at once: wordplay-generating vocabulary,
+  a title that admits the conceit is pushed, and real darkness early to earn
+  the lightness. Also recorded: staging a failed metaphor as the opening move.
 
 ### 2026-08-27
 

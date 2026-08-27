@@ -42,6 +42,8 @@ figcaption{padding:.75rem;border-top:2px solid var(--text);flex:1;
   font-size:.75rem;line-height:1.125rem;font-family:var(--mono)}
 .tag.src{background:var(--text);color:var(--gray-0)}
 .tag.small{border-color:var(--accent);color:var(--pink-6)}
+figure.lead{border-color:var(--accent);border-style:dashed}
+.tag.lead{background:var(--accent);color:var(--gray-0);border-color:var(--accent)}
 .row{display:flex;gap:.375rem;align-items:center}
 button,a.src{font:inherit;font-size:.8125rem;line-height:1.125rem;
   border:2px solid var(--text);background:var(--bg);color:var(--text);
@@ -76,18 +78,20 @@ def render(slot, brief, cands, deck_path, out_path):
     for c in cands:
         w, h = c.get("width"), c.get("height")
         dim = f"{w}×{h}" if w and h else "size unknown"
+        lead = c.get("lead")
         cmd = (f"python3 tools/commons/commons.py pick {deck_path} "
                f"{slot} {c['source']}:{c['id']}")
         page = (f'<a class="src" href="{html.escape(c["page_url"])}" target="_blank" '
                 f'rel="noopener">source</a>' if c.get("page_url") else "")
-        cards.append(f"""<figure>
+        cards.append(f"""<figure class="{'lead' if lead else ''}">
   <div class="imgwrap"><img loading="lazy" src="{html.escape(c['thumb_url'])}" alt=""></div>
   <figcaption>
     <span class="t">{html.escape(c['title'][:90])}</span>
     <span class="a">{html.escape((c.get('artist') or '')[:70])}{
       ' · ' + html.escape(c['date'][:24]) if c.get('date') else ''}</span>
     <div class="tags">
-      <span class="tag src">{html.escape(c['source'])}</span>
+      <span class="tag src">{html.escape(c['source'])}</span>{
+        '<span class="tag lead">already yours · too small to project</span>' if lead else ''}
       <span class="tag">{dim}</span>
       <span class="tag">{html.escape((c.get('license') or '')[:28])}</span>
     </div>

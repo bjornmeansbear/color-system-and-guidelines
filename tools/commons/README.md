@@ -65,8 +65,20 @@ dependency in a room you do not control.
 
 Fixed by RULES.md, and it stops as soon as it has enough:
 
-1. **Your are.na channels** — already collected, already vetted. Read over the
-   public v3 API, no auth, matched locally.
+1. **Your are.na** — already collected, already vetted. `GET /v3/search` with
+   `user_id`, so it is one request against everything you have saved rather
+   than a walk over a configured channel list. Needs `ARENA_ACCESS_TOKEN`;
+   without one the source is skipped and the cascade falls through. Token is
+   read from `.env` in this repo, then `chair-ness`, then `sentence-a-day` —
+   commented lines are skipped, since those files keep an old read-only token
+   commented above the live one.
+
+   **Expect your own blocks to fail the size filter.** are.na saves whatever
+   the source page served, so a 150x150 Flickr thumbnail is common. Searching
+   "mending" returns Sorolla's *Mending the Nets* — the actual painting from
+   the deck — at 150px. That is still the most useful result on the sheet: it
+   tells you which artwork you already chose, and the museum sources can then
+   find it at a printable size.
 2. **Art Institute of Chicago** — one request, real relevance ranking, reports
    dimensions, IIIF sizing.
 3. **The Met** — good ranking on `q` alone. Note the quirk handled in
@@ -89,7 +101,7 @@ the file's JPEG/PNG header is probed by streaming only the first few KB —
 | var | default | |
 |---|---|---|
 | `COMMONS_CACHE` | `~/Media/commons` | image cache + `manifest.csv` |
-| `COMMONS_CHANNELS` | `chair-ness` | are.na slugs searched first |
+| `COMMONS_CHANNELS` | `chair-ness` | legacy; the are.na source now searches your whole account |
 
 The cache lives **outside any repo**. `chair-ness` is the model: 423 images and
 348MB on disk against a 5.5MB `.git`, because the caches are gitignored. The
@@ -98,8 +110,7 @@ URL, licence, `full_url`, `local_path`, dimensions.
 
 ## Not done yet
 
-- **Writing picks back to are.na.** `chair-ness/scripts/arena_add.py` does this
-  already, but it needs a working `ARENA_ACCESS_TOKEN` — see NOTES.md. Until
-  then step 1 of the cascade never gets smarter from museum picks.
-- **Searching your own are.na account** rather than a configured channel list.
-  Same blocker.
+- **Writing picks back to are.na.** The token is now read+write and the spec is
+  at `~/Code/sentence-a-day/openapi` (YAML, are.na v3.0.0): `POST /v3/blocks`
+  to create, `POST /v3/connections` to connect it to a channel. Not wired up
+  yet — until it is, step 1 never gets smarter from museum picks.

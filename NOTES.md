@@ -70,12 +70,15 @@ before starting a session, not just written to at the end of one.
   If it only lands in a local manifest, the fifth deck re-searches the
   Met from scratch. Leaning yes (push); the cost is channel sprawl, which
   is a naming problem rather than a real one.
-- **are.na auth needs sorting.** `chair-ness/.env` has an
-  `ARENA_ACCESS_TOKEN` key but reading its value came back empty, and
-  unauthenticated v2 search reports `authenticated: false`. `arena_add.py`
-  also looks in `~/Code/sentence-a-day/.env`. Public channel reads work
-  without auth (v3 `/channels/{slug}/contents`); searching your own
-  channels and writing blocks do not.
+- **Writing picks back to are.na is the last unbuilt piece.** Auth is now
+  sorted (2026-08-27): a read+write `ARENA_ACCESS_TOKEN` lives in this repo's
+  gitignored `.env`, and the `commons` tool reads it there first, then
+  `chair-ness`, then `sentence-a-day`, skipping commented lines. The are.na
+  API spec is `~/Code/sentence-a-day/openapi` — YAML, v3.0.0, 41 paths. What
+  remains is `POST /v3/blocks` plus `POST /v3/connections` so a museum pick
+  gets saved into a channel; until that exists, step 1 of the cascade never
+  gets smarter from museum picks. Decide the channel-naming question first
+  (see the push-back-to-are.na entry above).
 - **`lectureScripts` git bloat is SVG, not images.** Its 115MB `.git` is
   524MB of `SampleSlides/CC-SSS-*.svg` in history (~3.4MB each), not
   photography. Worth knowing before anyone "fixes" image storage there —

@@ -9,6 +9,7 @@ import concurrent.futures as cf
 import io
 import json
 import re
+import pathlib
 import struct
 import time
 import urllib.error
@@ -112,69 +113,86 @@ def big_enough(c):
 
 # -------------------------------------------------------------------- are.na
 
-def arena_channels(slugs, query, per_channel=200):
-    """Search your own already-collected material first.
+ARENA_ENV_PATHS = [
+    pathlib.Path.home() / "Code/color-system-and-guidelines/.env",
+    pathlib.Path.home() / "Code/chair-ness/.env",
+    pathlib.Path.home() / "Code/sentence-a-day/.env",
+]
+_ARENA = {"token": ..., "user_id": None}
 
-    Uses the public v3 contents endpoint (no auth) and matches locally, so
-    this works whether or not ARENA_ACCESS_TOKEN is sorted out.
+
+def arena_token():
+    """First uncommented ARENA_ACCESS_TOKEN wins. Commented lines are skipped —
+    the .env files keep an old read-only token commented above the live one."""
+    if _ARENA["token"] is not ...:
+        return _ARENA["token"]
+    _ARENA["token"] = None
+    for path in ARENA_ENV_PATHS:
+        if not path.exists():
+            continue
+        for line in path.read_text().splitlines():
+            line = line.strip()
+            if line.startswith("#"):
+                continue
+            m = re.match(r"(?:export\s+)?ARENA_ACCESS_TOKEN\s*=\s*(.+)", line)
+            if m:
+                _ARENA["token"] = m.group(1).strip().strip("\"'")
+    return _ARENA["token"]
+
+
+def arena_user_id():
+    if _ARENA["user_id"] or not arena_token():
+        return _ARENA["user_id"]
+    try:
+        d = _get("https://api.are.na/v3/me",
+                 {"Authorization": "Bearer " + arena_token()})
+        _ARENA["user_id"] = (d.get("user") or d).get("id")
+    except Exception:
+        pass
+    return _ARENA["user_id"]
+
+
+def arena(query, limit=25, **_):
+    """Search everything he has already collected, across every channel.
+
+    /v3/search takes user_id, so this is one request against his whole are.na
+    rather than a walk over a configured channel list. Needs a token; without
+    one this source is simply skipped and the cascade falls through.
+
+    Note that are.na blocks are often saved at whatever size the source page
+    served — a 150x150 Flickr thumbnail is common — so many of his own blocks
+    fail the projection threshold. They still tell you *which* artwork he
+    already liked, which the later sources can then find at full size.
     """
-    terms = [t for t in re.split(r"\W+", query.lower()) if len(t) > 2]
-    out = []
-    for slug in slugs:
-        page, seen = 1, 0
-        while seen < per_channel:
-            try:
-                d = _get(f"https://api.are.na/v3/channels/{slug}/contents"
-                         f"?per=100&page={page}")
-            except Exception:
-                break
-            blocks = d.get("contents") or d.get("data") or []
-            if not blocks:
-                break
-            for b in blocks:
-                seen += 1
-                if (b.get("class") or b.get("type")) not in ("Image", "Link"):
-                    continue
-                img = b.get("image") or {}
-                orig = (img.get("original") or {})
-                if not orig.get("url"):
-                    continue
-                title = _plain(b.get("title")) or ""
-                desc = _plain(b.get("description")) or ""
-                hay = f"{title} {desc}".lower()
-                if terms and not any(t in hay for t in terms):
-                    continue
-                out.append(Candidate(
-                    source="arena", id=str(b.get("id")), title=title or "(untitled)",
-                    artist="", date="", license="see description",
-                    credit=desc or f"via are.na/{slug}",
-                    page_url=f"https://www.are.na/block/{b.get('id')}",
-                    thumb_url=(img.get("display") or {}).get("url") or orig["url"],
-                    full_url=orig["url"],
-                    width=None, height=None))
-            if len(blocks) < 100:
-                break
-            page += 1
+    tok, uid = arena_token(), arena_user_id()
+    if not tok or not uid:
+        return []
+    d = _get(_qs("https://api.are.na/v3/search", query=query, user_id=uid,
+                 type="Image", per=limit),
+             {"Authorization": "Bearer " + tok})
+    out, seen = [], set()
+    for b in (d.get("data") or []):
+        bid = b.get("id")
+        # Dedup on title as well as id: the same image is often saved to
+        # several channels as separate blocks.
+        key = (_plain(b.get("title")) or "").strip().lower() or bid
+        if bid in seen or key in seen:
+            continue
+        seen.update((bid, key))
+        img = b.get("image") or {}
+        if not img.get("src"):
+            continue
+        src = b.get("source") or {}
+        title = _plain(b.get("title")) or img.get("filename") or "(untitled)"
+        desc = _plain(b.get("description"))
+        out.append(Candidate(
+            source="arena", id=str(bid), title=title,
+            artist="", date="", license="check the source",
+            credit=desc or src.get("url") or f"via are.na block {bid}",
+            page_url=src.get("url") or f"https://www.are.na/block/{bid}",
+            thumb_url=((img.get("medium") or {}).get("src")) or img["src"],
+            full_url=img["src"], width=None, height=None))
     return out
-
-
-STOPWORDS = set("""a an the and or but of in on at to for with from by as is are
-was were be been being it its this that these those you your our their his her
-they them we us not no than then so such very more most other another some any
-each into over under about between through during before after above below out
-up down off again further once here there all both few own same only own""".split())
-
-
-def content_words(phrase):
-    """The searchable nouns inside a sentence, longest first."""
-    words = [w for w in re.split(r"[^A-Za-z-]+", phrase.lower())
-             if len(w) > 3 and w not in STOPWORDS]
-    seen, out = set(), []
-    for w in sorted(words, key=len, reverse=True):
-        if w not in seen:
-            seen.add(w)
-            out.append(w)
-    return out[:5]
 
 
 def _plain(v):
@@ -412,7 +430,7 @@ class Material:
 
 
 CASCADE = [
-    ("are.na", lambda q, ch, mat: arena_channels(ch, q)),
+    ("are.na", lambda q, ch, mat: arena(q)),
     # AIC before the Met: one request, real relevance ranking, and it reports
     # dimensions so most candidates need no header probe.
     ("aic", lambda q, ch, mat: aic(q, material=mat)),
@@ -449,12 +467,19 @@ def search(query, channels=(), want=40, only=None, verbose=True, material=None):
             continue
         got = [c for c in got if c.key not in seen]
         fill_sizes(got)
-        kept = [c for c in got if big_enough(c)]
+        # An are.na hit that is too small to project is still the single most
+        # informative row on the sheet: it names an artwork he already chose.
+        # Keep it as a lead and let the museum sources find a printable copy.
+        for c in got:
+            c["lead"] = c["source"] == "arena" and not big_enough(c)
+        kept = [c for c in got if big_enough(c) or c["lead"]]
         for c in kept:
             seen.add(c.key)
         if verbose:
+            leads = sum(1 for c in kept if c.get("lead"))
             small = len(got) - len(kept)
-            print(f"  {name:10s} {len(kept):3d} kept"
+            print(f"  {name:10s} {len(kept) - leads:3d} kept"
+                  + (f", {leads} lead(s) too small to project" if leads else "")
                   + (f", {small} under {MIN_PX}px" if small else ""))
         found += kept
         if len(found) >= want:

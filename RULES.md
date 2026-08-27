@@ -295,12 +295,20 @@ not a decoration to add if there is time. Extends the Images section
 above; the sourcing, treatment, and sizing rules there all apply.
 
 **Find the imagery while drafting, not after.** The metaphor runs both ways —
-a found image feeds the writing as often as the writing selects the image. A
-2026 set of faculty remarks about fixing what could be fixed that year was
-illustrated with paintings of fishermen and women mending nets, and the nets
-then pulled their own vocabulary into the prose: repair, collective, patient,
-something torn that people take back out tomorrow. Treated as a final
-illustration pass, that exchange cannot happen.
+a found image feeds the writing as often as the writing selects the image. The
+2026 FEC fall kickoff remarks ("Mending") were illustrated with paintings of
+fishermen and women mending nets, and the nets then supplied the prose its
+vocabulary: repair, collective, patient, something torn that people take back
+out tomorrow. Treated as a final illustration pass, that exchange cannot
+happen.
+
+The exchange is not one-directional, and not one-pass. In that piece the
+figure is *named* ten paragraphs in but *seeded* six paragraphs before that
+("An empty room mends nothing") — a phrase planted on a later revision, working
+backwards, so the image would read as recognition rather than introduction.
+Choosing artwork early is what makes that third pass possible. The prose-side
+rules for carrying a metaphor live in the `bjorn-voice` skill, "Sustaining a
+metaphor across a whole piece."
 
 **The brief is yours; the search terms are not.** A slot carries the metaphor
 in the writer's own words. Translating it into the concrete nouns a keyword

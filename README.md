@@ -19,6 +19,13 @@ same rules from scratch.
   components rendered live (it `<link>`s `kit.css` directly), plus a
   side-by-side of how `Code/oblique` independently arrived at equivalent
   primitives. Open it in a browser to see the kit applied, not just listed.
+- **`slideshow-template.html`** — drop-in template for an auto-advancing,
+  unattended slideshow (gallery projection, ambient background piece).
+  No build step — edit the `CONFIG`/`IMAGES`/`TEXTS` values at the top of
+  its `<script>` directly. See RULES.md "Slideshows / unattended players".
+- **`print/`** — drop-in Markdown-to-PDF toolchain (`md2pdf.sh`, a pandoc
+  template, and `print.css`) for print output that uses this kit's colors
+  and type scale. See RULES.md "PDF generation".
 
 ## References
 

@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Slideshow</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  /*
+    Ambient slideshow template — the pattern this repo settled on for
+    auto-advancing, unattended decks (gallery projection, background piece).
+    Extracted from ~/Code/chair-ness/scripts/build_slideshow.py's
+    `--ambient` build; see RULES.md "Slideshows / unattended players" for
+    the reasoning behind each piece. No build step — edit the CONFIG,
+    IMAGES and TEXTS objects in the <script> below directly, same as
+    kit.css itself has no build step.
+
+    Colors below are kit.css's measured dark palette (RULES.md "Dark
+    mode"): brown-9 ground, brown-0 text, brown-3/brown-4 secondary/
+    tertiary, pink-3 accent. If kit.css is on the page, these could be
+    swapped for var(--brown-9) etc. — hardcoded here so this file works
+    standalone with no dependency.
+  */
+  :root {
+    color-scheme: dark;
+    --bg: rgb(8,5,4);          /* brown-9 */
+    --text: rgb(251,245,242);  /* brown-0 */
+    --text-muted: rgb(192,185,181); /* brown-3 */
+    --text-subtle: rgb(158,151,147); /* brown-4 */
+    --accent: rgb(255,129,169); /* pink-3 */
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    overflow: hidden;
+  }
+  /* The stage centres its one in-flow child, the text panel. The image
+     layers and the caption are absolutely positioned, so they sit outside
+     this centring and keep their own placement. */
+  #stage {
+    position: relative; width: 100vw; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Two stacked layers so the next image is decoded before it is shown --
+     a hard cut to a half-decoded image reads as a flicker. No transition:
+     slides switch, they do not fade. */
+  .layer {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    visibility: hidden;
+  }
+  .layer.on { visibility: visible; }
+  .layer img { display: block; width: 100vw; height: 100vh; object-fit: contain; }
+
+  #caption {
+    position: absolute; left: 0; bottom: 0; z-index: 3;
+    max-width: 46vw; padding: 1.5vh 2.2vw;
+    font-size: clamp(14px, 1.6vw, 22px); line-height: 1.35;
+    letter-spacing: 0.02em;
+    color: var(--text-muted); background: var(--bg);
+  }
+  #caption:empty { display: none; }
+  #caption .credit {
+    display: block; margin-top: 0.35em;
+    font-size: 0.8em; color: var(--text-subtle);
+  }
+  /* The panel owns the frame while it is up; the caption returns after. */
+  #stage.texting #caption { opacity: 0; }
+  #caption { transition: opacity 400ms ease; }
+
+  /* The text panel rides over the running slides on its own opaque ground,
+     so contrast holds whatever image is behind it. A centred card, in
+     flow, shrink-wrapped to its text -- how much of the frame it covers
+     comes from the length of the text, not a fixed footprint. */
+  #overlay {
+    position: relative; z-index: 4;
+    /* A fresh tilt on every new text panel -- registers that it changed
+       before you've even read it. See RULES.md "Typography: rotation as
+       an accent". */
+    transform: rotate(var(--card-rotation, 0deg));
+    background: var(--bg);
+    padding: 4vh 4vw;
+    opacity: 0; transition: opacity 700ms ease;
+    display: flex; flex-direction: column; justify-content: center;
+    text-align: center;
+    height: fit-content;
+    pointer-events: none;
+  }
+  #overlay.on { opacity: 1; }
+  #overlay .quote {
+    white-space: pre-line; margin: 0;
+    overflow-wrap: break-word; /* never let a long unbroken run push past the card */
+    line-height: 1.22; letter-spacing: -0.01em;
+  }
+  #overlay .attribution {
+    margin: 1.6rem 0 0; font-size: clamp(14px, 1.4vw, 20px);
+    color: var(--accent);
+  }
+  /* Three footprints, picked by text length. The card is centred and in
+     flow, so width and type size are what vary. */
+  .sz-s { max-width: 44vw; }
+  .sz-s .quote { font-size: clamp(20px, 2.4vw, 38px); }
+  .sz-m { max-width: 68vw; }
+  .sz-m .quote { font-size: clamp(22px, 3.0vw, 46px); }
+  .sz-l { max-width: 88vw; }
+  .sz-l .quote { font-size: clamp(22px, 3.2vw, 52px); }
+
+  #chrome {
+    position: fixed; right: 2.2vw; bottom: 2.2vh; z-index: 5;
+    display: flex; flex-direction: column; align-items: flex-end; gap: 0.5vh;
+    opacity: 1; transition: opacity 1.5s ease;
+  }
+  #chrome.hidden { opacity: 0; }
+  #chrome:focus-within { opacity: 1; }
+  #home, #credit, #hint {
+    font-size: 13px; letter-spacing: 0.04em;
+    background: var(--bg); padding: 0.6vh 1vw;
+  }
+  /* Both are off by default (CONFIG.homeUrl / CONFIG.creditLabel empty) --
+     collapse the row entirely rather than showing an empty background box. */
+  #home:empty, #credit:empty { display: none; }
+  #home, #credit { color: var(--text-muted); }
+  #hint { color: var(--text-subtle); }
+  #home a, #credit a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  #home a:focus-visible, #credit a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  #paused-badge {
+    position: fixed; top: 2.2vh; right: 2.2vw; z-index: 5;
+    font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-subtle); background: var(--bg); padding: 0.6vh 1vw;
+    opacity: 0; transition: opacity 300ms ease;
+  }
+  #paused-badge.visible { opacity: 1; }
+
+  /* A hard cut is a lot of motion. Anyone who has asked their system to
+     reduce it gets a slow, calm version instead of an opt-out. */
+  @media (prefers-reduced-motion: reduce) {
+    #overlay { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="layer" id="layer0"><img alt=""></div>
+  <div class="layer" id="layer1"><img alt=""></div>
+  <div id="caption"></div>
+  <div id="overlay" aria-live="polite"></div>
+</div>
+<div id="paused-badge">Paused</div>
+<div id="chrome">
+  <div id="home"></div>
+  <div id="credit"></div>
+  <div id="hint">space play/pause &nbsp;·&nbsp; f fullscreen</div>
+</div>
+<script>
+// ---- Edit everything below: config, then your images and text. ----
+
+const CONFIG = {
+  imageMs: 4000,            // how long each image holds before the next hard-cuts in
+  imagesBetweenText: 6,     // how many images pass before a text panel surfaces
+  textBaseSeconds: 6,       // dwell floor a text panel gets regardless of length
+  textMinSeconds: 6,
+  textMaxSeconds: 16,
+  textCharsPerSecond: 18,   // higher = shorter dwell per character (faster reading rate)
+  maxUpscale: 2.5,          // cap on how far a small source image may be blown up
+  maxTiltDeg: 7,            // text panel tilt range, +/- degrees, 0 to disable
+  homeUrl: '',              // optional: link back to a parent page. '' hides the row.
+  homeLabel: 'index',
+  creditLabel: '',          // optional: "Source: ..." credit line. '' hides the row.
+  creditUrl: '',
+  quoteFonts: [],           // optional: font-family names to rotate through per text panel
+};
+
+// One entry per image. w/h (natural pixel size) are optional but recommended --
+// without them maxUpscale can't be enforced and a small source may blow up
+// to fill the screen. caption/credit are optional; caption:empty hides the bar.
+const IMAGES = [
+  { src: 'path/to/image-1.jpg', caption: '', credit: '', w: 0, h: 0 },
+  { src: 'path/to/image-2.jpg', caption: '', credit: '', w: 0, h: 0 },
+];
+
+// One entry per text panel. attribution is optional.
+const TEXTS = [
+  { text: 'Replace this with your own text.', attribution: '' },
+];
+
+// ---- Runtime. Shouldn't need to change below this line. ----
+
+const BASE_STACK = '-apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif';
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const IMAGE_MS = reduce ? Math.max(CONFIG.imageMs, 5000) : CONFIG.imageMs;
+
+const layers = [document.getElementById('layer0'), document.getElementById('layer1')];
+const capEl = document.getElementById('caption');
+const overlay = document.getElementById('overlay');
+const badge = document.getElementById('paused-badge');
+const chrome_ = document.getElementById('chrome');
+const stageEl = document.getElementById('stage');
+const homeEl = document.getElementById('home');
+const creditEl = document.getElementById('credit');
+
+if (CONFIG.homeUrl) homeEl.innerHTML = '<a href="' + CONFIG.homeUrl + '">' + CONFIG.homeLabel + '</a>';
+if (CONFIG.creditLabel) {
+  creditEl.innerHTML = CONFIG.creditUrl
+    ? 'Source: <a href="' + CONFIG.creditUrl + '">' + CONFIG.creditLabel + '</a>'
+    : 'Source: ' + CONFIG.creditLabel;
+}
+
+let li = 0, ii = 0, ti = 0, sinceText = 0, paused = false;
+let imgTimer = null, textTimer = null;
+// When the current panel is due down, and how long was left on it when the
+// show was suspended. Both timers must be re-armed together on resume: the
+// panel blocks new text while it is up, so a hide timer that is cleared and
+// never replaced stalls the text panels permanently while images keep cycling.
+let textHideAt = 0, textRemaining = 0;
+
+function applySize(el, s) {
+  if (s.w && s.h) {
+    el.style.maxWidth = (s.w * CONFIG.maxUpscale) + 'px';
+    el.style.maxHeight = (s.h * CONFIG.maxUpscale) + 'px';
+  } else {
+    el.style.maxWidth = el.style.maxHeight = '';
+  }
+}
+
+// Warm the next few so a hard cut lands on a decoded image.
+function warm(from) {
+  for (let n = 1; n <= 6; n++) new Image().src = IMAGES[(from + n) % IMAGES.length].src;
+}
+
+function showImage(i) {
+  const s = IMAGES[i];
+  const back = layers[1 - li];
+  const img = back.querySelector('img');
+  const swap = () => {
+    layers[li].classList.remove('on');
+    back.classList.add('on');
+    li = 1 - li;
+    capEl.textContent = s.caption || '';
+    if (s.credit) {
+      const cr = document.createElement('span');
+      cr.className = 'credit';
+      cr.textContent = s.credit;
+      capEl.appendChild(cr);
+    }
+  };
+  img.onload = swap;
+  img.onerror = () => { step(); };   // skip a source that will not load
+  applySize(img, s);
+  img.src = s.src;
+  warm(i);
+}
+
+function step() {
+  ii = (ii + 1) % IMAGES.length;
+  showImage(ii);
+  // Only count images shown with nothing over them. Counting during a panel
+  // spends the gap while text is still up, so the next panel fires the
+  // moment the last one hides and images never get the screen to
+  // themselves -- which also means the caption never becomes visible.
+  if (overlay.classList.contains('on')) {
+    // Safety net: if a panel has outlived its hide time by a wide margin,
+    // something dropped its timer. Take it down rather than wedge the show.
+    if (textHideAt && Date.now() > textHideAt + 5000) hidePanel();
+    return;
+  }
+  sinceText++;
+  if (sinceText >= CONFIG.imagesBetweenText) showText();
+}
+
+function textSeconds(t) {
+  const chars = (t.text || '').length + (t.attribution || '').length;
+  return Math.max(CONFIG.textMinSeconds, Math.min(CONFIG.textMaxSeconds,
+                  CONFIG.textBaseSeconds + chars / CONFIG.textCharsPerSecond));
+}
+
+function showText() {
+  if (!TEXTS.length) return;
+  const t = TEXTS[ti % TEXTS.length];
+  const n = (t.text || '').length;
+  const size = n < 60 ? 'sz-s' : n < 140 ? 'sz-m' : 'sz-l';
+  overlay.className = size;
+  const tilt = CONFIG.maxTiltDeg || 0;
+  overlay.style.setProperty('--card-rotation',
+    (Math.random() * 2 * tilt - tilt).toFixed(2) + 'deg');
+  overlay.innerHTML = '';
+  const q = document.createElement('p');
+  q.className = 'quote';
+  q.textContent = t.text;
+  if (CONFIG.quoteFonts.length) {
+    q.style.fontFamily = "'" + CONFIG.quoteFonts[ti % CONFIG.quoteFonts.length] + "', " + BASE_STACK;
+  }
+  overlay.appendChild(q);
+  if (t.attribution) {
+    const a = document.createElement('p');
+    a.className = 'attribution';
+    a.textContent = '— ' + t.attribution;
+    overlay.appendChild(a);
+  }
+  requestAnimationFrame(() => {
+    overlay.classList.add('on');
+    stageEl.classList.add('texting');
+  });
+  ti++; sinceText = 0;
+  const ms = textSeconds(t) * 1000;
+  textHideAt = Date.now() + ms;
+  armHide(ms);
+}
+
+function hidePanel() {
+  overlay.classList.remove('on');
+  stageEl.classList.remove('texting');
+  textHideAt = 0;
+}
+
+function armHide(ms) {
+  clearTimeout(textTimer);
+  textTimer = setTimeout(hidePanel, Math.max(0, ms));
+}
+
+// Freeze both tracks together, keeping whatever was left on the panel.
+function suspend() {
+  clearInterval(imgTimer); imgTimer = null;
+  if (textHideAt) textRemaining = Math.max(0, textHideAt - Date.now());
+  clearTimeout(textTimer); textTimer = null;
+}
+
+function resume() {
+  run();
+  if (textHideAt) {
+    textHideAt = Date.now() + textRemaining;
+    armHide(textRemaining);
+  }
+}
+
+function run() {
+  clearInterval(imgTimer);
+  if (paused) return;
+  imgTimer = setInterval(step, IMAGE_MS);
+}
+
+function setPaused(v) {
+  paused = v;
+  badge.classList.toggle('visible', paused);
+  if (paused) suspend(); else resume();
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === ' ') { e.preventDefault(); setPaused(!paused); }
+  else if (e.key === 'f' || e.key === 'F') {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) suspend();
+  else if (!paused) resume();
+});
+
+let chromeTimer = setTimeout(() => chrome_.classList.add('hidden'), 6000);
+function wakeChrome() {
+  chrome_.classList.remove('hidden');
+  clearTimeout(chromeTimer);
+  chromeTimer = setTimeout(() => chrome_.classList.add('hidden'), 4000);
+}
+document.addEventListener('mousemove', wakeChrome);
+document.addEventListener('focusin', wakeChrome);
+
+showImage(0);
+run();
+</script>
+</body>
+</html>

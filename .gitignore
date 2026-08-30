@@ -2,3 +2,8 @@
 
 # Claude Code local, machine-specific settings — never shared
 .claude/settings.local.json
+
+# Working source material (PDFs, Figma exports, etc.) used to extract
+# rules into RULES.md / the templates — not a deliverable itself, not
+# committed. Delete once extracted, same as Personal tropes.txt was.
+reference/

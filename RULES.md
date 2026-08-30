@@ -21,7 +21,7 @@ mediums.
 
 Projects sit under two domain families — `ookb.co` (+ subdomains like
 `oblique.ookb.co`) and `wjerk.shop` (+ subdomains like `a.wjerk.shop`,
-`bjornpaedia.wjerk.shop`). The intent is modular: shared tokens/rules here,
+`bjornpaedia.wjerk.shop`, `stuff.wjerk.shop`). The intent is modular: shared tokens/rules here,
 each project free to pick its own typeface and emphasis on top. The old
 `ookb.co` repo should get pulled down and checked against this doc too.
 
@@ -202,6 +202,199 @@ as the medium, not as a flourish. It carries two obligations. Honour
 `prefers-reduced-motion: reduce`, slowing the thing down rather than
 stripping it out. And scale dwell time to content length: a 30-character
 line and a 270-character passage do not need the same time on screen.
+
+## PDF generation: Markdown → pandoc → WeasyPrint
+
+Print output (syllabi first, in `~/Code/syllabiBuilder`) is built from
+Markdown, not authored in a page-layout tool or exported from a live web
+page. Source: `.md` → `pandoc` (to styled HTML5) → `weasyprint` (to PDF).
+Reach for this pipeline before a puppeteer/wkhtmltopdf-style browser-print
+or a GUI layout tool — it's plain text in git, diffable, and rebuilds
+without a browser.
+
+`print/` in this repo is the generalized, drop-in version of that
+toolchain — `print/md2pdf.sh`, `print/pandoc-template.html`,
+`print/print.css` — start a new print job by copying that folder rather
+than starting from `syllabiBuilder`'s syllabus-specific one.
+
+The print stylesheet is not `kit.css` linked as-is — print has its own
+`@page` rules (margins, running headers/footers, page-break control) that
+don't belong in a screen stylesheet, so `print/print.css` is a **separate
+file that restates the subset of kit tokens it needs** (`--color-text`,
+`--color-accent`, `--color-border`, the baseline-grid `--text-*`/
+`--leading-*` rungs) rather than importing the whole kit. Same warm-
+ground/brown-line-work/pink-accent/OFL-fonts-only rules apply.
+
+Fonts default to `--font-sans`/kit.css's own system-stack fallback, so
+`print/print.css` works with zero setup. A project earns its own display
+font the same way the kit does — self-host an OFL `@font-face` (a local
+file path or a sibling repo's `fonts/`) and override the variable; see the
+commented-out example at the top of `print/print.css`. WeasyPrint has no
+access to a browser's installed-font fallback or a CDN at build time, so
+the font has to be a real file on disk either way.
+
+Two structural conventions worth keeping on the next print job, both
+already wired into `print/md2pdf.sh`:
+
+- **Shared boilerplate via include directives** (`<!-- include:
+  path/to/file.md -->`, resolved relative to the including file, nesting
+  allowed, a missing include aborts the build) — keeps repeated legal/
+  policy text in one place instead of pasted into every document.
+- **Drop a section by heading** (`-x "Section Heading"` removes an `##`
+  section and everything under it before rendering) — lets one source
+  document produce both an internal draft and a clean external copy,
+  rather than maintaining two files.
+
+On macOS, WeasyPrint's pango dependency needs
+`DYLD_FALLBACK_LIBRARY_PATH` pointed at the Homebrew lib dir — `print/
+md2pdf.sh` sets this itself rather than assuming it's already in the
+shell environment.
+
+## Slideshows / unattended players
+
+Auto-advancing decks meant to run unattended for hours (a gallery
+projection, an ambient background piece) carry obligations beyond a
+normal web page, on top of the reduced-motion and dwell-time rules
+already under "Motion" above. First built for `~/Code/chair-ness`; the
+**ambient two-layer pattern is the default to reach for** — images hard-
+cut on one layer, text surfaces over them on opaque, rotated panels — not
+just one option among several. `slideshow-template.html` in this repo is
+the generalized, drop-in version: no build step, edit the `CONFIG`,
+`IMAGES`, and `TEXTS` values at the top of its `<script>` directly.
+
+- **One generator, several outputs via composable flags**, not several
+  near-duplicate scripts, if a project needs more than one build of the
+  same deck (e.g. a local-asset build and a hotlinked/publishable one).
+  `chair-ness/scripts/build_slideshow.py` produces four builds
+  (local-image / hotlinked-image × single-slide / two-layer-ambient) from
+  two independent flags (`--hotlink`, `--ambient`) that compose, so a
+  content change (editing `quotes.txt`) has exactly one script to re-run
+  correctly, not four. `slideshow-template.html` doesn't need this — it
+  has no build step, so there's nothing to keep in sync across builds in
+  the first place.
+- **Sizing**: pin the box (`width/height: 100%`) and let `object-fit:
+  contain` scale into it — see "Images: Sizing" above. Cap upscale of
+  small source images (chair-ness caps at 2.5x) rather than blowing a
+  150px thumbnail up to fill a projector.
+- **Fonts stay linked (self-hosted `@font-face`, normal file on disk) by
+  default** — same as everywhere else in the kit. Embedding a font as
+  base64 is a narrow fix for a specific problem, not a slideshow default:
+  reach for it only when the build must be one self-contained file with no
+  guaranteed network (a projector with no venue wifi) or must travel as a
+  single copy to somewhere that can't also hold a `fonts/` folder (chair-
+  ness's build gets copied into `a.wjerk.shop` as one file). If neither
+  applies, link the font file normally. When it does apply, budget the
+  embed against total asset weight rather than treating it as free —
+  chair-ness's six embedded OFL faces cost ~214 KB against ~12 MB of
+  images, under 2% — and ship a flag to fall back to the system font stack
+  when it isn't worth it.
+- **Bound memory for a long-running DOM.** Don't leave every slide ever
+  shown sitting in the DOM — decoded bitmaps accumulate for as long as the
+  tab stays open (chair-ness measured ~2.6 GB uncapped for its image set).
+  Keep only slides within a small radius of the current one; tear the rest
+  down and let their images release. Preload the next few images off-DOM
+  (`new Image()`, cache-only) so a slide is decoded before it's shown, not
+  while it's shown.
+- **Degrade instead of stalling.** An image that fails to load gets marked
+  broken and skipped, not left holding the slide for its full dwell time.
+  A backgrounded tab pauses (`visibilitychange`) instead of racing ahead
+  while nobody's watching, so it doesn't come back out of sync with the
+  room.
+- **Caption/metadata provenance**: derive captions from fields on the
+  source item itself, in a fixed precedence order (chair-ness: an
+  authoritative external source first, then the item's own title, then
+  its description), never by pairing an item with whatever happens to sit
+  next to it. Suppress machine-generated junk (filenames, CDN query
+  strings, bare UUIDs, scraped page titles like "403 Forbidden") — no
+  caption beats a wrong one.
+- **Hotlinking third-party images carries real risk**: a source may 403
+  any foreign `Referer` (chair-ness measured this against
+  `collection.design-museum.de`, 6/6), so a "distributable, no local
+  copies" build can silently lose exactly the images that matter most.
+  Confirm cross-origin hotlinking actually works on that host before
+  designing a build around it, and prefer sources whose own CDN is meant
+  to be hotlinked (an image upload) over a link/screenshot capture of
+  someone else's page.
+
+## Slide decks: talks vs. teaching support
+
+Two different genres of slide deck show up across `reference/` (25
+lecture PDFs, 2010–2026), and treating them the same is a mistake — a
+talk deck earns the whole "full-bleed everything" treatment below, but a
+teaching-support deck (screenshots, side-by-side comparisons, reference
+material meant to sit in front of students) stays plain and functional on
+purpose. The split is by genre, not by date: `WorkingTeachingLecture`
+(2023) is as plain/white/bordered as `Entropy` (2010, no images at all),
+while `FreeOpenCulture` (2021) already has the full expressive talk-deck
+look that `Copyright` / `NewDesignCommons` / `Semiotics` / `FutureCone`
+(2026) intensify rather than invent. Check which genre a deck is before
+reaching for the rules below.
+
+**Canvas: 16:9 or 16:10, always** — maximizes full-screen view on
+whatever the room's projector or a laptop lid actually is.
+
+**Full-bleed is a hard rule for talk decks**: images bleed to all four
+edges, tilted/cropped compositions rather than centered or letterboxed —
+a deliberate departure from "pin the box, `object-fit: contain` scales
+into it" elsewhere in this doc, which is for an image inside a page
+layout, not a full-canvas slide. Title/section-break slides get the
+busiest version: a full-bleed collage (photo, engraving, or shape
+confetti) under a large headline, often tilted to follow the image's own
+diagonal.
+
+**Text: short and aphoristic, never a restated sentence.** Slide text
+should not repeat what's being said out loud — it either cues the speaker
+on where the talk goes next, or illustrates/metaphorizes the point being
+made. A quote/aphorism slide pairs a full-bleed photo with an opaque card
+(tilted a few degrees, per "Typography: rotation as an accent" above)
+holding one or two short lines plus attribution — never a paragraph.
+
+**Illustration over exposition — the working techniques, not just the
+principle:**
+- Literalize a pun or term visually, sometimes twice in a row for the
+  joke to land ("cat burglar" over a cat silhouette, then over an actual
+  roof-burglar photo).
+- Diagram a concept as a photo-to-photo bridge rather than a caption (a
+  1999 headshot → a widening cone → a product photo, one arrow, no
+  exposition text — the "futures cone" idea, unstated).
+- A mascot delivers a wayfinding instruction instead of plain UI text (a
+  cartoon character "speaking" a QR code).
+- A closing slide can be pure image, no text at all, when the visual
+  carries the whole gesture (a line-art Earth on black, nothing else).
+
+**Typography and color, in practice:**
+- Typeface varies slide to slide, matched to the image's mood — the same
+  "vary project to project, license is the constant" ethos as the kit's
+  typography rules, applied within a single deck instead of across
+  projects.
+- All-caps for short punchy labels; word-level color-highlighting for key
+  terms within a longer line.
+- Two color modes recur, not blended on one slide: full-color photo
+  background with text set directly on top (no gradient scrim — legibility
+  comes from an opaque card or tonal matching, same as "Type over images"
+  above), or a black background with one or two saturated accent colors
+  for data/closing slides. A cream/off-white "paper" ground is the
+  recurring choice for text-forward slides, in both the oldest and newest
+  decks sampled.
+- A tiny credit line in a bottom corner of every image slide — "TYPE:
+  [fonts used]" / "IMAGE: [source, license]" — is a real, portable
+  convention worth keeping, not a one-off.
+- The vintage-engraving/mascot-collage device (a Victorian etching or a
+  cartoon character composited onto a real photo or screenshot) recurs
+  from 2021 through 2026 — this is the "Images: Style" Victorian-etchings
+  note above showing up as an active compositing technique, not just a
+  sourcing preference.
+
+**Pacing**: a talk deck changes visual mode (image/quote → image/title →
+clean diagram) roughly every 1–3 slides rather than settling into one
+mode for a run — a plain white-background diagram slide reads as a
+deliberate reset, not a lapse.
+
+This is about designing the slide canvases themselves (Keynote, Figma,
+whatever produces the deck) — it doesn't change
+`slideshow-template.html`, which is a different genre again (unattended/
+ambient, no speaker in the room) and is already canvas-agnostic: images
+`object-fit: contain` into whatever viewport they're given.
 
 ## Dark mode
 

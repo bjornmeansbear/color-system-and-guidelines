@@ -6,6 +6,25 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **No template file yet for the "talk deck" genre** (RULES.md "Slide
+  decks: talks vs. teaching support") — unlike the ambient player, this
+  one isn't a single reusable HTML file, since the decks themselves live
+  in Keynote/Figma/PDF, not a web page. Worth deciding whether a
+  lightweight web-based starting point (a static full-bleed-slide HTML
+  template, canvas-agnostic like `slideshow-template.html`) is worth
+  building, or whether this genre just stays documented-pattern-only
+  since the actual authoring happens in another tool.
+- **Teaching-support decks aren't specced, only named as the other
+  genre.** RULES.md now says they "stay plain and functional on purpose"
+  but doesn't document what plain/functional actually means in practice
+  (layout, type, screenshot treatment) the way the talk-deck genre now
+  is — would need its own pass through `WorkingTeachingLecture.pdf`-style
+  references if that's ever worth codifying.
+- **`print/` hasn't been run end-to-end yet** — it's a direct
+  generalization of `syllabiBuilder/build/`'s working script, but nobody's
+  built an actual PDF from the generalized copy to confirm the pandoc/
+  WeasyPrint invocation still works with the MICA-specific bits (font
+  paths, `--color-tint` token) removed.
 - **Find/build a libre Friz Quadrata alternative.** Friz Quadrata is a
   longtime personal pick but proprietary, so it's deliberately excluded
   from the shared typeface roster (RULES.md "Typography: the roster").
@@ -117,6 +136,7 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+<<<<<<< HEAD
 ### 2026-08-27 (later)
 
 - **Three decks arrived and recalibrated the density rule, then a fourth fact
@@ -203,6 +223,54 @@ before starting a session, not just written to at the end of one.
   a runtime dependency in a room you do not control. `chair-ness` already
   models the two-build split from one manifest, and gitignores its caches
   (423 images, 348MB on disk, 5.5MB `.git`).
+=======
+### 2026-08-30
+
+- **Added "Slide decks: talks vs. teaching support" to RULES.md**, from a
+  sampled review of the 25 lecture PDFs Kristian dropped in `reference/`
+  (2010–2026). Key finding: the expressive full-bleed/collage/aphorism
+  look isn't new — it's fully present by 2021 (`FreeOpenCulture`) and the
+  2026 decks intensify it rather than invent it. The real split is genre
+  (public talk vs. teaching-support handout), not era — a 2023 teaching
+  deck is as plain as a 2010 one.
+- New concrete rules captured: 16:9/16:10 canvas (maximize full-screen);
+  full-bleed-to-the-edge as a deliberate exception to the kit's usual
+  "pin the box, contain scales into it" image sizing; slide text must
+  cue-the-speaker or illustrate/metaphorize rather than restate spoken
+  words (confirmed directly, ties to the metaphor/illustration examples
+  cataloged in RULES.md); a recurring "TYPE: / IMAGE:" credit-caption
+  convention; the vintage-etching/mascot-collage compositing device as an
+  active technique, not just an image-sourcing preference.
+- `reference/` PDFs were sampled (page slices via PyMuPDF), not read
+  page-by-page in full — see open questions for what's still unexplored
+  (the teaching-deck genre specifically).
+
+### 2026-08-29
+
+- **Added "PDF generation" and "Slideshows / unattended players" to
+  RULES.md**, extracted the same way every other section here was —
+  from what's actually shipped, this time in `syllabiBuilder`'s
+  Markdown→pandoc→WeasyPrint pipeline and `chair-ness`'s
+  `build_slideshow.py` ambient-mode player, rather than from a `kit.css`
+  screen-CSS pattern.
+- **Added two drop-in template files**, not just documentation:
+  `slideshow-template.html` (the ambient two-layer pattern — confirmed as
+  the default to reach for going forward, not just one of chair-ness's
+  four build variants) and `print/` (`md2pdf.sh`,
+  `pandoc-template.html`, `print.css`), generalized from their
+  syllabus/chair-ness-specific originals. Both work with zero setup
+  (system fonts, no external assets) and take on a project's real content
+  by editing values in place rather than templating.
+- **Font embedding note**: chair-ness's base64-embedded OFL fonts were a
+  narrow fix (one self-contained file, no venue wifi guaranteed, and a
+  single copy has to travel into another repo's deploy) — not a slideshow
+  default. `slideshow-template.html` doesn't embed anything; link fonts
+  normally unless one of those specific constraints applies.
+- Kristian may provide PDFs and/or Figma prototypes showing more of the
+  slide-design vocabulary beyond what chair-ness currently covers — revisit
+  `slideshow-template.html` against those once supplied (see open
+  questions).
+>>>>>>> 5d22dcfb7cb10c1d56bc6ed5d22e37c6aff0c868
 
 ### 2026-08-26
 

@@ -209,7 +209,6 @@ as the medium, not as a flourish. It carries two obligations. Honour
 stripping it out. And scale dwell time to content length: a 30-character
 line and a 270-character passage do not need the same time on screen.
 
-<<<<<<< HEAD
 ## Presentations: the slide is not the script
 
 Written from a measurement pass on `~/Code/lectureScripts/
@@ -524,7 +523,7 @@ Image caches stay out of git. `chair-ness` gitignores `images/`,
 
 The cache should be shared across projects rather than living inside one
 of them; where it lives is an open question (NOTES.md).
-=======
+
 ## PDF generation: Markdown → pandoc → WeasyPrint
 
 Print output (syllabi first, in `~/Code/syllabiBuilder`) is built from
@@ -717,7 +716,6 @@ whatever produces the deck) — it doesn't change
 `slideshow-template.html`, which is a different genre again (unattended/
 ambient, no speaker in the room) and is already canvas-agnostic: images
 `object-fit: contain` into whatever viewport they're given.
->>>>>>> 5d22dcfb7cb10c1d56bc6ed5d22e37c6aff0c868
 
 ## Dark mode
 

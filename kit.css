@@ -264,8 +264,8 @@ select:focus-visible {
   border-color: var(--color-accent-hover);
 }
 
-/* Small pill/tag — the one deliberate border-radius exception. Structural
-   panels and buttons stay square; tags/badges get a full pill. */
+/* Small pill/tag — a full pill. Structural chrome (panels, buttons,
+   dividers) stays square; see RULES.md "Structure: rules, not chrome". */
 .tag {
   display: inline-block;
   border: 1px solid var(--color-accent);

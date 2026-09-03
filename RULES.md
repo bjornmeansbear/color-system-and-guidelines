@@ -27,11 +27,16 @@ each project free to pick its own typeface and emphasis on top. The old
 
 ## Structure: rules, not chrome
 
-No box-shadow, no gradients, no border-radius on structural elements
-(panels, buttons, dividers). Structure comes from solid 1–2px borders and
-whitespace. The one deliberate exception is small pill/tag elements
-(`border-radius: 999px`, see oblique) — radius is fine at "badge" scale,
-not at "panel/button" scale.
+No box-shadow, no gradients, no border-radius on *structural chrome* —
+panels, buttons, dividers, the elements that frame content. Structure comes
+from solid 1–2px borders and whitespace.
+
+The rule is about chrome, not about scale. It read "no radius at panel scale"
+until 2026-09-02, which was wrong: the talk decks have always used large
+rounded cards for quote slides, and those are content floating on an image,
+not chrome framing a layout. Radius is fine on a floating content block at any
+size. Small pill/tag elements (`border-radius: 999px`, see oblique) are the
+other standing case.
 
 Buttons and interactive elements show state by inverting foreground/
 background on press, not by adding elevation or a hover-glow.
@@ -97,6 +102,18 @@ zero each time: League Gothic, Avara, Gentium, Cormorant Garamond, Libre
 Franklin, Libre Clarendon, League Mono, Space Mono, Space Grotesk, Work
 Sans. This list is a personal snapshot, last revisited ~2018 — expect it
 to get pruned and added to as preferences move on; see NOTES.md.
+
+Added 2026-09-02, from the AY26 lecture decks: **Overpass** (OFL, the
+workhorse across every 2026 deck), **Pilowlava** (Velvetyne, OFL — display),
+**PicNic** (Velvetyne, display).
+
+PicNic carries a flag the others don't. It is published under Velvetyne's
+**CUTE** licence (Conditions d'utilisations typographiques engageantes), not
+the OFL — an ethical-use licence with conditions on who may use the font,
+rather than an unrestricted libre one. That is not a reason to avoid it, and
+the politics are probably congenial, but it is a different category from the
+rest of this roster, where "the constant is the licence" has meant OFL. Read
+the CUTE terms before PicNic goes into anything shared or client-facing.
 
 Friz Quadrata, a longtime personal pick, deliberately stays off this
 list — it's proprietary, so it can't be self-hosted or shared across
@@ -716,6 +733,49 @@ whatever produces the deck) — it doesn't change
 `slideshow-template.html`, which is a different genre again (unattended/
 ambient, no speaker in the room) and is already canvas-agnostic: images
 `object-fit: contain` into whatever viewport they're given.
+
+## Presentations: how the Figma file is built
+
+Everything above describes what a finished slide looks like. This is about the
+file. Working conventions across all 19 pages of `AY26 Lectures and
+Presentations` — roughly 2,100 frames, dumped 2026-09-02 with
+`lectureScripts/scripts/figma-slides.py`, which pulls a page to markdown so the
+deck can be grepped and diffed without opening Figma.
+
+**One flat canvas, sections as rows.** Not a linear stack of slides. Sections
+are horizontal bands at a fixed `y`; slides step left to right in `x`, about
+2000px apart for a 1920px frame. A talk deck runs 13–17 rows for 90–120 frames
+— six to eight slides per section. Zoomed out, the canvas *is* the outline.
+
+**The frame name carries section and position.** Two schemes in use, doing the
+same job:
+
+- `<n> <Section Name> <nn>` — `2 Future Cone 09`, `4.1 Quick Examples 13`.
+  Dominant in *Design For the Future Today* (71 of 91 frames), the earlier
+  *Semiotics* (106 of 121), *Designing Preferable Futures* (80 of 103).
+- A bare number whose leading digits are the section — `000`–`006`, then
+  `100`–`105`, then `2000`–`2009`. Dominant in *Semiotics Fall* (109 of 113)
+  and *DI: What is DI* (50 of 50).
+
+Either way the trailing digits are build order. Frames still called `Frame 4`
+or `Group 12` are unfinished, and they cluster — `Chair-ness` carries 26.
+
+**Slides build by duplication.** A run is one idea, and each frame is the
+previous frame plus one added element: `2 Future Cone 01`→`15` draws the axis,
+then now, then the past, then the cone, then each band label, one per frame.
+Animation by copying slides rather than by transitions — which is why it
+survives export to PDF and why it works on someone else's projector.
+
+Present in 15 of the 19 pages, and absent in exactly the four short
+administrative ones. That is a third genre beyond the talk / teaching-support
+split above: a faculty-meeting deck neither bleeds nor builds.
+
+**Consequence worth knowing when writing.** Because sections are rows and runs
+build, the deck is a readable outline of the argument before any script exists
+— `lecture-some-semiotics/` had a finished 113-frame deck and an empty script
+file, and the deck was the only record of the talk. It also means a run's *last*
+frame is the finished slide; the earlier ones are the reveal, so read a run
+bottom-up when you want to know what a section actually says.
 
 ## Dark mode
 

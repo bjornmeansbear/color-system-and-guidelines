@@ -6,6 +6,15 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **Deck colour and kit colour have never been reconciled.** `kit.css` says
+  pink accent on a warm yellowish-gray ground with dark brown line work. The
+  AY26 lecture decks are black, white and grayscale, with per-lecture semantic
+  accents (green marks "preferable" on the futures cone) and no pink anywhere.
+  RULES.md "Presentations: imagery" documents the deck side and the Colour
+  sections document the kit side, and neither references the other. Raised
+  2026-09-02: this is an accident of the two being written separately, not a
+  decision. Worth deciding whether projection is its own context with its own
+  palette, or whether the decks should carry the pink.
 - **No template file yet for the "talk deck" genre** (RULES.md "Slide
   decks: talks vs. teaching support") — unlike the ambient player, this
   one isn't a single reusable HTML file, since the decks themselves live

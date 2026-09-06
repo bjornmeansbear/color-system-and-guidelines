@@ -8,3 +8,6 @@
 # rules into RULES.md / the templates — not a deliverable itself, not
 # committed. Delete once extracted, same as Personal tropes.txt was.
 reference/
+
+# Built skill bundle for claude.ai upload — regenerate with scripts/package-skill.sh
+dist/

@@ -57,7 +57,9 @@ hmmm -> what's this? https://github.com/bjornmeansbear/color-documentation
 
 ---
 
-Original OOKB colors:
+Original OOKB (now Wjerk) colors — an earlier web version, as LESS variables. The
+Figma set with exact values is in RULES.md "Color: the original Wjerk palette";
+its White and Black are `--wjerk-white` / `--wjerk-black` in kit.css.
 
 /* Color Palette */
 @ookb-pink:          rgba(236,64,121,1);

@@ -32,6 +32,17 @@ DARK_OVERRIDES = {
     "color-text-muted": "brown-3",
     "color-text-subtle": "brown-4",
     "color-accent": "pink-3",
+    # Status colors flip to the light end of their own hue, the way text does
+    # (2026-09-11): ~10:1 on brown-9. Panels take step 8 of the same family.
+    "color-accent-hover": "pink-2",
+    "color-success": "green-3",
+    "color-warning": "yellow-3",
+    "color-danger": "red-3",
+    "color-info": "dark-gray-3",
+    "color-success-bg": "light-gray-8",
+    "color-warning-bg": "yellow-8",
+    "color-danger-bg": "red-8",
+    "color-info-bg": "dark-gray-8",
 }
 
 # fg tokens checked against every ground, in report order.

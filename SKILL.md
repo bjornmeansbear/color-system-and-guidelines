@@ -33,8 +33,11 @@ Pink is deliberate: on climate/sustainability work the expected accent is green
 or blue, and pink reads as a surprise instead of a cliché. It is the one thing
 that marks the work as his across every past pass.
 
-**Warm ground, dark brown line work.** `--color-bg: var(--gray-0)` (a slightly
-yellowish gray), `--color-text: var(--brown-8)`. Not black on white. This
+**Warm ground, dark brown line work.** `--color-bg: var(--wjerk-white)`
+(#F8FAE7, a warm cream), `--color-text: var(--wjerk-black)` (#2D2826, a soft
+brown-black) — the Wjerk palette's own White and Black. Not black on white.
+Each heads a scale of its own: `white-0…9` (papers, creamier as they go) and
+`black-0…9` (inks; `black-9` is the Black, every step AA text on the White). This
 pairing is a personal trope that predates the kit.
 
 **Structure from rules and whitespace.** No box-shadow, no gradients, no
@@ -103,6 +106,11 @@ Load the section from `RULES.md` before working in that area.
 | Dark mode | "Dark mode" |
 | Token naming | "Naming" |
 | Breakpoints | "Layout: mobile-first, two breakpoints" |
+| The pre-kit palette, adding colors | "Color: the original Wjerk palette" |
+| Tints behind text, pale fills | "Color: tints behind text" |
+| Charts, data layers, gradients as data | "Data on screen" |
+| Tailwind setup | "Using the kit with Tailwind (v4)" |
+| Favicons, app and home-screen icons | "Icons: one family across sites and apps" |
 
 Templates in this repo to start from rather than rebuild: `slideshow-template.html`
 (ambient/unattended player), `print/` (pandoc → WeasyPrint PDF pipeline),
@@ -118,7 +126,13 @@ scale. Don't invent a parallel token vocabulary: the names (`--color-accent`,
 projects before this repo existed.
 
 For a SvelteKit + Tailwind project (his default stack), map the tokens into the
-Tailwind theme rather than restating hex values in a config.
+Tailwind theme rather than restating hex values in a config — the recipe is in
+`RULES.md` "Using the kit with Tailwind (v4)", first done in wjeather.
+
+**Write back.** Any design decision made in another project that touches this
+system — a new token or tint, an icon convention, a data-viz pattern, a stack
+recipe, a palette finding — gets recorded here as part of the work: the rule in
+`RULES.md`, the finding or open question in `NOTES.md`, plus a changelog entry.
 
 ## Two open tensions
 
@@ -135,3 +149,5 @@ Check `NOTES.md` for the current state before assuming either way.
    brown scale with its ends swapped, `--brown-9` ground, `--pink-3` accent,
    `--brown-4` as the dimmest token allowed to carry text. It maps the text and
    accent tokens only; the status colors are not yet mapped (see below).
+   wjeather (2026-09-10) ships it per project from that mapping, `kit.css`
+   untouched.

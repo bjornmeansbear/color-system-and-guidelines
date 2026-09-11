@@ -41,6 +41,11 @@ other standing case.
 Buttons and interactive elements show state by inverting foreground/
 background on press, not by adding elevation or a hover-glow.
 
+Gradients follow the same chrome/content line. A gradient that *encodes
+data* is content, not decoration — wjeather's sky bands (2026-09-10), one
+tint per forecast hour, blending only where the weather does. Allowed. A
+gradient laid on for mood or depth is still not.
+
 ## Contrast: high-contrast pairs only, always verified
 
 Near-black text on a light background, or the reverse — never mid-gray on
@@ -55,7 +60,7 @@ Focus is always visible — thick, accent-colored outline via
 
 ## Color: pink is the accent, not blue
 
-`--color-accent` is OOKB pink (`--pink-5` / `--pink-6`), the color that's
+`--color-accent` is Wjerk pink (`--pink-5` / `--pink-6`), the color that's
 carried through every past iteration of this work. Blue showed up in
 a.wjerk.shop, bjornpaedia, and oblique's `--color-accent` only because it
 was a convenient default when nothing else was decided — it wasn't a
@@ -70,13 +75,33 @@ pink is the answer unless there's one.
 
 ## Color: yellowish-gray background, dark brown line work
 
-The default bg/text pairing (`--color-bg: var(--gray-0)`, `--color-text:
-var(--brown-8)`) isn't an arbitrary landing spot — a warm, slightly
+The default bg/text pairing (`--color-bg: var(--wjerk-white)`, `--color-text:
+var(--wjerk-black)`) isn't an arbitrary landing spot — a warm, slightly
 yellowish-gray ground with dark brown line work on top is a recurring
 personal trope independent of this kit, and the semantic tokens already
 encode it as the default rather than plain black-on-white. Projects can
 still override it, same as the accent, but this pairing is the answer
 unless there's a specific reason to change it.
+
+Since 2026-09-11 the pair is the palette's own White (#F8FAE7) and Black
+(#2D2826) — `--wjerk-white` / `--wjerk-black`, 13.73:1 — rather than the
+near-matches `gray-0` and `brown-8` (16.94:1) the kit used before. Muted text
+(`--gray-6`) is 7.34:1 on the White; the pink accent 4.92:1.
+
+**Papers and inks.** The pair also heads two scales of its own (2026-09-11),
+so the color story has range without leaving it:
+
+- **`white-0` → `white-9`, papers.** `white-0` is the White exactly; each step
+  warmer and creamier, to a butter cream (#E1D3A0). The Black holds on every
+  one (≥9.72:1), and so do `gray-6` labels (≥5.20), the pink line (≥3.48) and
+  the green line (≥3.03). Neighbouring steps are close (ΔE ~1.4) — paper
+  stocks, not a ramp.
+- **`black-0` → `black-9`, inks.** `black-9` is the Black exactly; lighter
+  warm charcoals below it, every one AA as text on the White (`black-0`
+  5.69:1 up to 13.73:1). `black-7` is the palette's Brown (#3C3634, ΔE 0.8).
+
+They break the kit's usual shape — the hue scales run pale to near-black
+across all ten steps — because they're a material, not a hue.
 
 ## Typography: open/libre first, system default when low-energy
 
@@ -805,11 +830,22 @@ and not a rewrite:
 
 | Semantic token | Light | Dark |
 |---|---|---|
-| `--color-bg` | `--gray-0` | `--brown-9` |
-| `--color-text` | `--brown-8` | `--brown-0` |
+| `--color-bg` | `--wjerk-white` | `--brown-9` |
+| `--color-text` | `--wjerk-black` | `--brown-0` |
 | `--color-text-muted` | `--gray-6` | `--brown-3` |
 | `--color-text-subtle` | `--gray-6` | `--brown-4` |
 | `--color-accent` | `--pink-5` | `--pink-3` |
+| `--color-accent-hover` | `--pink-6` | `--pink-2` |
+| `--color-success` | `--green-6` | `--green-3` |
+| `--color-warning` | `--yellow-6` | `--yellow-3` |
+| `--color-danger` | `--red-6` | `--red-3` |
+| `--color-info` | `--dark-gray-6` | `--dark-gray-3` |
+| `--color-*-bg` (status panels) | step 0 of each family | step 8 of each family |
+
+Status colors follow the text's logic (added 2026-09-11): in the dark they
+flip to the light end of their own hue. On `--brown-9` they measure 9.98–10.76:1
+(`red-3` lowest), and 8.8–9.5:1 on their step-8 panels — AAA throughout.
+`--pink-2` for the pressed accent is 10.93:1, and `--brown-9` on it the same.
 
 `kit.css` still pins `color-scheme: light` and does not ship the flip yet.
 The open question was never which colors — it was whether to spend the
@@ -817,6 +853,11 @@ complexity. The colors are now answered.
 
 First built and contrast-checked for the chair-ness exhibition slideshow
 (`~/Code/chair-ness`), projected dark in a gallery.
+
+First shipped in a web app in wjeather (2026-09-10): a `prefers-color-scheme:
+dark` block in the project's own CSS flipping exactly these tokens, `kit.css`
+untouched. The mapping held. Tints behind text in dark mode are steps 7–9 —
+see "Color: tints behind text".
 
 ## Layout: mobile-first, two breakpoints
 
@@ -834,3 +875,197 @@ this doc existed — oblique independently uses `--color-accent`,
 `--color-text`, `--color-bg`, and a distinct `--color-frame` for its
 decorative thick border. `kit.css` adopts exactly this naming rather than
 inventing a new scheme.
+
+## Color: tints behind text
+
+When a tint sits behind text or a data line — bands, fills, highlighted
+rows — the budget, measured 2026-09-10:
+
+- **Light:** steps 0–2 of every scale pass against the kit's text,
+  `--wjerk-black` (≥7.8:1, weakest on `pink-2`), `--gray-6` labels (≥5.2) and
+  a `--pink-5` line (≥3.5). Step 3
+  fails — `blue-3` drops labels to 4.05 and the pink line to 2.71.
+- **Dark:** steps 7–9 pass against `--brown-0`, `--brown-3` and a `--pink-3`
+  line (weakest, `yellow-7`: 11.59 / 6.47 / 5.35).
+
+Contrast isn't the only test. Pale tints crowd each other, so check
+distinctness too — OKLab distance ×100; under ~5 reads as the same color.
+What the scales look like on screen, not by name:
+
+- **Purple read pink** at steps 0–2 — close enough to be mistaken for the
+  accent — until 2026-09-11, when the scale moved from hue ~336° to 315° at
+  the same lightness and muted chroma. Step 2 now sits 5.7 from `pink-1` and
+  5.1 from `cornflower-2`. Still a gray-purple, not a violet; still worth a
+  look beside pink.
+- **Green reads olive;** `green-6` reads as more brown. `green-5` is the most
+  visibly green step that still holds 3:1 as a line on every pale tint
+  wjeather uses.
+- **Blue is a teal-gray;** `blue-0` is near-white.
+- **Warm gray, peach and pale brown** (`gray-1`, `orange-0`, `brown-1`) sit
+  within ~3 of each other — effectively one color.
+
+Blend tints `in oklab`. `oklch` takes the hue arc: yellow → purple passes
+through orange, too near the pink.
+
+## Data on screen
+
+From wjeather (2026-09-10), the first project where the kit carries data
+rather than prose:
+
+- **One variable per visual channel** — position, hue, edge softness,
+  texture. Two variables sharing a channel means neither reads.
+- **Pink is the primary series,** a 2px line. A second series takes a hue no
+  other layer uses *and* a dash (6/6, on the grid), so it survives grayscale
+  and color-blindness.
+- **Data tints sit inside the text budget** above, because the number and
+  labels sit on them.
+- **Texture is line work:** wind as hatching, stars as stipple. The etching
+  trope, and a way to add a variable without adding a hue.
+- **Anything drawn gets a spoken summary** for screen readers. Color and
+  position are never the only carrier.
+
+## Using the kit with Tailwind (v4)
+
+First done in wjeather (SvelteKit + Tailwind 4, 2026-09-10). `kit.css` stays a
+verbatim copy; the project's own CSS maps it in:
+
+```css
+@import 'tailwindcss';
+@import '../lib/kit.css' layer(base); /* layered, so utilities still win */
+
+@theme {
+  --color-*: initial;  --text-*: initial;  --font-*: initial;  --breakpoint-*: initial;
+  --breakpoint-tablet: 40rem;  --breakpoint-desktop: 55rem;
+  --container-tablet: 40rem;   --container-desktop: 55rem; /* @tablet: / @desktop: */
+  --spacing: 0.375rem;         /* p-4 = 24px: spacing on the 6px rhythm */
+}
+
+@theme inline reference {
+  --color-bg: var(--color-bg);  --color-text: var(--color-text); /* …every semantic token */
+  --text-base: var(--text-base);  --text-base--line-height: var(--leading-base); /* …every rung */
+}
+```
+
+- Clearing Tailwind's defaults leaves only kit colors, type rungs and the two
+  breakpoints as utilities — the handful-of-tokens rule, enforced by the build.
+- `inline reference` makes utilities point straight at the kit's variables
+  (`.bg-bg { background-color: var(--color-bg) }`) without Tailwind emitting a
+  second, self-referencing copy of them.
+- Unlayered, `kit.css` would beat every utility. Importing it into
+  `layer(base)` is what lets `text-xl` override the kit's `h1`.
+- Project-only tokens (a display size, data colors) live in the project's CSS
+  beside the mapping, each with its measured contrast in a comment.
+
+## Icons: one family across sites and apps
+
+Every site and app gets a mark from one family (2026-09-11: onething, oblique
+stuff, bjornpaedia, the wjerk.shop stores, wjeather). The frame is constant;
+one thing varies.
+
+**Constant**
+
+- **A solid white, full-square background.** Never transparent — iOS fills
+  transparency with black — and the white ground is what makes the set read
+  as a set on a home screen or tab bar.
+- **A bordered square in dark brown line work** (`--brown-8`, #191513), with
+  its shadow built from stacked offset outlines rather than a blur. "Rules,
+  not shadows," as the mark itself.
+- **Generous white margin** around the frame, so platform crops (Android's
+  circles and squircles, iOS rounding) only ever trim background.
+
+**Varies, one per site**
+
+- **A single pale fill** inside the square. Prefer a kit tint (steps 0–2,
+  measured against the brown); a custom fill is a deliberate exception.
+  OneThing's plain white is the neutral root.
+- **A monogram in the site's own typeface** — the type rule again: letterforms
+  vary by project, the license stays constant. Outlined OFL glyphs are fine in
+  a logo.
+
+a.wjerk.shop's etched globe breaks the frame — see NOTES.md.
+
+**Export, all from one SVG**
+
+| Where | File | Notes |
+|---|---|---|
+| Browser tab | `favicon.svg` | The source SVG as-is |
+| iOS home screen | `apple-touch-icon.png`, 180×180 | Opaque; `<link rel="apple-touch-icon">`. iOS rounds the corners — don't pre-round. iOS keeps the icon from when a site was added; re-add it to see a new one |
+| Android / installable web app | 192×192 and 512×512 PNG, in a web manifest | Keep the mark inside the centre ~80% (the maskable safe zone) |
+| App Store, if ever native | 1024×1024 PNG | Opaque, square, no rounding |
+
+On macOS the PNGs render straight from the SVG with Quick Look —
+`qlmanage -t -s 180 -o . icon.svg`, repeated for 192 and 512. Check the result
+is fully opaque: Quick Look writes an alpha channel even when no pixel is
+transparent.
+
+## Color: the original Wjerk palette
+
+The palette the work used before `kit.css` existed — named for OOKB, and the
+Wjerk palette now. It lives as the "OOKB Palette" color styles in Figma (the
+AY26 Lectures and Presentations file, also published as a library the decks
+pull from); the styles keep the old name so the decks don't break. White and
+Black are also kit tokens now, `--wjerk-white` and `--wjerk-black`, and the
+kit's ground and text. An earlier web version, as LESS variables, is in
+README.md — the same hues a step apart (its pink, #EC4079, is brighter than
+the Figma #DB4F7A). Recorded 2026-09-11 from the styles themselves,
+not eyeballed. "On White" is contrast against Wjerk White; ΔE is OKLab distance
+×100 to the nearest kit token (under ~5 reads as the same color).
+
+| Wjerk | Hex | Nearest kit | ΔE | On White |
+|---|---|---|---|---|
+| Black | #2D2826 | brown-7 | 4.0 | 13.73 |
+| White | #F8FAE7 | light-gray-0 | 1.1 | — |
+| Brown | #3C3634 | brown-7 | 1.7 | 11.20 |
+| Dark Gray | #616767 | dark-gray-5 | 5.1 | 5.44 |
+| Med Gray | #858479 | brown-5 | 5.2 | 3.56 |
+| Pink | #DB4F7A | pink-4 | 6.1 | 3.66 |
+| Red | #9F5B59 | orange-5 | 3.2 | 4.82 |
+| Orange | #B97868 | orange-4 | 4.7 | 3.33 |
+| Yellow | #C5C071 | yellow-3 | 0.4 | 1.78 |
+| Golden Rod | #CBAA46 | yellow-3 | 5.6 | 2.11 |
+| Light Green Gray | #C5D3BD | light-gray-2 | 2.5 | 1.48 |
+| Green | #91A478 | green-4 | 1.6 | 2.55 |
+| Dark Green | #6A8472 | light-gray-5 | 3.1 | 3.84 |
+| Light Blue | #A1B2B1 | blue-3 | 4.0 | 2.08 |
+| Cornflower | #627FBB | blue-5 | 10.2 | 3.76 |
+| Dark Cornflower | #3E5F9A | blue-6 | 11.0 | 5.99 |
+| Navy | #2C416B | blue-7 | 9.5 | 9.55 |
+| Purple | #A38DA1 | purple-4 | 1.9 | 2.88 |
+| Purple Gray | #777783 | dark-gray-5 | 2.5 | 4.17 |
+
+Plus a **YGB Gradient**: Yellow #C5C071 → Green #91A478 (at 51%) → #92A9A7.
+
+What it says about the kit:
+
+- **The kit grew from it.** Yellow is `yellow-3` almost exactly (0.4), Green
+  is `green-4`, Brown is `brown-7`, and Wjerk White is effectively the kit's
+  pale ground. The kit's scales are Wjerk's hues run through ten lightness
+  steps.
+- **The blues didn't make it.** Cornflower, Dark Cornflower and Navy are true
+  blues (hue ~262°); the kit's "blue" scale is a teal-gray (~190°), 9.5–11
+  away. Golden Rod had no kit match either. **Added back 2026-09-11** as the
+  `cornflower` and `goldenrod` scales, on the kit's shared lightness grid
+  (0.975 → 0.12) with the green scale's chroma shape. The originals fall
+  between grid steps, so each lands near one rather than on it: Cornflower ≈
+  `cornflower-5` (ΔE 4.1), Dark Cornflower ≈ `-6` (4.9), Navy ≈ `-7` (5.9),
+  Golden Rod ≈ `goldenrod-3` (4.3). Steps 0–2 and 7–9 of both pass the tint
+  budget; `-6` and `-7` of both pass as text on `--gray-0` (7.3, 11.9).
+  `cornflower-2` also gives the pale range a blue that's distinct from the
+  teal (6.1 from `blue-2`).
+- **The original pink is softer.** Wjerk Pink (#DB4F7A, OKLCH chroma 0.178) is
+  a dustier pink than the kit's `pink-5` (0.226). At 3.66:1 on White it was
+  never a body-text color — and never used as one: pink was for big display
+  type and accents, where 3:1 (AA large text and graphics) is the bar.
+- **It's a fill palette, made for light type on top.** It grew out of slide
+  deck designs and a personal webpage: the colors were backgrounds, with
+  White type reversed out of them. `kit.css` building ten tints per hue is
+  the same idea taken further. Read the "On White" column both ways — it is
+  also White type on that fill. Black, Brown, Navy, Dark Cornflower, Dark Gray
+  and Red carry White body text (≥4.5); Pink, Orange, Med Gray, Dark Green,
+  Cornflower and Purple Gray carry White display type (≥3, AA large text);
+  the pale ones (Yellow, Golden Rod, Light Green Gray, Green, Light Blue,
+  Purple) need dark type.
+- **Wjerk Purple was already mauve** (hue 329°), so "purple reads pink" is
+  partly inherited — a muted, muddled gray-purple, meant to lean blue. The
+  kit then drifted pinker still (~336°); since 2026-09-11 it sits at 315°,
+  bluer than the original, as intended.

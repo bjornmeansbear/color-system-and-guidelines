@@ -6,6 +6,48 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **Revisit the palette: a wider set, and the original one written down.**
+  Raised 2026-09-11 after wjeather ran short of distinct pale tints (see the
+  next two items). Two parts: (1) articulate the palette actually used in
+  past work, before the kit; (2) widen the options — more distinct hues at
+  the pale steps, a true violet, a clearer green — each measured against the
+  tint budget in RULES.md before it ships.
+
+  Part (1) done 2026-09-11: the Wjerk palette, read from its Figma styles, is
+  in RULES.md "Color: the original Wjerk palette". It points at what to add
+  first — **true blues** (Cornflower, Dark Cornflower, Navy; the kit had none)
+  and **Golden Rod**. Both added 2026-09-11 as the `cornflower` and
+  `goldenrod` scales in `kit.css`.
+
+  Still open: bring Wjerk's softer pink back as the accent, or keep the hotter
+  `pink-5`? Pink was only ever used for big display type and accents, never
+  body text — so the softer pink's 3.66:1 on White clears the 3:1 bar for
+  that role; `pink-5` is only needed where pink carries small text (links,
+  the focus ring's neighbours). And whether onething, a.wjerk.shop, oblique,
+  bjornpaedia or the `palette-*.html` drafts used anything outside the Wjerk
+  set.
+- **The kit's purples read pink.** Found in wjeather (2026-09-10): `purple-1`
+  as a snow band read as the accent, and `purple-0`–`2` as a night sky all read
+  rose on screen. Dark `purple-9` reads as a true night purple. Either treat
+  purple as a pink-family tint kept away from the accent, or add a cooler
+  violet to the scale. RULES.md "Color: tints behind text".
+  Intent, stated 2026-09-11: Wjerk Purple was a muted, muddled gray-purple —
+  never bright — and meant to lean *blue* of mauve, not pink. The kit drifted
+  the wrong way: `purple` sits at OKLCH hue ~336°, pinker than the original's
+  329°. **Done 2026-09-11:** the scale moved to hue 315° at the same
+  lightness and chroma — the balance point between pink and the new
+  `cornflower` (step 2: 5.7 from `pink-1`, 5.1 from `cornflower-2`); 300–310°
+  crowded cornflower. No project reads `kit.css` live — onething, fridgechef
+  and the lecture decks keep their own pasted copies — so nothing changed
+  under them; re-copy to adopt. wjeather's copy is synced.
+- **No bright green in the kit.** Every green step is olive; wjeather's
+  humidity line settled for `green-5`. Fine for now — decide whether a
+  data-viz green earns a token.
+- **Icon family: a.wjerk.shop is the outlier.** Its etched globe has no frame
+  or stepped shadow. Parent mark of the wjerk.shop family on purpose, or bring
+  it in? Also: wjeather's peach fill (#FFCCA0) isn't a kit tint (nearest
+  `orange-1`, pinker) — check whether the other icons' fills are. RULES.md
+  "Icons".
 - **Deck colour and kit colour have never been reconciled.** `kit.css` says
   pink accent on a warm yellowish-gray ground with dark brown line work. The
   AY26 lecture decks are black, white and grayscale, with per-lecture semantic
@@ -15,6 +57,10 @@ before starting a session, not just written to at the end of one.
   2026-09-02: this is an accident of the two being written separately, not a
   decision. Worth deciding whether projection is its own context with its own
   palette, or whether the decks should carry the pink.
+  Found 2026-09-11: the AD1 deck ("Design For the Future Today!", AY26 Figma
+  file) uses the Wjerk ("OOKB Palette") library styles — White, Yellow, Green, Dark Green, Black,
+  Light Green Gray. So at least one deck carries the original palette, not
+  grayscale; the reconciliation may be the Wjerk palette rather than `kit.css`.
 - **No template file yet for the "talk deck" genre** (RULES.md "Slide
   decks: talks vs. teaching support") — unlike the ambient player, this
   one isn't a single reusable HTML file, since the decks themselves live
@@ -136,16 +182,111 @@ before starting a session, not just written to at the end of one.
   as an open gap (flickr commons, unsplash, are.na channels — links
   pending).
 - **Motion** — intentionally out of scope per RULES.md; revisit only if a
-  specific project idea calls for it, not as a system default.
+  specific project idea calls for it, not as a system default. First
+  candidate: wjeather's wind hatching drifting with the wind, slowing to
+  still under `prefers-reduced-motion` (sketched 2026-09-10, not built).
 - **Dark mode — colors answered, not yet wired.** RULES.md now carries the
   measured dark palette and the light→dark semantic token mapping. What's
   left is a decision, not a design: whether to ship the flip in `kit.css`
   (which still pins `color-scheme: light`) or keep leaving it to projects
-  that need it.
+  that need it. wjeather (2026-09-10) is the first project to ship it this
+  way; the mapping held, plus dark tints for data at steps 7–9.
 
 ## Changelog
 
-<<<<<<< HEAD
+### 2026-09-11
+
+- **Icons became a family.** One frame across every site and app — white
+  square ground, brown bordered square, stacked-outline shadow — with one
+  pale fill and a monogram in the site's own face varying. RULES.md "Icons"
+  carries the rule and the export sizes (SVG tab icon, 180px iOS, 192/512
+  manifest, 1024 App Store).
+- **wjeather is the first app built on the kit** (SvelteKit + Tailwind 4 on
+  Cloudflare), and the first to push it into data. New in RULES.md: "Using the
+  kit with Tailwind (v4)" (the mapping recipe), "Color: tints behind text"
+  (the step 0–2 / 7–9 budget, and how the scales actually read on screen),
+  "Data on screen" (one variable per channel, pink primary, dashed second
+  series). "Structure" gained the data-gradient exception. Dark mode shipped
+  per project for the first time.
+- **Standing practice:** design decisions made in any project that touch this
+  system get written here as part of the work, not after.
+- **The original Wjerk palette is written down.** Nineteen colors plus the YGB
+  gradient, read from the Figma styles into RULES.md with each one's nearest
+  kit token and contrast. The kit grew from it, but lost its true blues and
+  Golden Rod, and hardened its pink.
+- **`kit.css` gained two scales: `cornflower` and `goldenrod`.** The lost
+  Wjerk colors, rebuilt on the shared lightness grid so step N means the same
+  thing in every scale. No existing token changed.
+- **`purple` moved bluer, 336° → 315°.** Same lightness and chroma; it had
+  drifted pinker than the original and read as the accent.
+- **OOKB → Wjerk.** The palette is named Wjerk throughout the docs now; the
+  Figma styles keep "OOKB Palette" so the decks' library doesn't break, and
+  the ookb.co domain family is unchanged. White and Black became kit tokens,
+  `--wjerk-white` (#F8FAE7) and `--wjerk-black` (#2D2826), and the kit's
+  `--color-bg` / `--color-text` point at them — 13.73:1, down from 16.94:1
+  with `gray-0` / `brown-8`, still AAA. Projects pick it up when they re-copy
+  `kit.css`.
+- **White and Black became scales: `white-0…9` and `black-0…9`.** Papers and
+  inks, so the long-running cream-and-brown-black story has range of its own.
+  `white-0` and `black-9` are the originals exactly; `--wjerk-white` /
+  `--wjerk-black` are now aliases for them. Every white holds the Black at AAA;
+  every black is AA text on the White; `black-7` is the palette's Brown.
+- **Changelog merge conflict resolved.** The two sides held different
+  entries (2026-08-27 ×2 vs. 2026-08-29 and 08-30), so both were kept and
+  put in date order; nothing was dropped.
+- **Dark mode's status colors are mapped.** Success, warning, danger and info
+  flip to step 3 of their own hue (~10:1 on `brown-9`), their panels to step 8,
+  and the pressed accent to `pink-2` — in RULES.md "Dark mode" and in
+  `scripts/contrast.py`, which now audits clean in both modes. The 15 failing
+  dark pairs are gone.
+
+### 2026-08-30
+
+- **Added "Slide decks: talks vs. teaching support" to RULES.md**, from a
+  sampled review of the 25 lecture PDFs Kristian dropped in `reference/`
+  (2010–2026). Key finding: the expressive full-bleed/collage/aphorism
+  look isn't new — it's fully present by 2021 (`FreeOpenCulture`) and the
+  2026 decks intensify it rather than invent it. The real split is genre
+  (public talk vs. teaching-support handout), not era — a 2023 teaching
+  deck is as plain as a 2010 one.
+- New concrete rules captured: 16:9/16:10 canvas (maximize full-screen);
+  full-bleed-to-the-edge as a deliberate exception to the kit's usual
+  "pin the box, contain scales into it" image sizing; slide text must
+  cue-the-speaker or illustrate/metaphorize rather than restate spoken
+  words (confirmed directly, ties to the metaphor/illustration examples
+  cataloged in RULES.md); a recurring "TYPE: / IMAGE:" credit-caption
+  convention; the vintage-etching/mascot-collage compositing device as an
+  active technique, not just an image-sourcing preference.
+- `reference/` PDFs were sampled (page slices via PyMuPDF), not read
+  page-by-page in full — see open questions for what's still unexplored
+  (the teaching-deck genre specifically).
+
+### 2026-08-29
+
+- **Added "PDF generation" and "Slideshows / unattended players" to
+  RULES.md**, extracted the same way every other section here was —
+  from what's actually shipped, this time in `syllabiBuilder`'s
+  Markdown→pandoc→WeasyPrint pipeline and `chair-ness`'s
+  `build_slideshow.py` ambient-mode player, rather than from a `kit.css`
+  screen-CSS pattern.
+- **Added two drop-in template files**, not just documentation:
+  `slideshow-template.html` (the ambient two-layer pattern — confirmed as
+  the default to reach for going forward, not just one of chair-ness's
+  four build variants) and `print/` (`md2pdf.sh`,
+  `pandoc-template.html`, `print.css`), generalized from their
+  syllabus/chair-ness-specific originals. Both work with zero setup
+  (system fonts, no external assets) and take on a project's real content
+  by editing values in place rather than templating.
+- **Font embedding note**: chair-ness's base64-embedded OFL fonts were a
+  narrow fix (one self-contained file, no venue wifi guaranteed, and a
+  single copy has to travel into another repo's deploy) — not a slideshow
+  default. `slideshow-template.html` doesn't embed anything; link fonts
+  normally unless one of those specific constraints applies.
+- Kristian may provide PDFs and/or Figma prototypes showing more of the
+  slide-design vocabulary beyond what chair-ness currently covers — revisit
+  `slideshow-template.html` against those once supplied (see open
+  questions).
+
 ### 2026-08-27 (later)
 
 - **Three decks arrived and recalibrated the density rule, then a fourth fact
@@ -232,54 +373,6 @@ before starting a session, not just written to at the end of one.
   a runtime dependency in a room you do not control. `chair-ness` already
   models the two-build split from one manifest, and gitignores its caches
   (423 images, 348MB on disk, 5.5MB `.git`).
-=======
-### 2026-08-30
-
-- **Added "Slide decks: talks vs. teaching support" to RULES.md**, from a
-  sampled review of the 25 lecture PDFs Kristian dropped in `reference/`
-  (2010–2026). Key finding: the expressive full-bleed/collage/aphorism
-  look isn't new — it's fully present by 2021 (`FreeOpenCulture`) and the
-  2026 decks intensify it rather than invent it. The real split is genre
-  (public talk vs. teaching-support handout), not era — a 2023 teaching
-  deck is as plain as a 2010 one.
-- New concrete rules captured: 16:9/16:10 canvas (maximize full-screen);
-  full-bleed-to-the-edge as a deliberate exception to the kit's usual
-  "pin the box, contain scales into it" image sizing; slide text must
-  cue-the-speaker or illustrate/metaphorize rather than restate spoken
-  words (confirmed directly, ties to the metaphor/illustration examples
-  cataloged in RULES.md); a recurring "TYPE: / IMAGE:" credit-caption
-  convention; the vintage-etching/mascot-collage compositing device as an
-  active technique, not just an image-sourcing preference.
-- `reference/` PDFs were sampled (page slices via PyMuPDF), not read
-  page-by-page in full — see open questions for what's still unexplored
-  (the teaching-deck genre specifically).
-
-### 2026-08-29
-
-- **Added "PDF generation" and "Slideshows / unattended players" to
-  RULES.md**, extracted the same way every other section here was —
-  from what's actually shipped, this time in `syllabiBuilder`'s
-  Markdown→pandoc→WeasyPrint pipeline and `chair-ness`'s
-  `build_slideshow.py` ambient-mode player, rather than from a `kit.css`
-  screen-CSS pattern.
-- **Added two drop-in template files**, not just documentation:
-  `slideshow-template.html` (the ambient two-layer pattern — confirmed as
-  the default to reach for going forward, not just one of chair-ness's
-  four build variants) and `print/` (`md2pdf.sh`,
-  `pandoc-template.html`, `print.css`), generalized from their
-  syllabus/chair-ness-specific originals. Both work with zero setup
-  (system fonts, no external assets) and take on a project's real content
-  by editing values in place rather than templating.
-- **Font embedding note**: chair-ness's base64-embedded OFL fonts were a
-  narrow fix (one self-contained file, no venue wifi guaranteed, and a
-  single copy has to travel into another repo's deploy) — not a slideshow
-  default. `slideshow-template.html` doesn't embed anything; link fonts
-  normally unless one of those specific constraints applies.
-- Kristian may provide PDFs and/or Figma prototypes showing more of the
-  slide-design vocabulary beyond what chair-ness currently covers — revisit
-  `slideshow-template.html` against those once supplied (see open
-  questions).
->>>>>>> 5d22dcfb7cb10c1d56bc6ed5d22e37c6aff0c868
 
 ### 2026-08-26
 

@@ -19,11 +19,9 @@ before starting a session, not just written to at the end of one.
   and **Golden Rod**. Both added 2026-09-11 as the `cornflower` and
   `goldenrod` scales in `kit.css`.
 
-  Still open: bring Wjerk's softer pink back as the accent, or keep the hotter
-  `pink-5`? Pink was only ever used for big display type and accents, never
-  body text — so the softer pink's 3.66:1 on White clears the 3:1 bar for
-  that role; `pink-5` is only needed where pink carries small text (links,
-  the focus ring's neighbours). And whether onething, a.wjerk.shop, oblique,
+  The pink question is settled (2026-09-11): the softer original replaced the
+  hot one — the scale rebuilt at its chroma, one family, `pink-5` still AA
+  for small text. Still open: whether onething, a.wjerk.shop, oblique,
   bjornpaedia or the `palette-*.html` drafts used anything outside the Wjerk
   set.
 - **The kit's purples read pink.** Found in wjeather (2026-09-10): `purple-1`
@@ -39,7 +37,8 @@ before starting a session, not just written to at the end of one.
   `cornflower` (step 2: 5.7 from `pink-1`, 5.1 from `cornflower-2`); 300–310°
   crowded cornflower. No project reads `kit.css` live — onething, fridgechef
   and the lecture decks keep their own pasted copies — so nothing changed
-  under them; re-copy to adopt. wjeather's copy is synced.
+  under them until re-copied. Re-copied 2026-09-11: onething and fridgechef
+  in full, the lecture decks purple-only; wjeather's copy is synced.
 - **No bright green in the kit.** Every green step is olive; wjeather's
   humidity line settled for `green-5`. Fine for now — decide whether a
   data-viz green earns a token.
@@ -182,9 +181,9 @@ before starting a session, not just written to at the end of one.
   as an open gap (flickr commons, unsplash, are.na channels — links
   pending).
 - **Motion** — intentionally out of scope per RULES.md; revisit only if a
-  specific project idea calls for it, not as a system default. First
-  candidate: wjeather's wind hatching drifting with the wind, slowing to
-  still under `prefers-reduced-motion` (sketched 2026-09-10, not built).
+  specific project idea calls for it, not as a system default. First one
+  built: wjeather's wind drift (2026-09-11) — ~4 s on open, then still;
+  skipped under `prefers-reduced-motion`. See RULES.md "Motion".
 - **Dark mode — colors answered, not yet wired.** RULES.md now carries the
   measured dark palette and the light→dark semantic token mapping. What's
   left is a decision, not a design: whether to ship the flip in `kit.css`
@@ -195,6 +194,17 @@ before starting a session, not just written to at the end of one.
 ## Changelog
 
 ### 2026-09-11
+
+- **The slideshow pattern got a second project, and a version-control rule.**
+  `WritingPlanning/gd420/exhibiting-ness` (an are.na archive about exhibiting
+  graphic design, built to project in a studio class) reuses chair-ness's
+  generator rather than forking it — `build_slideshow.py` gained `--root`,
+  `--title` and `--channel-label`, and treats its chair-specific metadata
+  file as optional; chair-ness's own builds verified byte-identical after.
+  The hard lesson is in RULES.md "Slideshows / unattended players": the
+  fetched image folder is a cache, it is re-fetchable from one command, and
+  it must be gitignored *before* the first commit. It wasn't, and 268 MB went
+  to GitHub — recovering needed a history rewrite and a force-push.
 
 - **Icons became a family.** One frame across every site and app — white
   square ground, brown bordered square, stacked-outline shadow — with one
@@ -239,6 +249,18 @@ before starting a session, not just written to at the end of one.
   and the pressed accent to `pink-2` — in RULES.md "Dark mode" and in
   `scripts/contrast.py`, which now audits clean in both modes. The 15 failing
   dark pairs are gone.
+- **The softer pink replaced the hot one.** The pink scale was rebuilt at the
+  original Wjerk Pink's chroma (0.178, down from 0.226) — same lightness and
+  hue per step. Accent 4.78:1 on the White, dark accent 8.80:1; every
+  wjeather pink line still ≥3.41:1.
+- **The kit was re-copied into the projects.** onething (`src/app.css`,
+  `src/lib/palette.css`) and fridgechef (`app/palette.css`) got every changed
+  value — pink, purple, and onething's ground and text — plus the new
+  goldenrod, cornflower, white and black scales. The two live di200 lecture
+  decks took the purple values only; their own background, text, accent and
+  font were left alone, and the backup copy was skipped.
+- **wjeather's wind drift is built** — the first motion idea in any project;
+  see RULES.md "Motion".
 
 ### 2026-08-30
 

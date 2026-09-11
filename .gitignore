@@ -11,3 +11,6 @@ reference/
 
 # Built skill bundle for claude.ai upload — regenerate with scripts/package-skill.sh
 dist/
+
+# Python bytecode
+__pycache__/

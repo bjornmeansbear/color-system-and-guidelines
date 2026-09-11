@@ -73,6 +73,12 @@ subversion, and unmistakably "mine" across every past pass at this palette.
 Projects can still override `--color-accent` for a specific reason, but
 pink is the answer unless there's one.
 
+Which pink: the original Wjerk Pink's, softer and dustier than the hot pink
+the kit carried until 2026-09-11. The scale was rebuilt at the original's
+chroma so one family covers both roles by step — around `pink-4` for display
+type and fills, `pink-5` (4.78:1 on the White) wherever pink carries small
+text: links, buttons, the focus ring. One accent, not two pinks.
+
 ## Color: yellowish-gray background, dark brown line work
 
 The default bg/text pairing (`--color-bg: var(--wjerk-white)`, `--color-text:
@@ -86,7 +92,7 @@ unless there's a specific reason to change it.
 Since 2026-09-11 the pair is the palette's own White (#F8FAE7) and Black
 (#2D2826) — `--wjerk-white` / `--wjerk-black`, 13.73:1 — rather than the
 near-matches `gray-0` and `brown-8` (16.94:1) the kit used before. Muted text
-(`--gray-6`) is 7.34:1 on the White; the pink accent 4.92:1.
+(`--gray-6`) is 7.34:1 on the White; the pink accent 4.78:1.
 
 **Papers and inks.** The pair also heads two scales of its own (2026-09-11),
 so the color story has range without leaving it:
@@ -250,6 +256,16 @@ as the medium, not as a flourish. It carries two obligations. Honour
 `prefers-reduced-motion: reduce`, slowing the thing down rather than
 stripping it out. And scale dwell time to content length: a 30-character
 line and a 270-character passage do not need the same time on screen.
+
+wjeather's wind drift (2026-09-11) is the one-idea flourish in practice:
+when the app opens or refreshes, each hour's wind lines (long dashes, so
+movement along them shows) drift the way that hour's wind blows for ~4 s,
+then settle still. The motion carries meaning — it tells a north wind from a
+south one — and it's brief on purpose: under WCAG 2.2.2's 5-second threshold,
+so no pause control is needed, and near-zero battery cost. Unlike an
+auto-advancing slideshow, it's a flourish rather than the medium, so under
+`prefers-reduced-motion` it's skipped outright; the still lines keep their
+angle and spacing.
 
 ## Presentations: the slide is not the script
 
@@ -618,7 +634,9 @@ shell environment.
 Auto-advancing decks meant to run unattended for hours (a gallery
 projection, an ambient background piece) carry obligations beyond a
 normal web page, on top of the reduced-motion and dwell-time rules
-already under "Motion" above. First built for `~/Code/chair-ness`; the
+already under "Motion" above. First built for `~/Code/chair-ness`, the player
+now lives in this repo at **`tools/slideshow/`** and is shared across
+archives (see its README to run it); the
 **ambient two-layer pattern is the default to reach for** — images hard-
 cut on one layer, text surfaces over them on opaque, rotated panels — not
 just one option among several. `slideshow-template.html` in this repo is
@@ -628,7 +646,7 @@ the generalized, drop-in version: no build step, edit the `CONFIG`,
 - **One generator, several outputs via composable flags**, not several
   near-duplicate scripts, if a project needs more than one build of the
   same deck (e.g. a local-asset build and a hotlinked/publishable one).
-  `chair-ness/scripts/build_slideshow.py` produces four builds
+  `tools/slideshow/build_slideshow.py` produces four builds
   (local-image / hotlinked-image × single-slide / two-layer-ambient) from
   two independent flags (`--hotlink`, `--ambient`) that compose, so a
   content change (editing `quotes.txt`) has exactly one script to re-run
@@ -678,6 +696,35 @@ the generalized, drop-in version: no build step, edit the `CONFIG`,
   designing a build around it, and prefer sources whose own CDN is meant
   to be hotlinked (an image upload) over a link/screenshot capture of
   someone else's page.
+- **A fetched archive is a cache, not a deliverable — ignore it before the
+  first commit, not after.** These players are usually fed by a script that
+  pulls someone else's channel down to disk (`chair-ness/scripts/
+  fetch_arena.py`, re-runnable, skips what it already has). That image
+  folder can be rebuilt from one command, so it never belongs in git.
+  chair-ness ignores `images/`, `links/` and `vitra/` from the start. The
+  second project built this way, `WritingPlanning/gd420/exhibiting-ness`,
+  didn't — 638 images, 268 MB, committed and pushed before anyone noticed,
+  taking `.git` from 4.8 MB to 263 MB. A `.gitignore` alone can't fix that
+  after the fact: the blobs are already in history, and getting them out
+  meant a reset, a re-commit and a force-push over a published branch.
+  Write the ignore rule when the directory is created.
+- **What does belong in git**: the fetch and merge scripts, the manifest
+  CSVs (small, and they're the provenance record — block id, title,
+  description, source URL, local path), the text file the panels are
+  written in, the README, and the built self-contained HTML. For
+  exhibiting-ness that's 22 files against 654, and the four built decks are
+  1.6 MB of it — worth keeping precisely because they're self-contained and
+  are what actually gets projected.
+- **A second project reuses the generator; it doesn't fork it.** When
+  exhibiting-ness needed the same four builds from a different archive, the
+  fix was three backwards-compatible flags on chair-ness's existing script
+  (`--root` for the archive directory, `--title`, `--channel-label`) plus
+  making its project-specific metadata file optional — not a copy of 46 KB
+  of player code to maintain in two places. Fonts keep resolving from the
+  script's own repo while content comes from `--root`, so the tool travels
+  and the data stays put. Rebuild the original and diff it after any such
+  change: chair-ness's two builds came out byte-identical, which is what
+  made the edit safe to keep.
 
 ## Slide decks: talks vs. teaching support
 
@@ -815,7 +862,7 @@ Measured against `--brown-9`:
 |---|---|---|
 | `--brown-0` | primary text | 18.81:1 |
 | `--brown-3` | secondary, captions | 10.49:1 |
-| `--pink-3` | accent | 8.67:1 |
+| `--pink-3` | accent | 8.80:1 |
 | `--brown-4` | tertiary, hints | 7.06:1 |
 
 `--brown-4` is the floor. `--brown-5` drops to 4.36:1 — that fails AAA and
@@ -845,7 +892,7 @@ and not a rewrite:
 Status colors follow the text's logic (added 2026-09-11): in the dark they
 flip to the light end of their own hue. On `--brown-9` they measure 9.98–10.76:1
 (`red-3` lowest), and 8.8–9.5:1 on their step-8 panels — AAA throughout.
-`--pink-2` for the pressed accent is 10.93:1, and `--brown-9` on it the same.
+`--pink-2` for the pressed accent is 11.07:1, and `--brown-9` on it the same.
 
 `kit.css` still pins `color-scheme: light` and does not ship the flip yet.
 The open question was never which colors — it was whether to spend the
@@ -883,10 +930,10 @@ rows — the budget, measured 2026-09-10:
 
 - **Light:** steps 0–2 of every scale pass against the kit's text,
   `--wjerk-black` (≥7.8:1, weakest on `pink-2`), `--gray-6` labels (≥5.2) and
-  a `--pink-5` line (≥3.5). Step 3
+  a `--pink-5` line (≥3.1 on every tint but pink's own; weakest `red-2`). Step 3
   fails — `blue-3` drops labels to 4.05 and the pink line to 2.71.
 - **Dark:** steps 7–9 pass against `--brown-0`, `--brown-3` and a `--pink-3`
-  line (weakest, `yellow-7`: 11.59 / 6.47 / 5.35).
+  line (weakest, `yellow-7`: 11.59 / 6.47; the pink line ≥5.4 on any step 7–9).
 
 Contrast isn't the only test. Pale tints crowd each other, so check
 distinctness too — OKLab distance ×100; under ~5 reads as the same color.
@@ -1053,9 +1100,12 @@ What it says about the kit:
   `cornflower-2` also gives the pale range a blue that's distinct from the
   teal (6.1 from `blue-2`).
 - **The original pink is softer.** Wjerk Pink (#DB4F7A, OKLCH chroma 0.178) is
-  a dustier pink than the kit's `pink-5` (0.226). At 3.66:1 on White it was
+  a dustier pink than the kit's old `pink-5` (0.226). At 3.66:1 on White it was
   never a body-text color — and never used as one: pink was for big display
   type and accents, where 3:1 (AA large text and graphics) is the bar.
+  **Since 2026-09-11 the kit's pink scale is rebuilt at that chroma** — same
+  lightness and hue per step, dustier throughout. The original sits between
+  `pink-4` and `pink-5`, and `pink-5` still carries small text (4.78:1).
 - **It's a fill palette, made for light type on top.** It grew out of slide
   deck designs and a personal webpage: the colors were backgrounds, with
   White type reversed out of them. `kit.css` building ten tints per hue is

@@ -195,6 +195,15 @@ before starting a session, not just written to at the end of one.
 
 ### 2026-09-11
 
+- **The kit's no-build path, used for real.** `~/Code/di200-fieldnotes` is a
+  one-screen phone form for class fieldnotes: plain `index.html` linking a
+  copied `kit.css`, served by a Cloudflare Worker (static assets plus a small
+  `/api`), no framework. Dark mode is the RULES.md token flip in a
+  `prefers-color-scheme` block, `kit.css` untouched, as in wjeather. New in
+  RULES.md "Structure": choice chips (radio under a pill, inverted when
+  checked). Contrast checked: the accent button is `white-0` on `pink-5` at
+  4.78:1, AA but not AAA for its bold 16px label; everything else on the page
+  clears AAA.
 - **The slideshow pattern got a second project, and a version-control rule.**
   `WritingPlanning/gd420/exhibiting-ness` (an are.na archive about exhibiting
   graphic design, built to project in a studio class) reuses chair-ness's

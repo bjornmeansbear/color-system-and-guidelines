@@ -41,6 +41,15 @@ other standing case.
 Buttons and interactive elements show state by inverting foreground/
 background on press, not by adding elevation or a hover-glow.
 
+Choice chips follow the same logic: a real radio input under a pill label
+(the pill case above), and the checked chip is inverted — text-color ground,
+bg-color text — like a button held down. No accent fill for "selected";
+the accent stays for focus rings and the one primary action. The input sits
+invisible over the label, not `display: none`, so it keeps keyboard focus
+and the focus ring can draw on the pill. Size the pill to a 44px touch
+target (`--leading-sm` plus 13px padding top and bottom). First built in
+di200-fieldnotes (2026-09-11).
+
 Gradients follow the same chrome/content line. A gradient that *encodes
 data* is content, not decoration — wjeather's sky bands (2026-09-10), one
 tint per forecast hour, blending only where the weather does. Allowed. A

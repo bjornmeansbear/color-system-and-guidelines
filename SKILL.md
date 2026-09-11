@@ -27,7 +27,8 @@ the style — not a budget constraint you'd lift if you could.
 These are the answer unless a project has a specific stated reason otherwise.
 "It's conventional" is not a reason.
 
-**Pink is the accent.** `--color-accent: var(--pink-5)`. Not blue — blue only
+**Pink is the accent.** `--color-accent: var(--pink-5)` — the original Wjerk
+Pink's softer, dustier pink (the scale was rebuilt at its chroma 2026-09-11). Not blue — blue only
 ever appeared as an undecided default, so it doesn't get to be the default.
 Pink is deliberate: on climate/sustainability work the expected accent is green
 or blue, and pink reads as a surprise instead of a cliché. It is the one thing

@@ -52,8 +52,13 @@ di200-fieldnotes (2026-09-11).
 
 Gradients follow the same chrome/content line. A gradient that *encodes
 data* is content, not decoration — wjeather's sky bands (2026-09-10), one
-tint per forecast hour, blending only where the weather does. Allowed. A
-gradient laid on for mood or depth is still not.
+tint per forecast hour. Allowed. A gradient laid on for mood or depth is
+still not.
+
+Those bands started out blending into each other, softening by cloud cover.
+The blur came out on 2026-09-11: a fading edge reads as softness rather than
+as data, and an hour is a hard fact. Hard stops at every boundary — which is
+the "rules, not chrome" instinct arriving in a data layer.
 
 ## Contrast: high-contrast pairs only, always verified
 
@@ -968,8 +973,8 @@ through orange, too near the pink.
 From wjeather (2026-09-10), the first project where the kit carries data
 rather than prose:
 
-- **One variable per visual channel** — position, hue, edge softness,
-  texture. Two variables sharing a channel means neither reads.
+- **One variable per visual channel** — position, hue, texture. Two variables
+  sharing a channel means neither reads.
 - **Pink is the primary series,** a 2px line. A second series takes a hue no
   other layer uses *and* a dash (6/6, on the grid), so it survives grayscale
   and color-blindness.
@@ -979,6 +984,13 @@ rather than prose:
   trope, and a way to add a variable without adding a hue.
 - **Anything drawn gets a spoken summary** for screen readers. Color and
   position are never the only carrier.
+- **An abstract screen earns an on-demand key.** Sighted viewers get nothing
+  from a spoken summary, and a system this compressed has to be learnable
+  without being explained every day: a small `?` beside the other controls,
+  opening a native `<dialog>` (focus trapped, Esc closes, focus returns).
+  Never shown first — always one tap away. Draw the samples from the same
+  tokens the screen uses, so the key can't drift out of sync with it.
+  wjeather, 2026-09-11.
 
 ## Using the kit with Tailwind (v4)
 
@@ -1108,6 +1120,12 @@ What it says about the kit:
   budget; `-6` and `-7` of both pass as text on `--gray-0` (7.3, 11.9).
   `cornflower-2` also gives the pale range a blue that's distinct from the
   teal (6.1 from `blue-2`).
+- **Purple Gray came back too**, later the same day, as the `purple-gray`
+  scale: hue 286 at about twice the gray scale's chroma — a gray that leans
+  purple, with the original landing on `purple-gray-5` (ΔE 2.2). It is the
+  night-time twin of the warm gray: wjeather uses `gray-1` for cloud by day
+  and `purple-gray-1` by night (`gray-8` / `purple-gray-8` in the dark), close
+  enough to read as siblings (ΔE 4.2) and clear of the night sky and the rain.
 - **The original pink is softer.** Wjerk Pink (#DB4F7A, OKLCH chroma 0.178) is
   a dustier pink than the kit's old `pink-5` (0.226). At 3.66:1 on White it was
   never a body-text color — and never used as one: pink was for big display

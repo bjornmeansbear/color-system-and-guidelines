@@ -270,6 +270,18 @@ before starting a session, not just written to at the end of one.
   font were left alone, and the backup copy was skipped.
 - **wjeather's wind drift is built** — the first motion idea in any project;
   see RULES.md "Motion".
+- **wjeather got an on-demand key**, and RULES.md "Data on screen" gained the
+  rule behind it: an abstract screen needs a way in for sighted viewers, a `?`
+  opening a native dialog, never shown first, samples drawn from the screen's
+  own tokens.
+- **`purple-gray` added; cloud now differs day from night.** The last of the
+  Wjerk palette's missing hues (Purple Gray ≈ `purple-gray-5`). wjeather's
+  cloudy hours take the warm gray by day and the purple-gray after dark —
+  siblings by design, distinct from the clear night and from rain.
+- **The sky bands' blur came out.** Edges are hard at every hour now; the
+  cloud-cover-softens-the-edge idea is gone, and with it the only use for the
+  cloud-cover reading, so wjeather stopped fetching it. Cloud still shows as
+  its own band color. See RULES.md "Structure: rules, not chrome".
 
 ### 2026-08-30
 

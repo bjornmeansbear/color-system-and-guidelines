@@ -82,6 +82,13 @@
   --gray-3: rgb(187,187,176); --gray-4: rgb(153,153,141); --gray-5: rgb(117,117,105);
   --gray-6: rgb(83,83,72);    --gray-7: rgb(52,51,42);    --gray-8: rgb(23,23,15);
   --gray-9: rgb(6,6,2);
+  /* purple-gray — a gray that leans purple (OKLCH hue 286, the gray scale's
+     chroma shape at ~2×), restored from the Wjerk palette: Purple Gray
+     (#777783) ≈ step 5. The night-time twin of the warm gray. */
+  --purple-gray-0: rgb(245,245,255); --purple-gray-1: rgb(233,233,254); --purple-gray-2: rgb(210,210,232);
+  --purple-gray-3: rgb(184,184,207); --purple-gray-4: rgb(150,149,174); --purple-gray-5: rgb(114,114,138);
+  --purple-gray-6: rgb(80,80,102);   --purple-gray-7: rgb(49,49,67);    --purple-gray-8: rgb(21,20,36);
+  --purple-gray-9: rgb(5,4,17);
   /* dark-gray (cool blue-gray) */
   --dark-gray-0: rgb(242,248,248); --dark-gray-1: rgb(229,235,235); --dark-gray-2: rgb(209,215,215);
   --dark-gray-3: rgb(181,188,188); --dark-gray-4: rgb(147,154,154); --dark-gray-5: rgb(110,118,118);

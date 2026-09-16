@@ -41,8 +41,12 @@ compose into four builds:
 |---|---|---|
 | — | `slideshow.html` | Deck. One image at a time, cross-fade, local images. |
 | `--hotlink` | `slideshow-web.html` | Deck, images served from are.na. Publishable, ships no copies. |
-| `--ambient` | `slideshow-ambient.html` | Two layers. Images hard-cut underneath; text surfaces over them on opaque panels. **The projection build.** |
+| `--ambient` | `slideshow-ambient.html` | Two layers. Images hard-cut underneath; text surfaces over them on opaque panels. Built to run unattended for hours. |
 | `--ambient --hotlink` | `slideshow-ambient-web.html` | The ambient piece, are.na-sourced. |
+
+Which mode a project leads with is its own call: exhibiting-ness is the ambient
+piece; chair-ness projects and publishes the deck, having found the ambient build
+too much for a page someone lands on cold.
 
 Useful flags: `--title`, `--channel-label` and `--channel-url` (the credit
 line), `--min-px` (drop images too small to project, default 300),

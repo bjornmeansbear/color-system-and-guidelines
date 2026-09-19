@@ -50,6 +50,21 @@ and the focus ring can draw on the pill. Size the pill to a 44px touch
 target (`--leading-sm` plus 13px padding top and bottom). First built in
 di200-fieldnotes (2026-09-11).
 
+A chip group can carry a free-text escape hatch: di200-fieldnotes picks a
+student from the names already in the database and keeps a text box under it
+for one that isn't. The *group* is what's required, so neither control may
+carry `required` — a picked chip leaves the box legitimately empty, and
+native validation would block the submit event before any script could read
+the group. Validate in script and say which. Whichever control you touch last
+clears the other.
+
+An action bar may stick to the bottom of the viewport (`position: sticky;
+bottom: 0`) so a long form never hides its own submit button. It follows the
+same rule as the rest: a solid 2px top border and the page background, never
+a shadow to float it above the content. Scope it to the form rather than the
+page, so it scrolls away with the thing it acts on. di200-fieldnotes
+(2026-09-11).
+
 Gradients follow the same chrome/content line. A gradient that *encodes
 data* is content, not decoration — wjeather's sky bands (2026-09-10), one
 tint per forecast hour. Allowed. A gradient laid on for mood or depth is
@@ -928,6 +943,30 @@ breakpoints: `40rem` (tablet / two-column) and `55rem` (desktop / widest
 treatment). No custom-media variables — the kit has no build step and
 needs to work as a plain `<link>`, so these are documented values to reuse
 by hand, not a variable to reference.
+
+## The `[hidden]` reset
+
+`kit.css` restores the `hidden` attribute:
+
+```css
+[hidden]:not([hidden='until-found']) { display: none !important; }
+```
+
+It needs `!important` and it needs to be in the kit. The browser's own
+`[hidden] { display: none }` lives in the UA stylesheet, which loses to *any*
+author rule that sets `display`, at any specificity — so writing
+`.chips { display: flex }` silently defeats `el.hidden = true` with no error
+anywhere. Found in di200-fieldnotes 2026-09-16, where it had shipped a live bug:
+the "Add photo" button stayed on screen beside the image preview because
+`.photo { display: block }` outranked the attribute.
+
+Plain `[hidden] { display: none }` in the kit is not enough — a project's own
+stylesheet loads after and wins on source order. `until-found` is exempt because
+the browser reveals it on find-in-page and needs it rendered.
+
+Audited across every project holding kit tokens before this shipped: nothing
+else uses the attribute at all (the Svelte projects use `{#if}`, the decks are
+static), so the rule could not change any existing rendering.
 
 ## Naming
 

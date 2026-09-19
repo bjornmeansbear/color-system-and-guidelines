@@ -193,8 +193,40 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-09-16
+
+- **`kit.css` now restores the `hidden` attribute**, closing the open question
+  raised 2026-09-11. `[hidden]:not([hidden='until-found']) { display: none
+  !important; }` in the base reset, and the rule is written up in RULES.md
+  "The `[hidden]` reset" — including why plain `display: none` in the kit
+  wouldn't do it (a project's stylesheet loads after and wins on source order).
+  Audited first across every project holding kit tokens: onething, fridgechef,
+  wjeather, lectureScripts and WritingPlanning use the attribute nowhere at all,
+  so the change could not alter any existing rendering. Only two `kit.css`
+  copies exist — di200-fieldnotes and wjeather — and both were re-synced from
+  canonical; di200's had also drifted, missing the `purple-gray` scale.
+  di200-fieldnotes dropped its local one-line patch in favour of the kit's.
+- **di200-fieldnotes hit the Notion select-option wall and got a `NOTES.md`.**
+  Notion never invents a `select` option on write, so every student's first note
+  was a 400 during the 2026-09-14 visit; the same property exists on two
+  databases and fixing one wasn't enough. Not a kit matter, but the project now
+  carries its own `NOTES.md` in this repo's shape — open items first, reasoning
+  underneath — which is a pattern worth repeating in other projects.
+
 ### 2026-09-11
 
+- **di200-fieldnotes: the form reordered around what it actually collects.**
+  The five things a student is there to record are the observation, the spot,
+  the time, and — set once per visit — who they are and which session it is.
+  The form had led with Time, which is prefilled and rarely touched, and
+  buried Spot sixth under kind/count/photo. Now: what happened, spot, time,
+  a rule, then the tags. Three behavior changes worth reusing — the time
+  stamps on the first keystroke rather than when the form opened (the form
+  can sit open a long while before anything happens); known names are chips,
+  which is also how the spelling stays consistent enough for Notion to group
+  by it; and Save sticks to the bottom of the viewport. The last two are
+  written up in RULES.md "Structure". Found on the way: the `[hidden]` gap
+  in `kit.css`, above.
 - **The kit's no-build path, used for real.** `~/Code/di200-fieldnotes` is a
   one-screen phone form for class fieldnotes: plain `index.html` linking a
   copied `kit.css`, served by a Cloudflare Worker (static assets plus a small

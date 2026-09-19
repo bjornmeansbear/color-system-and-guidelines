@@ -197,6 +197,15 @@
   box-sizing: border-box;
 }
 
+/* The browser's own [hidden] rule lives in the UA stylesheet, so *any* author
+   rule that sets display beats it regardless of specificity — .chips { display:
+   flex } silently leaves a hidden element on screen. Restore what the attribute
+   is specified to do. until-found is exempt: the browser reveals it on
+   find-in-page and needs it rendered. Found in di200-fieldnotes 2026-09-16. */
+[hidden]:not([hidden='until-found']) {
+  display: none !important;
+}
+
 html, body {
   margin: 0;
   font-family: var(--font-sans);

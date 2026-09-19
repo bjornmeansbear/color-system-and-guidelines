@@ -6,6 +6,23 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **No bright green in the kit — data-ink case.** Raised while building
+  Wjorth (2026-09-19), a budgeting dashboard needing a clear "good"
+  green distinct from the muted `--color-success` (`green-6`, which the
+  kit's own tint notes already flag as "reading brown"). Picked `green-5`
+  for chart/data-ink use specifically ("the most visibly green step that
+  still holds 3:1 as a line," per RULES.md "Data on screen"), reserving
+  `green-6`/`green-3` for status flags. Not yet visually validated against
+  a real built screen in either light or dark mode — do that before
+  treating this as settled, and fold the result back into RULES.md's "Data
+  on screen" section either way.
+- **Older projects worth a look, same visual vernacular.** Noted in passing
+  while working on Wjorth (2026-09-19): `bjornpaedia`, `oblique`, `onething`,
+  and `a.wjerk.shop` (the main portfolio site) are all in the same lineage
+  as this kit but predate or sit outside it. Not researched as part of that
+  work — just a pointer that they're worth revisiting sometime, e.g. for
+  older kit.css drift the way `di200-fieldnotes` and `wjeather` were audited
+  2026-09-16.
 - **Revisit the palette: a wider set, and the original one written down.**
   Raised 2026-09-11 after wjeather ran short of distinct pale tints (see the
   next two items). Two parts: (1) articulate the palette actually used in
@@ -192,6 +209,19 @@ before starting a session, not just written to at the end of one.
   way; the mapping held, plus dark tints for data at steps 7–9.
 
 ## Changelog
+
+### 2026-09-19
+
+- **New RULES.md principle: data portability, plain text as the canonical
+  form.** Written while building Wjorth (a budgeting dashboard rebuilt as
+  SvelteKit + Tailwind + this kit). Prefer Markdown/JSON/CSV as a project's
+  durable data representation over an app-specific opaque store, so it
+  stays reusable as needs change. Wjorth's own `state.json`-on-disk (instead
+  of browser `localStorage`) is the first concrete instance — see RULES.md
+  "Data portability: plain text as the canonical form."
+- Wjorth also surfaced the `green-5`-for-data-ink question and a pointer to
+  older sibling projects worth revisiting — both logged above under "Open
+  questions / next steps."
 
 ### 2026-09-16
 

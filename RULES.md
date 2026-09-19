@@ -1031,6 +1031,31 @@ rather than prose:
   tokens the screen uses, so the key can't drift out of sync with it.
   wjeather, 2026-09-11.
 
+## Data portability: plain text as the canonical form
+
+From Wjorth (2026-09-19), a budgeting dashboard: prefer Markdown, JSON, or
+CSV as a project's durable, canonical representation of its own data over
+an app-specific opaque store — because it stays reusable as needs change,
+without waiting for that need to be anticipated in advance. "Create
+anywhere, publish everywhere": collect and organize data once, in a form
+plain enough that a different tool, a script, or a future rebuild can pick
+it up without a migration.
+
+Concretely: Wjorth's state (transactions, budgets, categorization rules)
+lives in a plain `state.json` file on disk, not browser `localStorage`,
+specifically because (1) it survives a browser cache clear or a switch
+between browsers on the same machine, (2) it's inspectable and hand-editable
+without a debugger, and (3) the project already needed local filesystem
+access for its CSV inbox, so this cost nothing extra. Same instinct as
+`chair-ness`'s are.na-channel-plus-`manifest.csv` pattern (this repo,
+"Images: local cache, shared and gitignored") — the heavy/derived asset is
+disposable, the thin structured record is the thing worth keeping.
+
+This is a general project-shape preference, not a hard rule: a real
+multi-user or concurrent-access need is a legitimate reason to reach for an
+actual database instead. The default assumption for a personal, single-user
+tool should still be plain text first.
+
 ## Using the kit with Tailwind (v4)
 
 First done in wjeather (SvelteKit + Tailwind 4, 2026-09-10). `kit.css` stays a

@@ -695,9 +695,26 @@ the generalized, drop-in version: no build step, edit the `CONFIG`,
   ness's build gets copied into `a.wjerk.shop` as one file). If neither
   applies, link the font file normally. When it does apply, budget the
   embed against total asset weight rather than treating it as free —
-  chair-ness's six embedded OFL faces cost ~214 KB against ~12 MB of
-  images, under 2% — and ship a flag to fall back to the system font stack
-  when it isn't worth it.
+  chair-ness's 33 embedded OFL families cost ~1.6 MB against ~33 MB of
+  images, under 5% — and ship a flag to fall back to the system font stack
+  when it isn't worth it. Convert to woff2 without subsetting: under the
+  OFL a subset is a modified font, which trips the Reserved Font Name
+  clause most Velvetyne faces carry.
+- **Loud faces take short quotes only.** When the type rotates quote to
+  quote, mark each face text or display. Display faces (blackletter,
+  script, hairline, very wide) only take quotes under a length threshold
+  (80 characters in the shared player); a long quote passes over them to
+  the next text face. Rotation still never repeats a face back to back.
+  Without this, a display face eventually lands on the longest paragraph
+  in the file and it becomes unreadable on the wall.
+- **One slot per family; the family steps through its weights.** A family
+  with many weights gets one place in the rotation, and each time that
+  slot comes round it takes the next weight (or width, or axis value).
+  Nine Overpass weights as nine slots would make the deck read as
+  Overpass. Prefer the **variable** file when a family has one: a single
+  woff2 carries the whole axis, where statics cost one file per weight.
+  Take Google's Latin subsets only for families without a Reserved Font
+  Name; for an RFN family (Astloch) convert the full upstream file.
 - **Bound memory for a long-running DOM.** Don't leave every slide ever
   shown sitting in the DOM — decoded bitmaps accumulate for as long as the
   tab stays open (chair-ness measured ~2.6 GB uncapped for its image set).

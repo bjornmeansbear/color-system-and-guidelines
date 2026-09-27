@@ -210,6 +210,31 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-09-26
+
+- **Slideshow type rotation: 6 families → 33.** Two rules came with it
+  (RULES.md "Slideshows / unattended players"): display faces only take
+  quotes under 80 characters, and a family with several weights keeps one
+  slot and steps to its next weight, width or axis value each time.
+  - Velvetyne, from `~/Code/libreFontLibrary`, converted whole (most carry a
+    Reserved Font Name): Feroniapi, Anthony, Le Murmure, Compagnon, Combat,
+    Terminal Grotesque, and ten Degheest faces (Director, FT88
+    Regular/Serif/School/Gothique/Expanded, Louise, Latitude, Equateur,
+    Abordage).
+  - Google Fonts, Latin subsets from the API: Spectral (all 7 statics),
+    Overpass, Newsreader, Atkinson Hyperlegible Next, BioRhyme (weight and
+    width axes, so BioRhyme Expanded is the same file), Climate Crisis
+    (steps its YEAR axis 1979 → 2050), Fruktur, Oi, Yatra One, Young Serif.
+    Astloch has an RFN, so it's the full upstream file instead.
+  - **Velvelyne** was requested but is CUTE-licensed, not OFL (same
+    category as PicNic). Left out by choice, not pending.
+  - Open: Overpass 100 and the 200 weights are hairline at quote
+    size and may wash out on a projector. Combat has no curly double
+    quotes (the browser falls back for those two glyphs).
+- **Caption filter catches tab-count prefixes.** "(3) Instagram" was
+  projected as a caption; the junk-title pattern now allows a leading
+  "(N) ".
+
 ### 2026-09-19
 
 - **New RULES.md principle: data portability, plain text as the canonical

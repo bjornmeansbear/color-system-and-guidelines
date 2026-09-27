@@ -126,8 +126,9 @@ def looks_like_garbage_title(title, check_length=True):
         return True
     if re.search(r"\b[0-9a-f]{16,}\b", title, re.I):
         return True
-    # HTTP/interstitial page titles are.na captured instead of a real name
-    if re.fullmatch(r"\s*(4\d\d|5\d\d)?\s*(forbidden|not found|access denied|"
+    # HTTP/interstitial page titles are.na captured instead of a real name,
+    # including a browser tab's unread count in front: "(3) Instagram"
+    if re.fullmatch(r"\s*(\(\d+\)\s*)?(4\d\d|5\d\d)?\s*(forbidden|not found|access denied|"
                     r"error|untitled|instagram|just a moment\.{0,3}|"
                     r"attention required!?.*|page not found)\s*",
                     title, re.I):
@@ -254,34 +255,93 @@ def unsplash_credits(manifest_rows):
 # Faces the quote type rotates through. Each new quote takes the next one, so
 # the deck reads as a set of related cards rather than one voice. Order is the
 # rotation order; a face is skipped silently if its file is missing.
+#
+# (family, file, weight, display[, variants])
+#   file     one woff2, or {weight: file} for a family shipped as statics
+#   weight   an int, or a raw @font-face descriptor string for a variable
+#            file ("font-weight:100 900")
+#   display  loud or hard to read at length: only takes quotes shorter than
+#            SHORT_QUOTE_CHARS. A long passage passes over it to the next
+#            text face instead of landing in type built for four words.
+#   variants what the slot steps through each time it comes up: weight (w),
+#            width (s), or a raw variation setting (v). One slot per family,
+#            so a family with nine weights shows all nine over time without
+#            taking nine places in the rotation.
+WEIGHTS = lambda *ws: [{"w": w} for w in ws]
 QUOTE_FACES = [
-    ("Basteleur", "Basteleur-Bold.woff2", 700),
-    ("Space Grotesk", "SpaceGrotesk.woff2", 500),
-    ("Cormorant Garamond", "CormorantGaramond.woff2", 600),
-    ("Work Sans", "WorkSans.woff2", 500),
-    ("Sligoil Micro", "Sligoil-Micro.woff2", 400),
-    ("Libre Franklin", "LibreFranklin.woff2", 600),
+    ("Basteleur", "Basteleur-Bold.woff2", 700, True),
+    ("Spectral", {w: f"Spectral-{w}.woff2" for w in range(200, 801, 100)}, None,
+     False, WEIGHTS(200, 500, 800, 300, 600, 400, 700)),
+    ("FT88 Gothique", "FT88-Gothique.woff2", 400, True),
+    ("Space Grotesk", "SpaceGrotesk.woff2", 500, False),
+    ("Oi", "Oi.woff2", 400, True),
+    ("Overpass", "Overpass-VF.woff2", "font-weight:100 900", False,
+     WEIGHTS(100, 600, 300, 900, 400, 800, 200, 700, 500)),
+    ("Le Murmure", "LeMurmure.woff2", 400, False),
+    ("Climate Crisis", "ClimateCrisis-VF.woff2", 400, True,
+     [{"v": f"'YEAR' {y}"} for y in (1979, 2000, 2020, 2035, 2050)]),
+    ("Cormorant Garamond", "CormorantGaramond.woff2", 600, False),
+    ("Compagnon", "Compagnon-Roman.woff2", 400, False),
+    ("Combat", "Combat.woff2", 400, True),
+    ("Newsreader", "Newsreader-VF.woff2", "font-weight:200 800", False,
+     WEIGHTS(200, 500, 800, 300, 600, 400, 700)),
+    ("Work Sans", "WorkSans.woff2", 500, False),
+    ("FT88 Serif", "FT88-Serif.woff2", 400, False),
+    ("Louise", "Louise-Regular.woff2", 400, True),
+    ("BioRhyme", "BioRhyme-VF.woff2",
+     "font-weight:200 800;font-stretch:100% 125%", False,
+     [{"w": w, "s": s} for w, s in ((200, "100%"), (800, "125%"), (400, "100%"),
+                                    (600, "125%"), (800, "100%"), (200, "125%"),
+                                    (600, "100%"), (400, "125%"))]),
+    ("Terminal Grotesque", "TerminalGrotesque.woff2", 400, False),
+    ("Young Serif", "YoungSerif.woff2", 400, False),
+    ("Astloch", {400: "Astloch-400.woff2", 700: "Astloch-700.woff2"}, None,
+     True, WEIGHTS(400, 700)),
+    ("Latitude", "Latitude-Regular.woff2", 400, False),
+    ("Anthony", "Anthony.woff2", 400, True),
+    ("Atkinson Hyperlegible Next", "AtkinsonHyperlegibleNext-VF.woff2",
+     "font-weight:200 800", False, WEIGHTS(200, 500, 800, 300, 600, 400, 700)),
+    ("Sligoil Micro", "Sligoil-Micro.woff2", 400, False),
+    ("Fruktur", "Fruktur.woff2", 400, True),
+    ("Director", "Director-Regular.woff2", 400, False),
+    ("FT88 School", "FT88-School.woff2", 400, True),
+    ("Libre Franklin", "LibreFranklin.woff2", 600, False),
+    ("Equateur", "Equateur-Regular.woff2", 400, False),
+    ("Yatra One", "YatraOne.woff2", 400, True),
+    ("FT88 Regular", "FT88-Regular.woff2", 400, False),
+    ("Feroniapi", "Feroniapi-MediumItalic.woff2", 500, False),
+    ("FT88 Expanded", "FT88-Expanded.woff2", 400, True),
+    ("Abordage", "Abordage-Regular.woff2", 400, False),
 ]
+SHORT_QUOTE_CHARS = 80
 
 
 def embedded_faces(root):
-    """(@font-face css, [family names]) with the woff2 inlined as data URIs.
+    """(@font-face css, [{family, display, variants}]) with the woff2 inlined
+    as data URIs. Each file is embedded once however many variants use it.
 
     Inlined rather than linked so a built file is one self-contained thing:
     it travels between repos as a single copy, and the gallery build runs off
     a local file where a network fetch would be a liability, not a convenience.
     """
     css, families = [], []
-    for family, fname, weight in QUOTE_FACES:
-        f = root / "fonts" / fname
-        if not f.exists():
-            continue
-        b64 = base64.b64encode(f.read_bytes()).decode("ascii")
-        css.append(
-            "@font-face{font-family:'%s';font-weight:%d;font-style:normal;"
-            "font-display:block;src:url(data:font/woff2;base64,%s) format('woff2');}"
-            % (family, weight, b64))
-        families.append(family)
+    for family, src, weight, display, *rest in QUOTE_FACES:
+        files = src.items() if isinstance(src, dict) else [(weight, src)]
+        found = False
+        for w, fname in files:
+            f = root / "fonts" / fname
+            if not f.exists():
+                continue
+            found = True
+            desc = w if isinstance(w, str) else "font-weight:%d" % w
+            b64 = base64.b64encode(f.read_bytes()).decode("ascii")
+            css.append(
+                "@font-face{font-family:'%s';%s;font-style:normal;"
+                "font-display:block;src:url(data:font/woff2;base64,%s) format('woff2');}"
+                % (family, desc, b64))
+        if found:
+            families.append({"family": family, "display": display,
+                             "variants": rest[0] if rest else []})
     return "\n".join(css), families
 
 
@@ -577,8 +637,31 @@ let timer = null;
 const MAX_UPSCALE = __MAX_UPSCALE__;
 const QUOTE_FONTS = __QUOTE_FONTS__;
 const BASE_STACK = '-apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif';
+const SHORT_QUOTE_CHARS = __SHORT_QUOTE_CHARS__;
+// Each quote takes the next face in the rotation, so consecutive quotes never
+// share one. Display faces only take short quotes; a long one passes over them.
+let faceCursor = 0;
+// A family with variants steps to its next weight/width/axis setting each
+// time its slot comes round.
+const variantCursor = {};
+function applyFace(el, text) {
+  const long = (text || '').length >= SHORT_QUOTE_CHARS;
+  for (let k = 0; k < QUOTE_FONTS.length; k++) {
+    const f = QUOTE_FONTS[faceCursor++ % QUOTE_FONTS.length];
+    if (long && f.display) continue;
+    el.style.fontFamily = "'" + f.family + "', " + BASE_STACK;
+    if (f.variants.length) {
+      const i = variantCursor[f.family] || 0;
+      variantCursor[f.family] = i + 1;
+      const v = f.variants[i % f.variants.length];
+      if (v.w) el.style.fontWeight = v.w;
+      if (v.s) el.style.fontStretch = v.s;
+      if (v.v) el.style.fontVariationSettings = v.v;
+    }
+    return;
+  }
+}
 const elements = new Array(SLIDES.length).fill(null);
-let textCount = 0;
 const broken = new Array(SLIDES.length).fill(false);
 
 function buildSlide(i) {
@@ -619,11 +702,9 @@ function buildSlide(i) {
     const q = document.createElement('div');
     q.className = 'quote';
     q.textContent = s.text;
-    // Each quote takes the next face in the rotation, so consecutive text
-    // slides never share one. Tilt and layout stay put; only the type changes.
+    // Tilt and layout stay put; only the type changes (see applyFace).
     if (QUOTE_FONTS.length) {
-      q.style.fontFamily = "'" + QUOTE_FONTS[textCount++ % QUOTE_FONTS.length] +
-                           "', " + BASE_STACK;
+      applyFace(q, s.text);
     }
     el.appendChild(q);
     if (s.attribution) {
@@ -899,6 +980,30 @@ const TEXTS  = __TEXTS_JSON__;
 const MAX_UPSCALE = __MAX_UPSCALE__;
 const QUOTE_FONTS = __QUOTE_FONTS__;
 const BASE_STACK = '-apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif';
+const SHORT_QUOTE_CHARS = __SHORT_QUOTE_CHARS__;
+// Each quote takes the next face in the rotation, so consecutive quotes never
+// share one. Display faces only take short quotes; a long one passes over them.
+let faceCursor = 0;
+// A family with variants steps to its next weight/width/axis setting each
+// time its slot comes round.
+const variantCursor = {};
+function applyFace(el, text) {
+  const long = (text || '').length >= SHORT_QUOTE_CHARS;
+  for (let k = 0; k < QUOTE_FONTS.length; k++) {
+    const f = QUOTE_FONTS[faceCursor++ % QUOTE_FONTS.length];
+    if (long && f.display) continue;
+    el.style.fontFamily = "'" + f.family + "', " + BASE_STACK;
+    if (f.variants.length) {
+      const i = variantCursor[f.family] || 0;
+      variantCursor[f.family] = i + 1;
+      const v = f.variants[i % f.variants.length];
+      if (v.w) el.style.fontWeight = v.w;
+      if (v.s) el.style.fontStretch = v.s;
+      if (v.v) el.style.fontVariationSettings = v.v;
+    }
+    return;
+  }
+}
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 // Chairs switch this fast; a text panel arrives after this many chairs.
@@ -995,7 +1100,7 @@ function showText() {
   q.className = 'quote';
   q.textContent = t.text;
   if (QUOTE_FONTS.length) {
-    q.style.fontFamily = "'" + QUOTE_FONTS[ti % QUOTE_FONTS.length] + "', " + BASE_STACK;
+    applyFace(q, t.text);
   }
   overlay.appendChild(q);
   if (t.attribution) {
@@ -1165,12 +1270,15 @@ def main():
               "__TEXT_BASE__": repr(args.text_base_seconds),
               "__TEXT_CPS__": repr(args.text_chars_per_second),
               "__TEXT_MIN__": repr(args.text_min_seconds),
-              "__TEXT_MAX__": repr(args.text_max_seconds)}
+              "__TEXT_MAX__": repr(args.text_max_seconds),
+              "__SHORT_QUOTE_CHARS__": str(SHORT_QUOTE_CHARS)}
     if args.no_embed_fonts:
         face_css, families = "", []
     if families:
-        print(f"type rotates through {len(families)}: {', '.join(families)} "
-              f"({len(face_css)/1024:.0f} KB embedded)")
+        shown = [f["family"] + ("*" if f["display"] else "") for f in families]
+        print(f"type rotates through {len(families)}: {', '.join(shown)} "
+              f"({len(face_css)/1024:.0f} KB embedded; * = display, "
+              f"quotes under {SHORT_QUOTE_CHARS} chars only)")
     home = ""
     if args.home_url:
         home = ('  <div id="home"><a href="%s">\u2190 %s</a></div>\n'

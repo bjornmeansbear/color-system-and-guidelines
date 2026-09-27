@@ -38,6 +38,14 @@ not chrome framing a layout. Radius is fine on a floating content block at any
 size. Small pill/tag elements (`border-radius: 999px`, see oblique) are the
 other standing case.
 
+**Divider grids: draw the lines with `gap`, not per-cell borders.** Give the
+container the line color as its background, the cells the page background,
+and `gap: 1px`. The gaps are the dividers, and they stay right however the
+cells wrap — no `:nth-child` border-borrowing that has to be re-derived at
+every breakpoint. Use flex (not grid) so a short last row grows to fill
+instead of leaving a line-colored hole. First used for a.wjerk.shop's
+header nav (2026-09-27).
+
 Buttons and interactive elements show state by inverting foreground/
 background on press, not by adding elevation or a hover-glow.
 
@@ -85,7 +93,12 @@ on onething shipped a "muted" text token that actually failed WCAG AA
 background it sits on before it ships — don't trust the name.
 
 Focus is always visible — thick, accent-colored outline via
-`:focus-visible`. Never suppressed.
+`:focus-visible`. Never suppressed. Two refinements for edge-to-edge block
+links (nav cells, full-width cards): inset the ring (negative
+`outline-offset`) so the screen edge or an `overflow: hidden` parent can't
+cut it off, and give focus the same filled state as hover. On that accent
+fill the ring switches to the text color, since an accent ring on an accent
+ground disappears.
 
 ## Color: pink is the accent, not blue
 
@@ -219,6 +232,16 @@ touching a single `--text-*`/`--leading-*` value, because every step is
 relative to the same root. `kit.css` doesn't set a root font-size itself —
 it inherits the browser default (respects user zoom/settings) — this is a
 technique to reach for per-project, not a default the kit imposes.
+
+**Fluid type is an allowed trade.** A `clamp()` font-size (rem min, rem
+max, `rem + vw` in between) slides through off-grid sizes as the viewport
+grows, so it breaks the rhythm between its endpoints. That’s acceptable
+when it replaces a per-breakpoint stack of overrides — efficiency over
+forcing the grid (“do more with less”). Keep both endpoints in rem, ideally
+on scale rungs, so text still honors user zoom and font-size settings
+(WCAG 1.4.4); never use a bare `vw` size. First used on a.wjerk.shop
+(2026-09-27): four headline/blurb sizes, each ramping from a 20rem to a
+55rem viewport.
 
 Two existing utilities, `.label-upper` (0.8125rem) and `.caption-muted`
 (0.875rem), already matched a scale rung exactly once the grid existed

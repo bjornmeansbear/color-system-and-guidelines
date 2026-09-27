@@ -210,6 +210,26 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-09-27
+
+- **Fluid type allowed as an exception to the baseline grid** (RULES.md
+  “Typography: baseline grid, not a ratio scale”). a.wjerk.shop swapped
+  four per-breakpoint font-size stacks for one `clamp()` each, removing
+  seven media-query overrides. Endpoints stay in rem; the sizes in between
+  are knowingly off-grid.
+- **a.wjerk.shop migrated to the kit palette (2026-09-27).** Previously used
+  browser-default `blue`/`black`/`white`. Now: `--wjerk-white` (white-0
+  #F8FAE7) as the page ground, `--wjerk-black` (black-9 #2D2826) for text,
+  `--pink-5` for hover/focus accent fill and focus ring, `--cornflower-6`
+  for inline running-text link color (7.38:1 on white-0). Self-contained
+  `:root` block in style.css with inline rgb() values — no `@import` of
+  kit.css. Pattern to follow for other Wjerk/OOKB static sites.
+- **Gap-drawn divider grids** added to RULES.md “Structure: rules, not
+  chrome” — replaced ~25 lines of border-borrowing in a.wjerk.shop's nav.
+- **Focus on edge-to-edge block links**: inset ring, shared hover fill,
+  text-colored ring on accent fill (RULES.md “Contrast”). Came from finding
+  the homepage card links' ring clipped by `overflow: hidden`.
+
 ### 2026-09-26
 
 - **Slideshow type rotation: 6 families → 33.** Two rules came with it

@@ -231,6 +231,10 @@ before starting a session, not just written to at the end of one.
   - Open: Overpass 100 and the 200 weights are hairline at quote
     size and may wash out on a projector. Combat has no curly double
     quotes (the browser falls back for those two glyphs).
+- **Every quote credits its typeface.** Small "Type: …" line: face and
+  weight/axis shown, designer, SIL OFL, linked to the download page on the
+  deck. See RULES.md "Slideshows / unattended players". Also made the deck's
+  off-screen slides `inert`, so a link on a hidden neighbour can't take focus.
 - **Caption filter catches tab-count prefixes.** "(3) Instagram" was
   projected as a caption; the junk-title pattern now allows a leading
   "(N) ".

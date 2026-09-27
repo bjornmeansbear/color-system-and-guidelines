@@ -315,6 +315,49 @@ QUOTE_FACES = [
 ]
 SHORT_QUOTE_CHARS = 80
 
+# Who made each face and where anyone can get it, shown small under every
+# quote. Every face here is free to use, so the credit doubles as a pointer:
+# a visitor who likes the type can go and download it. Designers are from
+# each font's own name table or google/fonts METADATA.pb, not from memory.
+VELVETYNE = "https://velvetyne.fr/fonts/%s/"
+GOOGLE = "https://fonts.google.com/specimen/%s"
+DEGHEEST = VELVETYNE % "degheest"
+FACE_CREDITS = {
+    "Basteleur": ("Keussel", VELVETYNE % "basteleur"),
+    "Sligoil Micro": ("Ariel Martín Pérez", VELVETYNE % "sligoil"),
+    "Feroniapi": ("Peter Wiegel & Julienne Richard", VELVETYNE % "feroniapi"),
+    "Anthony": ("Sun Young Oh", VELVETYNE % "anthony"),
+    "Le Murmure": ("Jérémy Landes", VELVETYNE % "le-murmure"),
+    "Compagnon": ("Juliette Duhé & Léa Pradine", VELVETYNE % "compagnon"),
+    "Combat": ("Martin Desinde", VELVETYNE % "combat"),
+    "Terminal Grotesque": ("Raphaël Bastide", VELVETYNE % "terminal-grotesque"),
+    "Director": ("Ange Degheest, May Jolivet & Justine Herbel", DEGHEEST),
+    "FT88 Regular": ("Ange Degheest & Mandy Elbé", DEGHEEST),
+    "FT88 Serif": ("Ange Degheest & Mandy Elbé", DEGHEEST),
+    "FT88 School": ("Ange Degheest & Mandy Elbé", DEGHEEST),
+    "FT88 Gothique": ("Ange Degheest & Mandy Elbé", DEGHEEST),
+    "FT88 Expanded": ("Ange Degheest & Mandy Elbé", DEGHEEST),
+    "Louise": ("Ange Degheest, Luna Delabre & Camille Depalle", DEGHEEST),
+    "Latitude": ("Ange Degheest & Eugénie Bidaut", DEGHEEST),
+    "Equateur": ("Ange Degheest & Eugénie Bidaut", DEGHEEST),
+    "Abordage": ("Ange Degheest & Eugénie Bidaut", DEGHEEST),
+    "Space Grotesk": ("Florian Karsten", GOOGLE % "Space+Grotesk"),
+    "Cormorant Garamond": ("Christian Thalmann", GOOGLE % "Cormorant+Garamond"),
+    "Work Sans": ("Wei Huang", GOOGLE % "Work+Sans"),
+    "Libre Franklin": ("Impallari Type", GOOGLE % "Libre+Franklin"),
+    "Spectral": ("Production Type", GOOGLE % "Spectral"),
+    "Newsreader": ("Production Type", GOOGLE % "Newsreader"),
+    "Overpass": ("Delve Withrington, Dave Bailey & Thomas Jockin", GOOGLE % "Overpass"),
+    "Atkinson Hyperlegible Next": ("Braille Institute", GOOGLE % "Atkinson+Hyperlegible+Next"),
+    "BioRhyme": ("Aoife Mooney", GOOGLE % "BioRhyme"),
+    "Climate Crisis": ("Daniel Coull & Eino Korkala", GOOGLE % "Climate+Crisis"),
+    "Astloch": ("Dan Rhatigan", GOOGLE % "Astloch"),
+    "Fruktur": ("Viktoriya Grabowska & Eben Sorkin", GOOGLE % "Fruktur"),
+    "Oi": ("Kostas Bartsokas", GOOGLE % "Oi"),
+    "Yatra One": ("Catherine Leigh Schmidt", GOOGLE % "Yatra+One"),
+    "Young Serif": ("Bastien Sozeau", GOOGLE % "Young+Serif"),
+}
+
 
 def embedded_faces(root):
     """(@font-face css, [{family, display, variants}]) with the woff2 inlined
@@ -340,8 +383,10 @@ def embedded_faces(root):
                 "font-display:block;src:url(data:font/woff2;base64,%s) format('woff2');}"
                 % (family, desc, b64))
         if found:
+            by, url = FACE_CREDITS.get(family, ("", ""))
             families.append({"family": family, "display": display,
-                             "variants": rest[0] if rest else []})
+                             "variants": rest[0] if rest else [],
+                             "by": by, "url": url})
     return "\n".join(css), families
 
 
@@ -562,6 +607,27 @@ __FONT_FACES__
     font-size: clamp(16px, 1.8vw, 26px);
     color: rgb(255,129,169); /* pink-3: the one accent */
   }
+  /* The type credit takes the image caption's corner, one size down and in
+     the caption credit's dim brown-4 (7.06:1 on the ground, AAA). Set in the
+     base stack, not the face it names, so it reads the same every time. */
+  .typecredit {
+    position: absolute; left: 0; bottom: 0;
+    max-width: 46vw;
+    padding: 1.5vh 2.2vw;
+    font: clamp(12px, 1.1vw, 15px)/1.35 -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 400; font-style: normal; font-stretch: 100%;
+    letter-spacing: 0.02em;
+    color: rgb(158,151,147);
+  }
+  .typecredit a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .typecredit a:focus-visible {
+    outline: 2px solid rgb(255,129,169);
+    outline-offset: 3px;
+  }
 
   /* Bottom-RIGHT: the caption block owns the bottom-left corner, and this
      stack is only on screen for the first few seconds anyway. The source
@@ -650,16 +716,35 @@ function applyFace(el, text) {
     const f = QUOTE_FONTS[faceCursor++ % QUOTE_FONTS.length];
     if (long && f.display) continue;
     el.style.fontFamily = "'" + f.family + "', " + BASE_STACK;
+    let label = f.family;
     if (f.variants.length) {
       const i = variantCursor[f.family] || 0;
       variantCursor[f.family] = i + 1;
       const v = f.variants[i % f.variants.length];
-      if (v.w) el.style.fontWeight = v.w;
-      if (v.s) el.style.fontStretch = v.s;
-      if (v.v) el.style.fontVariationSettings = v.v;
+      if (v.w) { el.style.fontWeight = v.w; label += ' ' + v.w; }
+      if (v.s) { el.style.fontStretch = v.s; if (v.s !== '100%') label += ' Expanded'; }
+      if (v.v) { el.style.fontVariationSettings = v.v; label += ' ' + v.v.replace(/[^0-9]/g, ''); }
     }
-    return;
+    return {label: label, by: f.by, url: f.url};
   }
+  return null;
+}
+// "Type: Spectral 500, Production Type (SIL OFL)". The name links to where
+// the face can be downloaded, when the caller wants a link.
+function typeCredit(face, tag, linked) {
+  const tc = document.createElement(tag);
+  tc.className = 'typecredit';
+  tc.append('Type: ');
+  if (linked && face.url) {
+    const a = document.createElement('a');
+    a.href = face.url;
+    a.textContent = face.label;
+    tc.append(a);
+  } else {
+    tc.append(face.label);
+  }
+  tc.append((face.by ? ', ' + face.by : '') + ' (SIL OFL)');
+  return tc;
 }
 const elements = new Array(SLIDES.length).fill(null);
 const broken = new Array(SLIDES.length).fill(false);
@@ -703,9 +788,7 @@ function buildSlide(i) {
     q.className = 'quote';
     q.textContent = s.text;
     // Tilt and layout stay put; only the type changes (see applyFace).
-    if (QUOTE_FONTS.length) {
-      applyFace(q, s.text);
-    }
+    const face = QUOTE_FONTS.length ? applyFace(q, s.text) : null;
     el.appendChild(q);
     if (s.attribution) {
       const a = document.createElement('div');
@@ -713,6 +796,7 @@ function buildSlide(i) {
       a.textContent = '— ' + s.attribution;
       el.appendChild(a);
     }
+    if (face) el.appendChild(typeCredit(face, 'div', true));
   }
   stage.appendChild(el);
   elements[i] = el;
@@ -774,7 +858,10 @@ function show(i) {
   if (!elements[current]) buildSlide(current);
   const nxt = (current + 1) % SLIDES.length;
   if (!elements[nxt]) buildSlide(nxt);
-  elements.forEach((el, idx) => { if (el) el.classList.toggle('active', idx === current); });
+  // inert keeps links on the invisible neighbouring slides out of the tab order.
+  elements.forEach((el, idx) => {
+    if (el) { el.classList.toggle('active', idx === current); el.inert = idx !== current; }
+  });
   prune();
   preloadAhead();
   scheduleNext();
@@ -922,6 +1009,14 @@ __FONT_FACES__
     margin: 1.6rem 0 0; font-size: clamp(14px, 1.4vw, 20px);
     color: rgb(255,129,169);
   }
+  /* Type credit rides at the foot of the card, small and dim (brown-4, 7.06:1
+     on the panel). Base stack, so it reads the same under every face. */
+  #overlay .typecredit {
+    margin: 1.4rem 0 0;
+    font: clamp(11px, 0.9vw, 14px)/1.35 -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    letter-spacing: 0.02em;
+    color: rgb(158,151,147);
+  }
   /* Three footprints, picked by quote length. The card is centred and in
      flow, so width and type size are what vary -- a short line takes a small
      card, a long passage takes most of the frame. */
@@ -993,16 +1088,35 @@ function applyFace(el, text) {
     const f = QUOTE_FONTS[faceCursor++ % QUOTE_FONTS.length];
     if (long && f.display) continue;
     el.style.fontFamily = "'" + f.family + "', " + BASE_STACK;
+    let label = f.family;
     if (f.variants.length) {
       const i = variantCursor[f.family] || 0;
       variantCursor[f.family] = i + 1;
       const v = f.variants[i % f.variants.length];
-      if (v.w) el.style.fontWeight = v.w;
-      if (v.s) el.style.fontStretch = v.s;
-      if (v.v) el.style.fontVariationSettings = v.v;
+      if (v.w) { el.style.fontWeight = v.w; label += ' ' + v.w; }
+      if (v.s) { el.style.fontStretch = v.s; if (v.s !== '100%') label += ' Expanded'; }
+      if (v.v) { el.style.fontVariationSettings = v.v; label += ' ' + v.v.replace(/[^0-9]/g, ''); }
     }
-    return;
+    return {label: label, by: f.by, url: f.url};
   }
+  return null;
+}
+// "Type: Spectral 500, Production Type (SIL OFL)". The name links to where
+// the face can be downloaded, when the caller wants a link.
+function typeCredit(face, tag, linked) {
+  const tc = document.createElement(tag);
+  tc.className = 'typecredit';
+  tc.append('Type: ');
+  if (linked && face.url) {
+    const a = document.createElement('a');
+    a.href = face.url;
+    a.textContent = face.label;
+    tc.append(a);
+  } else {
+    tc.append(face.label);
+  }
+  tc.append((face.by ? ', ' + face.by : '') + ' (SIL OFL)');
+  return tc;
 }
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1099,9 +1213,7 @@ function showText() {
   const q = document.createElement('p');
   q.className = 'quote';
   q.textContent = t.text;
-  if (QUOTE_FONTS.length) {
-    applyFace(q, t.text);
-  }
+  const face = QUOTE_FONTS.length ? applyFace(q, t.text) : null;
   overlay.appendChild(q);
   if (t.attribution) {
     const a = document.createElement('p');
@@ -1109,6 +1221,9 @@ function showText() {
     a.textContent = '\u2014 ' + t.attribution;
     overlay.appendChild(a);
   }
+  // Plain text here: the panel takes no pointer events, so a link would be
+  // a promise it can't keep.
+  if (face) overlay.appendChild(typeCredit(face, 'p', false));
   requestAnimationFrame(() => {
     overlay.classList.add('on');
     stageEl.classList.add('texting');

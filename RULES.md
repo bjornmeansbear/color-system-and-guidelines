@@ -707,6 +707,16 @@ the generalized, drop-in version: no build step, edit the `CONFIG`,
   the next text face. Rotation still never repeats a face back to back.
   Without this, a display face eventually lands on the longest paragraph
   in the file and it becomes unreadable on the wall.
+- **Credit the type, and point at where to get it.** Every quote carries a
+  small "Type: Spectral 500, Production Type (SIL OFL)" line: face and the
+  weight or axis value actually shown, designer or foundry, licence. On the
+  deck it takes the image caption's bottom-left corner and the name links to
+  the download page; on the ambient card it's plain text at the foot of the
+  panel (the card takes no clicks). Set in the base stack and the caption
+  credit's dim brown-4 (7.06:1, AAA). It's the "TYPE:" credit convention
+  from the decks, applied per slide, and it treats the rotation as a
+  showcase of the libre commons: anyone who likes a face can go and get it.
+  Designers come from each font's name table or google/fonts METADATA.pb.
 - **One slot per family; the family steps through its weights.** A family
   with many weights gets one place in the rotation, and each time that
   slot comes round it takes the next weight (or width, or axis value).

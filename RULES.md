@@ -1034,6 +1034,20 @@ What the scales look like on screen, not by name:
 Blend tints `in oklab`. `oklch` takes the hue arc: yellow → purple passes
 through orange, too near the pink.
 
+**Ledger rows** (Wjorth, 2026-09-24) — the first table-row tints:
+
+- **Zebra stripe:** `white-4` on the `white-0` ground (5.5 apart, just past
+  "same color"), `brown-8` on `brown-9` in dark (8.0). One paper stock
+  creamier, so a stripe reads as ruled ledger paper, not a gray band. Text
+  on the light stripe: `--wjerk-black` 11.8:1, `gray-6` 6.3, `red-6` 6.8,
+  `green-6` 6.1. `white-3` (4.1 apart) was too faint to guide the eye.
+- **Row needing attention** (e.g. uncategorized): `--color-accent-subtle`
+  (`pink-0` / `pink-8`), replacing the stripe, plus a 3px `--color-accent`
+  rule on the row's first cell, so the flag isn't carried by a fill alone.
+  Rule on tint: 3.6:1 light, 7.2:1 dark (3:1 needed for non-text). Every
+  row's first cell carries the rule's width transparently so columns don't
+  shift. 9.6 apart from the stripe (8.4 dark), so the two never blur.
+
 ## Data on screen
 
 From wjeather (2026-09-10), the first project where the kit carries data
@@ -1057,6 +1071,41 @@ rather than prose:
   Never shown first — always one tap away. Draw the samples from the same
   tokens the screen uses, so the key can't drift out of sync with it.
   wjeather, 2026-09-11.
+- **A plain-text numeric readout gets its own type texture, not just the
+  body font at a smaller size.** wjeather (2026-09-20) added a humidity
+  percentage under the hero temperature (`--font-display`, Basteleur) and
+  set it in a self-hosted OFL monospace (IBM Plex Mono) instead of
+  `--font-sans`. Same logic as texture-as-a-channel above, applied to type:
+  the number reads as its own data channel — and fixed-width digits don't
+  reflow the layout as the value updates. Colored with `--color-text-muted`
+  (already verified against every sky-band tint, light and dark, per the
+  "labels" contrast figures logged with each band above), not a new token.
+  Reach for a mono face specifically for numbers that update in place; a
+  static label has no reason to leave `--font-sans`.
+- **Map a value so its everyday range gets most of the visible change.**
+  A straight min→max mapping wastes the range when real data clusters at
+  one end. wjeather's wind hatch (2026-09-26) ran line spacing linearly
+  from 5 to 60 km/h. Everyday winds (6–20 km/h) moved it only 7px, so it
+  read as constant, and only gales looked different. A square root on the
+  normalized value (`t = √((v − min) / (max − min))`) spread 6–20 km/h over
+  12px with the same end points. Use `t ** p` to tune it: a smaller `p`
+  gives the low end more change. Log does the same for data spanning
+  orders of magnitude. The curve distorts on purpose, so use it for
+  at-a-glance or ambient encodings only. Never use it for bar lengths,
+  axes, or anything read as an exact comparison. Related: any size drawn
+  as an area (circles, squares) needs √ just to be honest, since area
+  grows with the square of the radius.
+- **One value may take two channels when one alone is too quiet.** This
+  is the reverse of "one variable per channel" above: a channel still
+  never carries two variables, but one variable can use two channels. The
+  wind hatch gets both closer and darker as the wind strengthens (spacing
+  36→6px, opacity 0.25→0.4), both driven by the same `strength(t)`, so
+  they can't disagree. It's the same logic as the humidity line being hue
+  *and* dash. Keep the second channel's range narrow: here the darkest
+  hatch has to stay under the "quieter than the number and labels"
+  budget, and the lightest has to stay visible on the darkest sky band.
+  In wjeather, 0.25 has only been checked by eye on the partly cloudy
+  bands so far.
 
 ## Data portability: plain text as the canonical form
 

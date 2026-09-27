@@ -238,6 +238,36 @@ before starting a session, not just written to at the end of one.
 - **Caption filter catches tab-count prefixes.** "(3) Instagram" was
   projected as a caption; the junk-title pattern now allows a leading
   "(N) ".
+- **Two new "Data on screen" bullets: curve the mapping toward the
+  everyday range, and let one value take two channels.** In wjeather, the
+  wind hatch's line spacing barely moved between 6 and 20 km/h (typical
+  days), so it read as constant. A square-root mapping fixed that, and
+  line opacity now changes too (0.25→0.4) from the same curve. See
+  RULES.md "Data on screen". Open question: whether the √ default should
+  become a small shared helper if a second project maps skewed data
+  (rain intensity in wjeather is the likely next case).
+
+### 2026-09-24
+
+- **Ledger row tints: zebra stripe and attention row.** Wjorth's
+  transaction table got a `white-4` stripe (`brown-8` dark) as a new app
+  token, `--color-row-alt`, and uncategorized rows the existing
+  `--color-accent-subtle` plus a 3px accent rule on the first cell.
+  Contrast and OKLab distance measured for every text color on both tints,
+  light and dark. See RULES.md "Color: tints behind text", "Ledger rows".
+  `--color-row-alt` lives in the project for now; promote it to `kit.css`
+  if a second project needs striped tables.
+
+### 2026-09-20
+
+- **New "Data on screen" bullet: numeric readouts get their own type
+  texture.** wjeather added a humidity percentage under the hero
+  temperature, set in self-hosted IBM Plex Mono (OFL) rather than
+  `--font-sans` — mirrors the texture-as-a-channel idea already in that
+  section, now applied to type, plus fixed-width digits so the number
+  doesn't jitter the layout as it updates. See RULES.md "Data on screen".
+  Colored with the existing `--color-text-muted`, already contrast-checked
+  against every sky band; no new token.
 
 ### 2026-09-19
 

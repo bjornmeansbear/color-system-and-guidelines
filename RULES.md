@@ -1087,6 +1087,11 @@ rather than prose:
   trope, and a way to add a variable without adding a hue.
 - **Anything drawn gets a spoken summary** for screen readers. Color and
   position are never the only carrier.
+- **A progress bar is a bordered track and a flat fill,** square, no gradient
+  or rounding. Fill is the primary data series (`--color-data-primary`, which
+  already flips to pink-3 in dark mode); the track border is the text color.
+  The amount is always stated in words next to it, and the bar carries
+  `role="progressbar"` with `aria-valuenow`. Wjorth Baby Steps, 2026-10-02.
 - **An abstract screen earns an on-demand key.** Sighted viewers get nothing
   from a spoken summary, and a system this compressed has to be learnable
   without being explained every day: a small `?` beside the other controls,
@@ -1186,6 +1191,61 @@ verbatim copy; the project's own CSS maps it in:
   `layer(base)` is what lets `text-xl` override the kit's `h1`.
 - Project-only tokens (a display size, data colors) live in the project's CSS
   beside the mapping, each with its measured contrast in a comment.
+
+## Using the kit in a TiddlyWiki static site
+
+First done in bjornpaedia (2026-10-04). TiddlyWiki's own stylesheet is built
+from a *palette*, not from CSS variables, so the kit goes in at two levels:
+
+- **The palette holds the literals.** A palette tiddler
+  (`$:/palettes/Wjerk`, type `application/x-tiddler-dictionary`) carries the
+  kit hex values: `background` = `--wjerk-white`, `foreground` =
+  `--wjerk-black`, `primary` = `--cornflower-6` (link color, 7.38:1 on the
+  White), `wjerk-accent` = `--pink-5` (read as `--color-accent`, so focus rings,
+  nav hover and the pill stay pink while links are blue), `muted-foreground` =
+  `--gray-6`, table header = `--white-4`. Literals, not `var(--…)`, because
+  TiddlyWiki does colour math on palette values (tag pills, contrast).
+- **A stylesheet tiddler exposes them as kit tokens.** `Wjerk Tokens` (tagged
+  `$:/tags/Stylesheet`) writes `--color-bg: <<colour background>>;` and so on,
+  so the project's own CSS uses `var(--color-*)` and the hex lives in one
+  place. Gotcha: TiddlyWiki wikitext turns `--` into an en-dash, which
+  silently breaks every custom-property name — start that tiddler with
+  `\rules except dash`. The same goes for any other wikitext
+  tiddler that writes `var(--…)` (the static CSS template needed it too).
+- Don't paste all of `kit.css`: its element resets (`h1`, `p`, `a`…) fight the
+  vanilla theme. Tokens only.
+
+What the migration found, kept as rules:
+
+- **A stock palette is a hidden default.** The wiki's active palette was the
+  stock ContrastLight (white ground, pure `#00f` links) — the same "blue only
+  ever appeared as an undecided default" case as the accent rule.
+- **Links are `cornflower-6`, not pink — a deliberate choice, not the old
+  default.** It is 7.38:1 on the White and still 6.35:1 on `white-4`, where
+  `pink-5` falls to 4.11:1. A long list of pink links also drowned the accent;
+  with blue doing "goes somewhere", pink does interaction (nav hover, focus
+  ring, pill) and "not written yet". `cornflower-5` fails AA (4.44:1).
+- **Inline links get an underline.** Neither pink-5 (2.87:1) nor cornflower-6
+  (1.86:1) is 3:1 against the ink, so color alone is not a sufficient cue
+  (WCAG 1.4.1).
+- **Missing ("TBA") links: `pink-6` text on a `pink-0` tint, 5.57:1.** Pale
+  pink text alone fails (`pink-4` 2.94:1, `pink-3` 2.18:1), and the old
+  `opacity: .6` suffix was 2.53:1 — so the pale pink is a *tint behind*
+  darker pink text, not the text color.
+- **Header nav uses the divider-grid pattern** (see "Structure: rules, not
+  chrome"): container background = line color, `gap: 1px`, cells = ground.
+  It replaced about 40 lines of `:nth-child` border-borrowing across two
+  breakpoints. Hover/focus are the accent fill with White text, matching
+  a.wjerk.shop's header nav (white on `pink-5`, 4.78:1), with the focus ring
+  drawn inside the block (`outline-offset: -0.5rem`) so it isn't cut off at
+  the screen edge.
+- **A pill with white text on `#ccc` was 1.61:1.** The word-count pill is now
+  `--color-text` on `--color-accent-subtle` (`pink-0`), 10.44:1.
+- **Pair paddings are a bug class.** The sidebar lost its left gutter because
+  two columns each owned one side of the gap. Use one `gap`, or a shared
+  token (`--frame-pad`: 14px, 42px from 960px, mirroring the vanilla theme's
+  card padding) for every element that has to bleed to, or align with, the
+  card edge.
 
 ## Icons: one family across sites and apps
 

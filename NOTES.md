@@ -210,6 +210,28 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-10-04
+
+- **bjornpaedia moved onto the kit palette** (TiddlyWiki static site; recipe
+  in RULES.md "Using the kit in a TiddlyWiki static site"). Palette tiddler +
+  `Wjerk Tokens` stylesheet; links go from default blue to `cornflower-6` (accent stays pink; missing links are pink-6 on a pink-0 tint), ground to
+  `--wjerk-white`, nav hover from `blue` to the pink fill a.wjerk.shop uses, nav
+  dividers rebuilt with the `gap` pattern. Contrast measured: ink on White
+  13.73, `pink-5` links 4.78, `pink-6` hover 7.33, ink on `white-4` bands
+  11.81, ink on `pink-0` pill 10.44. **Still open for bjornpaedia:** not yet
+  checked in dark mode; the sticky tiddler title (`.tc-title`) is inert as
+  built; the homepage intro and entry list use three different side insets;
+  the word-count pill's overhang clips off-screen below ~40rem.
+
+### 2026-10-02
+
+- **Compact button size** (`.btn.btn-sm`, `.field`'s 0.375rem/0.75rem padding, about 32px tall) added in Wjorth for secondary actions in dense forms, where kit `.btn` (0.875rem/1.75rem) took over the page. Same square bordered look; meets WCAG 2.2's 24px minimum target. Candidate for kit.css if a second project needs it.
+- **Progress bar pattern** added to RULES.md “Data on screen”, from Wjorth's
+  Baby Steps page: a square, 1px-bordered track with a flat `--color-data-primary`
+  fill, and the number always in words beside it. Measured: pink-5 on white-0
+  4.78:1; the dark-mode swap to pink-3 on brown-9 is 8.80:1 (pink-5 there
+  would be 4.01:1, still over the 3:1 non-text bar).
+
 ### 2026-09-27
 
 - **Fluid type allowed as an exception to the baseline grid** (RULES.md

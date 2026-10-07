@@ -38,6 +38,12 @@ not chrome framing a layout. Radius is fine on a floating content block at any
 size. Small pill/tag elements (`border-radius: 999px`, see oblique) are the
 other standing case.
 
+Same logic covers a soft shadow on a *content image* that is deliberately
+set on top of another image, to read as a physical object lying on it. Standing
+case: the tilted poster over the MICA admissions tile on a.wjerk.shop's
+homepage — a faint `1px 1px 5px rgba(0,0,0,.3)`, scoped to that one image.
+Don't generalize it to panels or tiles.
+
 **Divider grids: draw the lines with `gap`, not per-cell borders.** Give the
 container the line color as its background, the cells the page background,
 and `gap: 1px`. The gaps are the dividers, and they stay right however the
@@ -201,6 +207,29 @@ deliberate accent on a specific element: a stamp, a callout, a heading.
 Not yet wired into `kit.css` as a reusable utility; see `.tilt` there for
 the starting point.
 
+Two sizes of it, from onething (2026-10-07) and oblique:
+
+- **The accent tilt, 7–12deg,** stays for the one loud thing: onething's
+  "✓ Done" stamp (8deg) and its stack-complete sticker (−8deg).
+- **The pile tilt, 1.5–4deg,** makes a set of cards read as a deck or a pile
+  of notes. Random per card, alternating sides so neighbours never line up,
+  fixed for the card's life. The card being read gets about a third of its
+  tilt — enough to belong to the pile, straight enough to read. Pivot the
+  tilt near whatever must stay put (onething: `transform-origin: 25% 0`, by
+  the tabs). oblique's single card runs wider (±7deg) because nothing is
+  stacked behind it.
+
+**Stickers** are the one place a non-rectangular shape is at home: content
+that floats, like the quote card. onething's is a 24-point burst in
+`--color-accent` with a 2px ink outline, `--color-bg` text (4.78:1), pressed
+state inverting to ink like any button. The ink outline on pink is 2.87:1, so
+it is decoration — the pink-on-ground edge (4.78:1) is what carries the shape.
+
+**State marks take ink before a second hue.** onething marks done in pink
+and skipped in `--color-text` (tab, footer key). One accent holds; the other
+state is told apart by shape and side (left/right, matching its button), not
+by a new color.
+
 ## Typography: baseline grid, not a ratio scale
 
 `kit.css`'s `--text-*` / `--leading-*` tokens are a vertical-rhythm
@@ -318,6 +347,15 @@ so no pause control is needed, and near-zero battery cost. Unlike an
 auto-advancing slideshow, it's a flourish rather than the medium, so under
 `prefers-reduced-motion` it's skipped outright; the still lines keep their
 angle and spacing.
+
+onething's stamp (2026-10-07) is the second: the card just acted on stays on
+top for about a second — a pink "✓ Done" sticker slams onto its right
+corner, or a dark "Skipped" tab pops up on its left — then leaves toward the
+side of the button that was pressed. The motion says which thing happened and
+where the card went (gone, or to the back of the pile). The state has already
+changed underneath, so nothing waits on the animation. Under
+`prefers-reduced-motion` the stamp or tab still appears and the card is then
+simply gone.
 
 ## Presentations: the slide is not the script
 
@@ -994,6 +1032,29 @@ treatment). No custom-media variables — the kit has no build step and
 needs to work as a plain `<link>`, so these are documented values to reuse
 by hand, not a variable to reference.
 
+## Navigation: one bar, grouped, a second row for the group
+
+An app with more than a few pages gets one site-wide bar in the layout, not
+a button row hand-built on each page (Wjorth had eight pages with eight
+different rows, and the only page that linked to everything was the
+dashboard). Group the pages by the job they do, not one link per page: four
+top-level links fit at phone width, seven don't. A group with more than one
+page gets a second row, shown only while you're inside it. Pages keep only
+controls that belong to them (a month stepper, a Print button); "back to
+the dashboard" is the wordmark.
+
+Built from the structure rules, not around them: a solid 1px border under
+each row, square links, no fill or shadow. The current page is marked by
+**weight plus a 3px underline in the ink color**, never by color alone, and
+nav links use the full text color rather than the muted tone (the muted
+tones are the ones that quietly fail contrast; ink on the ground measures
+13.73:1). `aria-current="page"` on the exact page, `"location"` on the
+group; the two rows are separate labelled `<nav>` landmarks. Link height is
+44px. At phone width the wordmark and the theme toggle share the first row
+and the links take the full row below; from `40rem` it is one row. First
+built in Wjorth `app/` (2026-10-05); the site map lives in one file so a new
+page is one line.
+
 ## The `[hidden]` reset
 
 `kit.css` restores the `hidden` attribute:
@@ -1083,6 +1144,16 @@ rather than prose:
   and color-blindness.
 - **Data tints sit inside the text budget** above, because the number and
   labels sit on them.
+- **A big number scales to its card, not to the viewport.** Size a stat
+  tile's amount from the tile's own width: wrap it in a size container
+  (`container-type: inline-size`) and set `font-size: clamp(0.75rem, 13cqi,
+  var(--text-lg))`, `white-space: nowrap`. Monospace digits are 0.6em wide, so
+  13cqi fits about twelve characters (`-$100,000.00`) with room to spare, and
+  the cap keeps it at full size when there's room. A fixed size with a
+  breakpoint can't do this: four tiles at 640px are narrower than two at
+  390px, so a breakpoint tuned for one breaks the other. Pair it with
+  `break-words` on any text value (a category name) in the same tile. Wjorth
+  KPI row, 2026-10-06.
 - **Texture is line work:** wind as hatching, stars as stipple. The etching
   trope, and a way to add a variable without adding a hue.
 - **Anything drawn gets a spoken summary** for screen readers. Color and
@@ -1246,6 +1317,18 @@ What the migration found, kept as rules:
   token (`--frame-pad`: 14px, 42px from 960px, mirroring the vanilla theme's
   card padding) for every element that has to bleed to, or align with, the
   card edge.
+- **One palette entry, several backgrounds.** A TiddlyWiki palette color can
+  be used by the theme on more than one ground, so check each place it lands
+  (2026-10-06). `sidebar-controls-foreground-hover` was set to the background
+  color, which made the page-control icons vanish on hover; it and
+  `tiddler-controls-foreground-hover` (was `#ddd`, 1.28:1) are now
+  `wjerk-accent` (`pink-5`, 4.78:1). `tiddler-controls-foreground-selected`
+  is a green (`#8ca573`) that works as editor-toolbar icons on ink buttons
+  (5.37:1) but is 2.56:1 on the White, so the project CSS overrides the
+  selected icon on the ground to `pink-6` (7.33:1), the selected editor
+  button's icon to the White on cornflower (7.38:1), and the hovered editor
+  button's icon to ink on green (5.37:1). `pink-6` on the ink buttons is
+  1.87:1 — don't put it there.
 
 ## Icons: one family across sites and apps
 

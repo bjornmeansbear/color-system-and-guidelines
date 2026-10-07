@@ -210,8 +210,58 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-10-07
+
+- **onething: pile, stamp, tabs, sticker** (RULES.md "Typography: rotation as
+  an accent", "Motion"). Two tilt sizes now written down — 7–12deg for the
+  one loud accent, 1.5–4deg per card for a pile. Stickers named as floating
+  content that may leave the rectangle. Done is pink, skipped is ink: a
+  second state gets shape and side, not a second hue. Measured: `white-0` on
+  `pink-5` 4.78:1 (stamp, sticker, tally marks), `white-0` on ink 13.73:1
+  (tab); ink outline on `pink-5` is 2.87:1 and so only decorative.
+  **Open question:** `.tilt` in `kit.css` covers the accent size only —
+  whether the pile tilt deserves a utility waits on a second project using it.
+
+### 2026-10-06
+
+- **Bjornpaedia toolbar icon states** (RULES.md "Using the kit in a
+  TiddlyWiki static site", "One palette entry, several backgrounds"). Hover
+  on the page and tiddler controls is now `pink-5`; selected on the ground is
+  `pink-6`; the editor toolbar keeps its green on ink, with the selected and
+  hovered icon colors corrected. All pairs measured, lowest is 4.78:1.
+  **Open question:** the green (`#8ca573`) is a leftover from the stock
+  ContrastLight palette, not a kit color. It sits within a few units of
+  `--green-4` (`#89A271`, 5.18:1 on ink). Kristian likes how it looks; not
+  yet decided whether to snap it to `green-4` or whether green belongs in
+  this wiki's interaction colors at all, given pink does interaction.
+
+### 2026-10-05
+
+- **App navigation pattern** (RULES.md "Navigation: one bar, grouped, a
+  second row for the group"). Wjorth `app/` swapped per-page button rows for
+  a site bar (Month · Budget · Debt · Insights) plus a second row inside
+  groups with several pages (Budget: Budget/Foundations; Debt:
+  Payoff/Steps/Gap/Call prep). Active state is weight + a 3px ink underline,
+  not color. Ink on ground measured 13.73:1. Checked in light mode at 390px
+  and 1000px; **not yet checked visually in dark mode** (same tokens, so
+  contrast should carry, but the underline hasn't been seen there).
+- **Stat-tile amounts now fit their card** (RULES.md "Data on screen"). The
+  Wjerk dashboard's KPI amounts (`$67,181.73`, 22px mono) overflowed their
+  cards at 390px: about 115px of room, 132px of number. Two causes, two
+  fixes: the amount scales to its card instead of the viewport (a size
+  container plus `clamp(0.75rem, 13cqi, var(--text-lg))`), and the four-up
+  row now starts at the 55rem breakpoint, not 40rem, because four cards at
+  640px were narrower than two at 390px. Checked at 360, 390, 700 and 1100px,
+  and with a $201,545.19 total at 360px. Other pages' big numbers (Call
+  prep, Month close-out, Payoff) use whole dollars in wider layouts and
+  weren't audited.
+
 ### 2026-10-04
 
+- **Shadow exception recorded.** a.wjerk.shop's homepage has one deliberate
+  `box-shadow` (faint, on the tilted poster image over the MICA tile). It's
+  content-on-content, not chrome, so it fits the existing scope of the
+  structure rule; RULES.md now names it as a standing case.
 - **bjornpaedia moved onto the kit palette** (TiddlyWiki static site; recipe
   in RULES.md "Using the kit in a TiddlyWiki static site"). Palette tiddler +
   `Wjerk Tokens` stylesheet; links go from default blue to `cornflower-6` (accent stays pink; missing links are pink-6 on a pink-0 tint), ground to

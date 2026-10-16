@@ -99,7 +99,22 @@ on onething shipped a "muted" text token that actually failed WCAG AA
 background it sits on before it ships — don't trust the name.
 
 Focus is always visible — thick, accent-colored outline via
-`:focus-visible`. Never suppressed. Two refinements for edge-to-edge block
+`:focus-visible`. Never suppressed.
+
+**Whatever hover reveals, tap and keyboard reach too.** taste-translator's
+cards showed their rate/translate controls on mouse hover only, so they were
+unreachable on a phone and by keyboard. Now a tap (press and release
+without moving) or keyboard focus *selects* a card, and selection shows the
+same controls. Selected is drawn as a doubled rule. Two catches found
+building it (2026-10-15):
+
+- Count hover only for `pointerType === 'mouse'`. Touch fires
+  `pointerenter`/`mouseenter` with no matching leave, so cards stuck "hovered".
+- A popup can't rely on hover-out to close. Close it on Esc and on any press
+  outside it. Run its Esc handler in the capture phase and
+  `preventDefault()`, so Esc closes only the innermost thing (the menu) and
+  not its parent (the selection), and focus returns to the button that
+  opened it. Two refinements for edge-to-edge block
 links (nav cells, full-width cards): inset the ring (negative
 `outline-offset`) so the screen edge or an `overflow: hidden` parent can't
 cut it off, and give focus the same filled state as hover. On that accent
@@ -185,6 +200,10 @@ to get pruned and added to as preferences move on; see NOTES.md.
 Added 2026-09-02, from the AY26 lecture decks: **Overpass** (OFL, the
 workhorse across every 2026 deck), **Pilowlava** (Velvetyne, OFL — display),
 **PicNic** (Velvetyne, display).
+
+Added 2026-10-15, from taste-translator: **Fraunces** (Undercase Type, OFL —
+a soft, wonky old-style serif with an optical-size axis), weight axis only,
+for titles and the wordmark over the system-sans body.
 
 PicNic carries a flag the others don't. It is published under Velvetyne's
 **CUTE** licence (Conditions d'utilisations typographiques engageantes), not
@@ -1223,6 +1242,32 @@ rather than prose:
   budget, and the lightest has to stay visible on the darkest sky band.
   In wjeather, 0.25 has only been checked by eye on the partly cloudy
   bands so far.
+- **A canvas gets a dot grid.** An infinite pan-and-zoom canvas on a plain
+  ground gives no sign that it moved. taste-translator (2026-10-15) lays one
+  dot per 24 world px (four 6px units) at ~25% ink, a hard-edged 1px dot
+  that is quieter than the faintest edge. It scales and offsets with the
+  viewport, and halves its density whenever dots would sit closer than 18
+  screen px, so it never turns to noise at low zoom. It's texture as a
+  channel, like wjeather's stipple. It carries position, not decoration.
+  The on-demand key (below) applies here too: taste-translator's `?` copies
+  wjeather's `Legend.svelte`.
+- **A network graph is line work too.** taste-translator (2026-10-15) maps a
+  web of rated films, books and records, and gives each edge variable its own
+  channel: *hue* is preference (`--color-accent` where either end is loved,
+  `--color-text` from a seed, `--gray-6`/`--brown-3` otherwise — 7.34:1 and
+  10.49:1 on the ground, so even the quiet lines pass 3:1); *dash* is kind
+  (solid parent→child, 6/6 dashed bridge, 1/4 dotted hand-drawn link);
+  *weight* is strength (2 / 1.5 / 1px). Dash lengths and stroke width are
+  divided by the canvas zoom so the line work stays the same on screen at any
+  scale. No glow filter — a blur is softness, not data.
+- **Node state is carried by the rule, not by fading the text.** The same
+  project's cards: seed = 2px ink frame; loved = pink rule; "part of me" =
+  2px pink rule on `--color-accent-subtle` (ink 10.44:1 on `pink-0`, the rule
+  3.63:1); disliked = dashed rule and `--color-text-muted` text; hidden-but-
+  shown = dotted rule and struck-through title. Ink before a second hue, as
+  with onething's state marks. Opacity fades stay on the *lines* (a disliked
+  edge at 35%), never on text someone has to read — a 45%-opacity card is
+  how the previous version quietly failed AA.
 
 ## Data portability: plain text as the canonical form
 
@@ -1280,6 +1325,18 @@ verbatim copy; the project's own CSS maps it in:
   `layer(base)` is what lets `text-xl` override the kit's `h1`.
 - Project-only tokens (a display size, data colors) live in the project's CSS
   beside the mapping, each with its measured contrast in a comment.
+- **`kit.css`'s component classes are global, so a Svelte component's own
+  `.panel`, `.panel-header`, `.btn` or `.tag` picks them up as well.** Scoped
+  styles win on the properties they set, but whatever they leave alone —
+  padding, a `border-bottom` — leaks in from the kit. taste-translator's
+  explorations dialog grew an extra rule and a 2rem indent this way
+  (2026-10-15). Either use the kit class on purpose or give the component a
+  name the kit doesn't use (`.picker`, `.picker-header`).
+- **Self-hosting an OFL face through Fontsource counts as self-hosted.**
+  `npm i -D @fontsource-variable/<face>` and `@import` it in the app CSS: Vite
+  bundles the woff2 into the build, so no third-party request and the licence
+  ships in `node_modules`. Quicker than hand-copying files into `static/fonts`
+  as wjeather does, and it replaces a Google Fonts `<link>` one-for-one.
 
 ## Using the kit in a TiddlyWiki static site
 
@@ -1390,6 +1447,11 @@ one thing varies.
   a logo.
 
 a.wjerk.shop's etched globe breaks the frame — see NOTES.md.
+
+taste-translator (2026-10-15) keeps the frame and takes a custom fill: a
+dusty rose, `#C98F8E`, darker than any kit pink step 0–2. The brown line work
+measures 6.74:1 on it. Its mark is the app's own subject, a hub of radiating
+nodes, with a "TT" monogram at the centre.
 
 **Export, all from one SVG**
 

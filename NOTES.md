@@ -6,6 +6,14 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **Emoji carry their own palette.** taste-translator (2026-10-15) marks
+  ratings (❤️ 👍 🙂 😐 👎 🚫) and domains (🎬 🎵 📖 …) with emoji, which bring
+  red, yellow and blue that sit outside the kit and can't be contrast-
+  checked as tokens. Left in place for now — they're content the app's
+  meaning leans on. **Decided 2026-10-15:** a custom ink glyph set, to be
+  drawn by hand later (line-drawn, matching the canvas line work). Until
+  then the emoji stay, all in one table (`DOMAINS` and `RATINGS` in
+  taste-translator's `src/lib/types.ts`), so the swap is one place.
 - **No bright green in the kit — data-ink case.** Raised while building
   Wjorth (2026-09-19), a budgeting dashboard needing a clear "good"
   green distinct from the muted `--color-success` (`green-6`, which the
@@ -209,6 +217,35 @@ before starting a session, not just written to at the end of one.
   way; the mapping held, plus dark tints for data at steps 7–9.
 
 ## Changelog
+
+### 2026-10-15
+
+- **taste-translator joined the kit.** A SvelteKit + Tailwind 4 app that maps
+  your taste as a node graph; it was a dark "starfield" with purple/blue/pink
+  glass panels, Skeleton's Cerberus theme, and Inter + Fraunces from Google
+  Fonts. Now: `kit.css` copied in verbatim and mapped into Tailwind per
+  RULES.md, the measured dark mapping under `prefers-color-scheme`, Skeleton
+  removed, Inter dropped for the system stack, Fraunces self-hosted through
+  Fontsource. All blur, glow, gradient and shadow gone; panels and buttons
+  square and ruled, pressed/selected states inverted, pink kept for loved
+  things, focus rings and the one primary action. New in RULES.md: network-
+  graph edge encoding and rule-carried node states ("Data on screen"), the
+  kit-class collision and Fontsource notes (Tailwind section), Fraunces on the
+  roster. Project tokens: `--color-tint` (`white-4` / `brown-8`),
+  `--color-edge*`, `--color-core-bg`, each with its ratio in the project CSS.
+  A11y in the same pass: the "Show Exiled" switch was a `display: none`
+  checkbox (unreachable by keyboard) — now a real input under the track;
+  the seed input's suppressed focus ring restored; sub-12px text raised to
+  the scale; disliked cards no longer faded below AA.
+  Later the same day: the app icon (custom rose fill, see RULES.md "Icons"),
+  an on-demand key copied from wjeather, a canvas dot grid, and tap/keyboard
+  selection so nothing is hover-only (RULES.md "Contrast" and "Data on
+  screen"). A review pass also fixed two older bugs: ratings were never
+  saved (auto-save only watched node counts), and Reset didn't clear storage.
+  Light/dark toggle deliberately skipped, since the system setting is enough here.
+  A mono face (IBM Plex Mono, Sligoil Micro) was considered and declined:
+  the only live numbers are the zoom % and rating counts, and `tnum` on the
+  system stack already keeps their width steady. Two faces were enough.
 
 ### 2026-10-08
 

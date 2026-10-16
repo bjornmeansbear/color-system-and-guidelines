@@ -210,7 +210,50 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-10-08
+
+- **Wjorth: saved theme applied before first paint** (RULES.md "Dark mode").
+  The toggle used to set `data-theme` after hydration, so a saved dark choice
+  on a light system flashed light on every full load. Now an inline script in
+  `app.html` sets it. No colors or tokens changed. Same pass made the
+  transaction table's sort headers real buttons with `aria-sort`, and gave
+  the unlabeled filters and per-row selects `aria-label`s. **Open:** wjorth's
+  dark tokens are still written out twice (the media-query block and the
+  `[data-theme='dark']` block), which can drift.
+
+- **Bjornpaedia homepage: doors in place of the full index** (RULES.md
+  "Using the kit in a TiddlyWiki static site"). Reuses the nav's
+  divider-grid; no new colors or tokens. Checked in headless Chrome at 390px
+  (no horizontal overflow) and 1280px, and the search/show-all behaviour
+  tested by script. Not yet seen by Kristian in a real browser, not
+  published. **Open:** about 840 of 1,900 pages carry none of the twelve door
+  tags, and 86 untagged pages have nothing linking to them, so they are
+  reachable only through search or the full list.
+
+- **Bjornpaedia: stock green snapped to `green-4`.** Closes the open question
+  from 2026-10-06. `tiddler-controls-foreground-selected` is now `#89A271`
+  (was `#8ca573`, three units off). On ink 5.18:1, on cornflower 2.78:1, on
+  the White 2.65:1 — the same pairs pass and fail as before, so the CSS
+  overrides stay.
+
 ### 2026-10-07
+
+- **Image ledger on a.wjerk.shop** (RULES.md "Images", "Weight, shown").
+  `images.html` lists all 84 image files by size (10.58 MB), filled in by
+  `image-index.js` at build time, linked from both footers. Reuses the
+  case-study table styles; three small CSS rules added, no new colors. First
+  run found 17 files (2.96 MB) that ship but no page loads — mostly the
+  photos the dithered tiles were made from — and 10 images hotlinked from
+  Flickr and mica.edu that the page-weight numbers can't see. **Not yet
+  checked in a browser** at phone or desktop width. The idea came from
+  Hannah Gmeiner's permacomputing thesis site, which prints a file size
+  beside every image.
+  Follow-up the same day: all 10 hotlinked images are now self-hosted (two
+  already had identical local copies sitting unused). Hotlinks 0, unused
+  files 15 (2.71 MB), 93 images, 11.87 MB. The stated site weight rose from
+  9.29 MB to 10.77 MB with no change in what a visitor downloads — the old
+  number was under-reporting. A ledger makes the number go up before it
+  goes down.
 
 - **onething: pile, stamp, tabs, sticker** (RULES.md "Typography: rotation as
   an accent", "Motion"). Two tilt sizes now written down — 7–12deg for the

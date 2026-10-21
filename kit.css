@@ -122,6 +122,31 @@
   --wjerk-white: var(--white-0); /* #F8FAE7 */
   --wjerk-black: var(--black-9); /* #2D2826 */
 
+  /* ---- the rest of the original Wjerk palette, exact ----
+     The Figma "OOKB Palette" styles at their own values (RULES.md "Color: the
+     original Wjerk palette"). The ramps above were built from these hues, but
+     a ramp step only lands on an original when the lightness happens to match
+     — Med Gray, Dark Gray, Pink and Orange fall between steps. These keep the
+     originals usable as themselves. Fills first: most were made for White
+     type reversed out of them; check contrast per pairing (table in RULES.md). */
+  --wjerk-brown:            #3C3634;
+  --wjerk-dark-gray:        #616767;
+  --wjerk-med-gray:         #858479; /* the main gray; legacy LESS @ookb-gray rgb(132,132,120) */
+  --wjerk-pink:             #DB4F7A; /* legacy LESS @ookb-pink is brighter, #EC4079 */
+  --wjerk-red:              #9F5B59;
+  --wjerk-orange:           #B97868;
+  --wjerk-yellow:           #C5C071;
+  --wjerk-goldenrod:        #CBAA46;
+  --wjerk-light-green-gray: #C5D3BD;
+  --wjerk-green:            #91A478;
+  --wjerk-dark-green:       #6A8472;
+  --wjerk-light-blue:       #A1B2B1;
+  --wjerk-cornflower:       #627FBB;
+  --wjerk-dark-cornflower:  #3E5F9A;
+  --wjerk-navy:             #2C416B;
+  --wjerk-purple:           #A38DA1;
+  --wjerk-purple-gray:      #777783;
+
   /* ---- semantic layer ----
      text-muted is gray-6 (7.3:1 on --color-bg), not gray-5 (4.35:1, fails AA).
      Any new "muted"/"subtle" token needs its contrast checked against the

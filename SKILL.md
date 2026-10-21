@@ -41,9 +41,18 @@ Each heads a scale of its own: `white-0…9` (papers, creamier as they go) and
 `black-0…9` (inks; `black-9` is the Black, every step AA text on the White). This
 pairing is a personal trope that predates the kit.
 
-**Structure from rules and whitespace.** No box-shadow, no gradients, no
-border-radius on *chrome* — panels, buttons, dividers, anything framing content.
-1–2px solid borders and space instead. Radius is fine on content that floats
+**The originals are tokens too.** Every original Wjerk color is in kit.css at
+its exact value as `--wjerk-*` (`--wjerk-med-gray`, `--wjerk-pink`,
+`--wjerk-navy`…). The ramps were built from those hues but don't always land
+on them, so never round an original to its "nearest step" — use the
+`--wjerk-*` token when the color is the identity, a ramp step for tints and
+guaranteed-contrast steps.
+
+**Structure from rules and whitespace.** No gradients, no border-radius on
+*chrome* — panels, buttons, dividers, anything framing content. 1–2px solid
+borders and space instead. Shadows aren't banned, but they're never the first
+answer to "make these stand apart": try a border, a ground change, whitespace,
+or an offset outline first, and use a shadow only when those do the job worse. Radius is fine on content that floats
 (a quote card over an image) and on pill/tag elements (`border-radius: 999px`).
 Interactive state inverts foreground/background on press — never elevation,
 never a hover-glow.

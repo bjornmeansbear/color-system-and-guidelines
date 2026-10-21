@@ -27,9 +27,16 @@ each project free to pick its own typeface and emphasis on top. The old
 
 ## Structure: rules, not chrome
 
-No box-shadow, no gradients, no border-radius on *structural chrome* —
-panels, buttons, dividers, the elements that frame content. Structure comes
-from solid 1–2px borders and whitespace.
+No gradients and no border-radius on *structural chrome* — panels,
+buttons, dividers, the elements that frame content. Structure comes from
+solid 1–2px borders and whitespace.
+
+**Shadows are a last resort, not banned.** When two things need to read as
+separate, reach first for a border, a ground change (a card fill against a
+different page ground), whitespace, or an offset outline. A drop shadow is
+fine when those genuinely do the job worse — e.g. oblique's strategy card,
+a physical object lifted off the page. It should never be the default way to
+separate a panel from the page, and never stand in for missing contrast.
 
 The rule is about chrome, not about scale. It read "no radius at panel scale"
 until 2026-09-02, which was wrong: the talk decks have always used large
@@ -1242,6 +1249,16 @@ rather than prose:
   budget, and the lightest has to stay visible on the darkest sky band.
   In wjeather, 0.25 has only been checked by eye on the partly cloudy
   bands so far.
+- **A canvas is a deeper paper than what sits on it.** taste-translator
+  (2026-10-16) puts the map on `white-4` and keeps cards and chrome on
+  `white-0`, so cards read as sheets on a desk without a shadow (5.5 apart in
+  OKLab, the same pairing as the Wjorth ledger stripe). Everything drawn
+  straight on the canvas still passes: ink lines 11.81:1, `gray-6` lines and
+  labels 6.32, the pink line 4.11. `white-2` was too faint to hold on a dim
+  screen; `white-6` and deeper started to warm the pinks. In dark mode the
+  logic runs the same way up the brown scale: the canvas stays `brown-9`
+  and cards lift to `brown-8` (`brown-0` text 16.79, `brown-3` 9.37,
+  `pink-3` 7.85).
 - **A canvas gets a dot grid.** An infinite pan-and-zoom canvas on a plain
   ground gives no sign that it moved. taste-translator (2026-10-15) lays one
   dot per 24 world px (four 6px units) at ~25% ink, a hard-edged 1px dot
@@ -1503,6 +1520,15 @@ not eyeballed. "On White" is contrast against Wjerk White; ΔE is OKLab distance
 | Purple Gray | #777783 | dark-gray-5 | 2.5 | 4.17 |
 
 Plus a **YGB Gradient**: Yellow #C5C071 → Green #91A478 (at 51%) → #92A9A7.
+
+**Every one is a kit token at its exact value** (since 2026-10-19):
+`--wjerk-` plus the name in kebab case — `--wjerk-med-gray`, `--wjerk-pink`,
+`--wjerk-dark-cornflower`, and so on; White and Black stay `--wjerk-white` /
+`--wjerk-black`. The ramps are the tint system; these are the originals,
+usable as themselves rather than as "nearest step." Reach for the original
+when the color *is* the identity (a ground, a fill, a mark); reach for a ramp
+step when you need a tint, a hover, or a guaranteed contrast step. The
+"Nearest kit" column above is a lookup, not a replacement.
 
 What it says about the kit:
 

@@ -138,7 +138,8 @@ Two recurring meta treatments:
 **Borders carry all the structure.** `1px solid var(--color-border)`, where
 border *is* the text color. Structure comes from rules and whitespace.
 
-- **No `box-shadow`.** No elevation, ever, on structural elements.
+- **`box-shadow` is a last resort.** Separate panels with borders, ground
+  and whitespace first; a shadow only where those genuinely do worse.
 - **No gradients.**
 - **No `border-radius` on anything structural** — panels, cards, buttons,
   inputs, tables are square.
@@ -256,8 +257,8 @@ deleted. Relatedly, `.btn-black` is now a *pink* button — a stale name.
 **9. `oblique` uses its own breakpoints** — `30rem` / `50rem` / `70rem`, versus
 the documented `40rem` / `55rem`. Its focus ring is also `3px` / offset `3px`
 rather than `0.25rem` / offset `2px`, and `.strategy` carries a
-`box-shadow: 0 1rem 2rem` that the no-shadow rule doesn't carve an exception
-for.
+`box-shadow: 0 1rem 2rem` — allowed under the shadows-as-last-resort rule
+(2026-10-19), since the card reads as an object lifted off the page.
 
 **10. `--color-accent-hover` means two different things.** In `kit.css` it's
 `--pink-6`, a *darker* text/border color. In `oblique` it's `--pink-5` used as

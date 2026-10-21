@@ -143,6 +143,9 @@
     color: var(--color-text-muted);
   }
   .scale-row .swatch { flex: 1; height: 2rem; }
+  .orig-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); gap: 1rem; }
+  .orig-grid li { display: flex; gap: 0.75rem; align-items: flex-start; font-size: var(--text-xs); }
+  .orig-chip { flex: none; width: 3rem; height: 3rem; border: 1px solid var(--color-border); }
   .scale-wrap { overflow-x: auto; padding-bottom: 0.5rem; }
   .scale-wrap-inner { min-width: 40rem; }
   .step-header { display: flex; padding-left: 5.5rem; gap: 2px; margin-bottom: 4px; }
@@ -398,6 +401,34 @@
           <div class="scale-row"><div class="hue-label">black</div><div class="swatch" style="background:var(--black-0)"></div><div class="swatch" style="background:var(--black-1)"></div><div class="swatch" style="background:var(--black-2)"></div><div class="swatch" style="background:var(--black-3)"></div><div class="swatch" style="background:var(--black-4)"></div><div class="swatch" style="background:var(--black-5)"></div><div class="swatch" style="background:var(--black-6)"></div><div class="swatch" style="background:var(--black-7)"></div><div class="swatch" style="background:var(--black-8)"></div><div class="swatch" style="background:var(--black-9)"></div></div>
         </div>
       </div>
+
+      <h3 style="margin-top:2.5rem;">The original Wjerk palette</h3>
+      <p>The Figma "OOKB Palette" styles at their exact values, as
+        <code>--wjerk-*</code> tokens (added 2026-10-19). The ramps above grew
+        from these hues, but a step only lands on an original when the lightness
+        happens to match, so some (Med Gray, Dark Gray, Pink, Orange) fall
+        between steps. "Near" is the closest ramp step.</p>
+      <ul class="orig-grid">
+          <li><span class="orig-chip" style="background:var(--wjerk-white)"></span><span><strong>White</strong><br><code>--wjerk-white</code><br><code>#F8FAE7</code> · near <code>white-0</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-black)"></span><span><strong>Black</strong><br><code>--wjerk-black</code><br><code>#2D2826</code> · near <code>black-9</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-brown)"></span><span><strong>Brown</strong><br><code>--wjerk-brown</code><br><code>#3C3634</code> · near <code>brown-7</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-dark-gray)"></span><span><strong>Dark Gray</strong><br><code>--wjerk-dark-gray</code><br><code>#616767</code> · near <code>dark-gray-5</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-med-gray)"></span><span><strong>Med Gray</strong><br><code>--wjerk-med-gray</code><br><code>#858479</code> · near <code>gray-4/5</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-pink)"></span><span><strong>Pink</strong><br><code>--wjerk-pink</code><br><code>#DB4F7A</code> · near <code>pink-4/5</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-red)"></span><span><strong>Red</strong><br><code>--wjerk-red</code><br><code>#9F5B59</code> · near <code>orange-5</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-orange)"></span><span><strong>Orange</strong><br><code>--wjerk-orange</code><br><code>#B97868</code> · near <code>orange-4</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-yellow)"></span><span><strong>Yellow</strong><br><code>--wjerk-yellow</code><br><code>#C5C071</code> · near <code>yellow-3</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-goldenrod)"></span><span><strong>Golden Rod</strong><br><code>--wjerk-goldenrod</code><br><code>#CBAA46</code> · near <code>goldenrod-3</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-light-green-gray)"></span><span><strong>Light Green Gray</strong><br><code>--wjerk-light-green-gray</code><br><code>#C5D3BD</code> · near <code>light-gray-2</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-green)"></span><span><strong>Green</strong><br><code>--wjerk-green</code><br><code>#91A478</code> · near <code>green-4</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-dark-green)"></span><span><strong>Dark Green</strong><br><code>--wjerk-dark-green</code><br><code>#6A8472</code> · near <code>light-gray-5</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-light-blue)"></span><span><strong>Light Blue</strong><br><code>--wjerk-light-blue</code><br><code>#A1B2B1</code> · near <code>blue-3</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-cornflower)"></span><span><strong>Cornflower</strong><br><code>--wjerk-cornflower</code><br><code>#627FBB</code> · near <code>cornflower-5</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-dark-cornflower)"></span><span><strong>Dark Cornflower</strong><br><code>--wjerk-dark-cornflower</code><br><code>#3E5F9A</code> · near <code>cornflower-6</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-navy)"></span><span><strong>Navy</strong><br><code>--wjerk-navy</code><br><code>#2C416B</code> · near <code>cornflower-7</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-purple)"></span><span><strong>Purple</strong><br><code>--wjerk-purple</code><br><code>#A38DA1</code> · near <code>purple-4</code></span></li>
+          <li><span class="orig-chip" style="background:var(--wjerk-purple-gray)"></span><span><strong>Purple Gray</strong><br><code>--wjerk-purple-gray</code><br><code>#777783</code> · near <code>purple-gray-5</code></span></li>
+      </ul>
     </section>
 
     <section id="components">

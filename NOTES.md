@@ -218,6 +218,52 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-10-19
+
+- **Wjerk Med Gray as a ground: what survives on it** (onething, measured
+  on #858479). Ink: `brown-9` 5.39:1, `brown-8` 4.81 — `wjerk-black` is only
+  3.86, so it fails as small text here. No muted tone passes (`gray-6`
+  2.07), so quiet text on the gray is quiet by size/italics, not color.
+  `pink-5` is 1.34:1 — **a pink focus ring is invisible on this ground**;
+  onething uses a `brown-9` ring instead (5.39 on gray, ~19 on `yellow-0`).
+  Light type (`white-0`) and `yellow-0` both sit at ~3.5:1 — fine for fills
+  and large type, not small text. Open question for RULES.md: the
+  "accent is the focus ring" rule needs a ground-dependent exception.
+- **Shadows softened from banned to last resort** (RULES.md "Structure: rules,
+  not chrome", SKILL.md, DASHBOARD-SPEC.md). Drop shadows aren't forbidden;
+  they just shouldn't be the first way to make things stand apart. Border,
+  ground change, whitespace or offset outline first. oblique's strategy-card
+  shadow no longer counts as a violation.
+- **The whole original Wjerk palette is tokens now** (`--wjerk-*` in kit.css,
+  a swatch grid in showcase.html, note in RULES.md). Only White and Black had
+  been kept exactly; the rest existed only as a table mapping each to its
+  nearest ramp step. Several sit between steps (Med Gray between `gray-4`/`-5`,
+  ΔE 5.2 from anything) — and Med Gray is the main gray of years of work, so
+  "nearest step" was quietly losing it. Ramps unchanged; the originals sit
+  beside them. Values are the Figma styles; the legacy LESS ones in README.md
+  are a unit or so off (Med Gray) or brighter (Pink).
+  Open question: should the ramps be re-anchored so each original *is* a step?
+  It would break equal lightness per step across hues, which is what makes
+  "step 6 passes on the ground" true for every hue at once.
+- **Card-stack depth by ground step** (onething). Front card `yellow-0`, cards
+  underneath `yellow-1`…`yellow-4`, one step per card back — oblique's card
+  colour as a family. Tried the `white` scale first: `white-2`→`white-9`
+  spans only 1.31:1, invisible on a 3px offset sliver. Yellow reaches 2.5:1
+  by `yellow-4`. Capped there: ink border on `yellow-5` falls to 3.18:1.
+  Skip tabs step by *tab*, not by card, counted from the back: the
+  farthest-back tab is `brown-9`, each tab in front of it a step lighter,
+  floored at `brown-6` (white-0 label still 7.34:1). Untabbed cards don't
+  use up a step.
+  Open question: `yellow-0` is also `--color-warning-bg` — fine while the
+  card is the only yellow on screen, worth a look if warnings show up.
+
+### 2026-10-16
+
+- **Canvas vs. card ground** (RULES.md "Data on screen"). taste-translator's
+  map moved to `white-4` with cards and chrome on `white-0`; dark mode lifts
+  cards to `brown-8` on the `brown-9` canvas. Chosen by eye from a
+  `white-0`/`2`/`4`/`6`/`8` contact sheet, every step contrast-checked first.
+
 ### 2026-10-15
 
 - **taste-translator joined the kit.** A SvelteKit + Tailwind 4 app that maps

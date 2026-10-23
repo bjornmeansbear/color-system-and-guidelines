@@ -522,7 +522,7 @@ TEMPLATE = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <title>__TITLE__</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+__HEAD_LINKS__<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 __FONT_FACES__
   :root { color-scheme: dark; }
@@ -932,7 +932,7 @@ AMBIENT_TEMPLATE = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <title>__TITLE__</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+__HEAD_LINKS__<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 __FONT_FACES__
   :root { color-scheme: dark; }
@@ -1300,6 +1300,22 @@ run();
 </html>
 """
 
+ICON_TYPES = {".svg": "image/svg+xml", ".png": "image/png", ".ico": "image/x-icon"}
+
+
+def head_links(icons, apple_touch):
+    """<link> tags for --icon / --apple-touch-icon; empty when neither is set."""
+    out = []
+    for href in icons:
+        ext = Path(href.split("?")[0]).suffix.lower()
+        kind = ICON_TYPES.get(ext)
+        type_attr = f' type="{kind}"' if kind else ""
+        out.append(f'<link rel="icon" href="{html.escape(href, quote=True)}"{type_attr}>\n')
+    if apple_touch:
+        out.append(f'<link rel="apple-touch-icon" href="{html.escape(apple_touch, quote=True)}">\n')
+    return "".join(out)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", default=None,
@@ -1322,6 +1338,11 @@ def main():
                     help="if set, a link back to the page this piece belongs to "
                          "(e.g. the case study). Omitted by default so the "
                          "gallery build carries no stray link.")
+    ap.add_argument("--icon", action="append", default=[],
+                    help="favicon href, repeatable (e.g. /Chairness.svg). Type "
+                         "comes from the extension. Omitted by default.")
+    ap.add_argument("--apple-touch-icon", default="",
+                    help="href for a 180px apple-touch-icon. Omitted by default.")
     ap.add_argument("--home-label", default="Chair-ness",
                     help="text for --home-url (default: Chair-ness)")
     ap.add_argument("--channel-url",
@@ -1386,7 +1407,8 @@ def main():
               "__TEXT_CPS__": repr(args.text_chars_per_second),
               "__TEXT_MIN__": repr(args.text_min_seconds),
               "__TEXT_MAX__": repr(args.text_max_seconds),
-              "__SHORT_QUOTE_CHARS__": str(SHORT_QUOTE_CHARS)}
+              "__SHORT_QUOTE_CHARS__": str(SHORT_QUOTE_CHARS),
+              "__HEAD_LINKS__": head_links(args.icon, args.apple_touch_icon)}
     if args.no_embed_fonts:
         face_css, families = "", []
     if families:

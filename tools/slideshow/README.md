@@ -55,6 +55,8 @@ because they're usually social-share cards, but worth it when the link blocks
 are the named references), `--image-ms` / `--chairs-between-text` (ambient
 pacing), `--no-embed-fonts`.
 
+`--icon HREF` (repeatable) and `--apple-touch-icon HREF` add favicon links to the page head. The type comes from the extension (`.svg`, `.png`, `.ico`). They're omitted by default, so a page inherits nothing. The chair-ness projection on a.wjerk.shop uses `--icon /Chairness.svg --icon /Chairness.png --apple-touch-icon /Chairness-apple-touch-icon.png`.
+
 ## Two more scripts
 
 ```sh

@@ -153,20 +153,22 @@ system — a new token or tint, an icon convention, a data-viz pattern, a stack
 recipe, a palette finding — gets recorded here as part of the work: the rule in
 `RULES.md`, the finding or open question in `NOTES.md`, plus a changelog entry.
 
-## Two open tensions
+## An open tension
 
-Don't resolve these silently — they're live design questions, not oversights.
+Don't resolve this silently — it's a live design question, not an oversight.
 Check `NOTES.md` for the current state before assuming either way.
 
-1. **Deck color vs. kit color have never been reconciled.** The kit is pink on
-   warm gray. The AY26 lecture decks are black/white/grayscale with per-lecture
-   semantic accents and no pink at all. Neither document references the other.
-   If a task touches both, ask whether projection is its own context.
+**Deck color vs. kit color have never been reconciled.** The kit is pink on
+warm gray. The AY26 lecture decks are black/white/grayscale with per-lecture
+semantic accents and no pink at all. Neither document references the other.
+If a task touches both, ask whether projection is its own context.
 
-2. **Dark mode is specified but not shipped.** `kit.css` still pins
-   `color-scheme: light`. `RULES.md` "Dark mode" has the measured mapping —
-   brown scale with its ends swapped, `--brown-9` ground, `--pink-3` accent,
-   `--brown-4` as the dimmest token allowed to carry text. It maps the text and
-   accent tokens only; the status colors are not yet mapped (see below).
-   wjeather (2026-09-10) ships it per project from that mapping, `kit.css`
-   untouched.
+## Dark mode ships in kit.css
+
+Since 2026-10-26. It follows the system setting: brown scale with its ends
+swapped, `--brown-9` ground, `--brown-0` text, `--pink-3` accent, `--brown-4`
+the dimmest token allowed to carry text. A project doesn't build its own;
+it only overrides tokens it has a reason to (taste-translator lifts cards to
+`brown-8`). `data-theme="light"` on `<html>` keeps a page that isn't ready
+light; `data-theme="dark"` forces dark for a saved toggle. `RULES.md` "Dark
+mode" has the measurements and the toggle recipe.

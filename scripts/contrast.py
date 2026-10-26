@@ -22,29 +22,6 @@ from pathlib import Path
 
 KIT = Path(__file__).resolve().parent.parent / "kit.css"
 
-# Dark mode lives in RULES.md ("Dark mode"), not yet in kit.css. When the
-# flip ships, delete this and let the parser find it.
-DARK_OVERRIDES = {
-    "color-bg": "brown-9",
-    "color-surface": "brown-9",
-    "color-surface-2": "brown-9",
-    "color-text": "brown-0",
-    "color-text-muted": "brown-3",
-    "color-text-subtle": "brown-4",
-    "color-accent": "pink-3",
-    # Status colors flip to the light end of their own hue, the way text does
-    # (2026-09-11): ~10:1 on brown-9. Panels take step 8 of the same family.
-    "color-accent-hover": "pink-2",
-    "color-success": "green-3",
-    "color-warning": "yellow-3",
-    "color-danger": "red-3",
-    "color-info": "dark-gray-3",
-    "color-success-bg": "light-gray-8",
-    "color-warning-bg": "yellow-8",
-    "color-danger-bg": "red-8",
-    "color-info-bg": "dark-gray-8",
-}
-
 # fg tokens checked against every ground, in report order.
 FOREGROUNDS = [
     "color-text", "color-text-muted", "color-text-subtle", "color-accent",
@@ -52,12 +29,29 @@ FOREGROUNDS = [
     "color-info",
 ]
 GROUNDS = ["color-bg", "color-surface", "color-surface-2"]
+# fg on its own panel, checked as a pair.
+PANELS = [
+    ("color-text", "color-accent-subtle"), ("color-success", "color-success-bg"),
+    ("color-warning", "color-warning-bg"), ("color-danger", "color-danger-bg"),
+    ("color-info", "color-info-bg"),
+]
+DARK = re.compile(r"/\* ---- dark mode ----.*?/\* ---- end dark mode ---- \*/", re.S)
+TOKEN = re.compile(r"--([\w-]+)\s*:\s*([^;]+);")
 
 
 def parse_kit():
-    """--name: value pairs from kit.css :root, in file order."""
-    text = KIT.read_text()
-    return dict(re.findall(r"--([\w-]+)\s*:\s*([^;]+);", text))
+    """--name: value pairs from kit.css :root (light), in file order."""
+    return dict(TOKEN.findall(DARK.sub("", KIT.read_text())))
+
+
+def parse_dark():
+    """The dark-mode overrides, read from the dark-mode block in kit.css."""
+    block = DARK.search(KIT.read_text())
+    if not block:
+        return {}
+    # var(--brown-9) -> brown-9, the form resolve() follows.
+    return {k: re.sub(r"var\(\s*--([\w-]+)\s*\)", r"\1", v).strip()
+            for k, v in TOKEN.findall(block.group(0))}
 
 
 def resolve(name, tokens, overrides=None, _seen=None):
@@ -148,6 +142,17 @@ def report(mode, tokens, overrides):
             if r < 4.5:
                 worst.append((fgname, ground, r))
         print()
+    for fgname, panel in PANELS:
+        try:
+            fg, bg = to_rgb(fgname, tokens, overrides), to_rgb(panel, tokens, overrides)
+        except KeyError:
+            continue
+        r = ratio(fg, bg)
+        flag = "  <-- fails AA" if r < 4.5 else ""
+        print(f"  {fgname:<20} on {panel:<16} {r:6.2f}:1  {grade(r)}{flag}")
+        if r < 4.5:
+            worst.append((fgname, panel, r))
+    print()
     return worst
 
 
@@ -198,8 +203,7 @@ def main():
     if "--dark" not in args:
         failures += report("light mode", tokens, None)
     if "--light" not in args:
-        failures += report("dark mode (RULES.md mapping, not yet in kit.css)",
-                           tokens, DARK_OVERRIDES)
+        failures += report("dark mode", tokens, parse_dark())
 
     if failures:
         print(f"{len(failures)} pair(s) below AA:")

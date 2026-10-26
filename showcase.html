@@ -563,12 +563,35 @@
   </main>
 
   <footer style="border-top:1px solid var(--color-border); padding-top:1.5rem;">
-    <p class="caption-muted">Contrast ratios computed via the WCAG
-      relative-luminance formula against the exact <code>rgb()</code>
-      values in <code>kit.css</code> — see NOTES.md changelog for when
-      this page was generated.</p>
+    <p class="caption-muted">Contrast ratios are computed in the page, with the
+      WCAG relative-luminance formula, from the colors <code>kit.css</code>
+      actually renders, so they follow light and dark mode. Without
+      JavaScript the light-mode values show.</p>
   </footer>
 
 </div>
+<script>
+  // Recompute each pair from the colors on screen, so the numbers can't go
+  // stale and stay right in dark mode. Same formula as scripts/contrast.py.
+  function lum(rgb) {
+    const [r, g, b] = rgb.match(/\d+(\.\d+)?/g).slice(0, 3).map(Number).map(c => {
+      c /= 255;
+      return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  }
+  function rate() {
+    for (const pair of document.querySelectorAll('.pair')) {
+      const css = getComputedStyle(pair.querySelector('.pair-preview'));
+      const [hi, lo] = [lum(css.color), lum(css.backgroundColor)].sort((a, b) => b - a);
+      const r = (hi + 0.05) / (lo + 0.05);
+      const grade = r >= 7 ? 'aaa' : r >= 4.5 ? 'aa' : 'fail';
+      pair.querySelector('.pair-ratio').innerHTML =
+        `${r.toFixed(1)}:1<span class="badge ${grade}">${grade.toUpperCase()}</span>`;
+    }
+  }
+  rate();
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', rate);
+</script>
 </body>
 </html>

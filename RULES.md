@@ -1067,15 +1067,27 @@ and not a rewrite:
 | `--color-danger` | `--red-6` | `--red-3` |
 | `--color-info` | `--dark-gray-6` | `--dark-gray-3` |
 | `--color-*-bg` (status panels) | step 0 of each family | step 8 of each family |
+| `--color-accent-subtle` | `--pink-0` | `--pink-8` (text on it 15.37:1) |
 
 Status colors follow the text's logic (added 2026-09-11): in the dark they
 flip to the light end of their own hue. On `--brown-9` they measure 9.98–10.76:1
 (`red-3` lowest), and 8.8–9.5:1 on their step-8 panels — AAA throughout.
 `--pink-2` for the pressed accent is 11.07:1, and `--brown-9` on it the same.
 
-`kit.css` still pins `color-scheme: light` and does not ship the flip yet.
-The open question was never which colors — it was whether to spend the
-complexity. The colors are now answered.
+**Shipped in `kit.css` (2026-10-26).** One block, written twice: once under
+`prefers-color-scheme: dark`, once for `data-theme="dark"`. So it follows the
+system setting, and `data-theme` on `<html>` overrides it either way. A page
+with hard-coded light colors that isn't ready for dark sets
+`data-theme="light"` and stays light. Both selectors sit inside `:where()`, which
+keeps them at plain `:root` weight: a project's own token overrides, loaded
+after the kit, still win in dark mode. Projects that import the kit into a
+Tailwind `layer(base)` win regardless. Before this, four projects (wjeather,
+wjorth, taste-translator, fridgechef) each carried their own copy of the flip.
+`scripts/contrast.py` now reads the dark block from `kit.css` rather than
+keeping its own list, and checks text on `--color-accent-subtle` and each
+status color on its panel in both modes (all AAA in dark). `showcase.html`
+computes its contrast badges from the rendered colors, so they're right in
+both modes.
 
 First built and contrast-checked for the chair-ness exhibition slideshow
 (`~/Code/chair-ness`), projected dark in a gallery.

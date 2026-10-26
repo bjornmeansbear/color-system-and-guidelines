@@ -202,16 +202,20 @@ before starting a session, not just written to at the end of one.
   specific project idea calls for it, not as a system default. First one
   built: wjeather's wind drift (2026-09-11) — ~4 s on open, then still;
   skipped under `prefers-reduced-motion`. See RULES.md "Motion".
-- **Dark mode — colors answered, not yet wired.** RULES.md now carries the
-  measured dark palette and the light→dark semantic token mapping. What's
-  left is a decision, not a design: whether to ship the flip in `kit.css`
-  (which still pins `color-scheme: light`) or keep leaving it to projects
-  that need it. wjeather (2026-09-10) is the first project to ship it this
-  way; the mapping held, plus dark tints for data at steps 7–9.
 
 ## Changelog
 
 ### 2026-10-26
+
+- **Dark mode ships in `kit.css`.** It's the RULES.md mapping, plus
+  `--color-accent-subtle` → `pink-8` (text on it 15.37:1). It follows the
+  system setting, and `data-theme` overrides it either way; `:where()` keeps
+  project overrides winning. Every dark pair is AAA. `contrast.py` reads the
+  block instead of keeping a copy, and now also checks text on its panels
+  (accent-subtle, the four status panels). `showcase.html` computes its
+  badges live: the hand-typed ones would have been wrong in dark mode.
+  Rendered `showcase.html` forced dark to check the page itself; nothing was
+  left in a light color.
 
 - **README cut to a front door.** What the repo is, how to use it, what's
   in it. The reading list moved into RULES.md beside the rules it backs up

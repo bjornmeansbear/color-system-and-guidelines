@@ -212,10 +212,66 @@
   --text-2xl: 2.25rem;    --leading-2xl: 2.625rem;  /* 36/42 · 1.17 — h2 */
   --text-3xl: 3rem;       --leading-3xl: 3.375rem;  /* 48/54 · 1.13 — h1 */
 
-  /* dark mode: deliberately not implemented yet — see RULES.md. Keeping
-     color-scheme pinned to light until there's a real system for it. */
   color-scheme: light;
 }
+
+/* ---- dark mode ----
+   The same brown scale with its ends swapped: brown-9 ground, brown-0 text,
+   pink-3 accent (pink-5 falls to 4.01:1 here). Every pair measured in
+   RULES.md "Dark mode"; scripts/contrast.py checks them from this block.
+
+   Follows the viewer's system setting. data-theme on <html> overrides it
+   either way: "light" keeps a page light (one with hard-coded light colors
+   that isn't ready), "dark" forces dark (a saved toggle choice — set it from
+   an inline script in <head> so the page never flashes the other theme).
+
+   :where() keeps these at plain :root weight, so a project's own token
+   overrides, loaded after this file, still win in dark mode too. The two
+   blocks must stay identical. */
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --color-bg: var(--brown-9);
+    --color-surface: var(--brown-9);
+    --color-surface-2: var(--brown-9);
+    --color-text: var(--brown-0);          /* 18.81:1 */
+    --color-text-muted: var(--brown-3);    /* 10.49:1 */
+    --color-text-subtle: var(--brown-4);   /* 7.06:1, the floor: brown-5 fails */
+    --color-accent: var(--pink-3);         /* 8.80:1 */
+    --color-accent-hover: var(--pink-2);
+    --color-accent-subtle: var(--pink-8);
+    --color-success: var(--green-3);
+    --color-success-bg: var(--light-gray-8);
+    --color-warning: var(--yellow-3);
+    --color-warning-bg: var(--yellow-8);
+    --color-danger: var(--red-3);
+    --color-danger-bg: var(--red-8);
+    --color-info: var(--dark-gray-3);
+    --color-info-bg: var(--dark-gray-8);
+  }
+}
+
+:root:where([data-theme="dark"]) {
+  color-scheme: dark;
+  --color-bg: var(--brown-9);
+  --color-surface: var(--brown-9);
+  --color-surface-2: var(--brown-9);
+  --color-text: var(--brown-0);
+  --color-text-muted: var(--brown-3);
+  --color-text-subtle: var(--brown-4);
+  --color-accent: var(--pink-3);
+  --color-accent-hover: var(--pink-2);
+  --color-accent-subtle: var(--pink-8);
+  --color-success: var(--green-3);
+  --color-success-bg: var(--light-gray-8);
+  --color-warning: var(--yellow-3);
+  --color-warning-bg: var(--yellow-8);
+  --color-danger: var(--red-3);
+  --color-danger-bg: var(--red-8);
+  --color-info: var(--dark-gray-3);
+  --color-info-bg: var(--dark-gray-8);
+}
+/* ---- end dark mode ---- */
 
 /* ---- base reset ---- */
 *, *::before, *::after {

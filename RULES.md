@@ -128,6 +128,23 @@ cut it off, and give focus the same filled state as hover. On that accent
 fill the ring switches to the text color, since an accent ring on an accent
 ground disappears.
 
+Sources: Alan Dalton,
+["Good designers, bad websites: a proposal"](https://alistapart.com/article/good-designers-bad-websites-a-proposal/)
+(A List Apart): accessibility personas and recognition over recall, to catch
+problems while designing rather than after, which is why contrast is checked
+as tokens are chosen. The [A11y Project](https://www.a11yproject.com/) for
+practical checklists. The palette-as-a-system thinking behind the ten-step
+scales and computed pairs comes from Jxnblk and MrMrs:
+[Palx](https://github.com/jxnblk/palx),
+[Hello Color](https://jxnblk.com/hello-color),
+[Colorable](https://colorable.jxnblk.com/)
+([source](https://github.com/jxnblk/colorable)),
+["Color palette documentation for living style guides"](https://jxnblk.com/blog/color-palette-documentation-for-living-style-guides),
+MrMrs's ["Counting accessible color combinations"](https://mrmrs.cc/writing/counting-accessible-color-combinations/)
+and [color-systems](https://github.com/mrmrs/color-systems), and
+[Randoma11y](https://randoma11y.com/). The `color-expert` skill is MrMrs's
+[skill.color-expert](https://github.com/mrmrs/skill.color-expert).
+
 ## Color: pink is the accent, not blue
 
 `--color-accent` is Wjerk pink (`--pink-5` / `--pink-6`), the color that's
@@ -260,7 +277,7 @@ by a new color.
 
 `kit.css`'s `--text-*` / `--leading-*` tokens are a vertical-rhythm
 baseline grid (Bringhurst, *The Elements of Typographic Style*; Lupton,
-*Thinking with Type* — see README references), not a modular ratio scale.
+*Thinking with Type*), not a modular ratio scale.
 The grid comes first: line-heights are even multiples of a 6px (0.375rem)
 base unit — 18px, 24px, 30px, 36px, 42px, 54px. Font-sizes are then chosen
 to pair with those rungs, snapping to whichever rung gives a comfortable
@@ -306,6 +323,15 @@ shipping, not just a new invention. They're wired to the tokens now.
 1.125rem and `--text-lg` 1.375rem) — left alone rather than silently
 resized, but worth a deliberate call later on which rung it should snap
 to.
+
+Sources: Robert Bringhurst, *The Elements of Typographic Style*, and Ellen
+Lupton, *Thinking with Type*, for the grid itself: leading on even multiples
+of a base unit, sizes chosen to pair with the rungs. Tim Brown,
+["More Meaningful Typography"](https://alistapart.com/article/more-meaningful-typography/)
+(A List Apart) and
+[*Flexible Typesetting*](https://abookapart.com/products/flexible-typesetting.html)
+(A Book Apart), for type that responds fluidly to its container instead of
+jumping at a breakpoint: the `clamp()` ramps above.
 
 ## Images
 
@@ -1529,9 +1555,9 @@ Wjerk palette now. It lives as the "OOKB Palette" color styles in Figma (the
 AY26 Lectures and Presentations file, also published as a library the decks
 pull from); the styles keep the old name so the decks don't break. White and
 Black are also kit tokens now, `--wjerk-white` and `--wjerk-black`, and the
-kit's ground and text. An earlier web version, as LESS variables, is in
-README.md — the same hues a step apart (its pink, #EC4079, is brighter than
-the Figma #DB4F7A). Recorded 2026-09-11 from the styles themselves,
+kit's ground and text. An earlier web version, as LESS variables (below
+the table), has the same hues a step apart (its pink, #EC4079, is brighter
+than the Figma #DB4F7A). Recorded 2026-09-11 from the styles themselves,
 not eyeballed. "On White" is contrast against Wjerk White; ΔE is OKLab distance
 ×100 to the nearest kit token (under ~5 reads as the same color).
 
@@ -1558,6 +1584,18 @@ not eyeballed. "On White" is contrast against Wjerk White; ΔE is OKLab distance
 | Purple Gray | #777783 | dark-gray-5 | 2.5 | 4.17 |
 
 Plus a **YGB Gradient**: Yellow #C5C071 → Green #91A478 (at 51%) → #92A9A7.
+
+The earlier web version, as LESS variables (a.wjerk.shop era; also the
+palette in the 2016 `color-documentation` experiment):
+
+```less
+@ookb-pink:      rgba(236,64,121,1);   @ookb-red:    rgba(183,80,81,1);
+@ookb-brown:     rgba(47,41,38,1);     @ookb-orange: rgba(195,115,99,1);
+@ookb-gray:      rgba(132,132,120,1);  @ookb-yellow: rgba(197,192,101,1);
+@ookb-darkgray:  rgba(96,103,103,1);   @ookb-green:  rgba(140,165,115,1);
+@ookb-lightgray: rgba(194,211,186,1);  @ookb-blue:   rgba(157,178,176,1);
+                                       @ookb-purple: rgba(174,139,164,1);
+```
 
 **Every one is a kit token at its exact value** (since 2026-10-19):
 `--wjerk-` plus the name in kebab case — `--wjerk-med-gray`, `--wjerk-pink`,

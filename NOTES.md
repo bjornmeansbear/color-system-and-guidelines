@@ -6,6 +6,13 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **A generated palette page.** The 2016 `color-documentation` experiment
+  (after Jxnblk's "Color palette documentation for living style guides")
+  parsed a stylesheet and rendered every swatch plus every passing pair.
+  `showcase.html` is hand-written instead, and `contrast.py find` only
+  prints. A page built from `kit.css` would never fall out of date. Not
+  urgent; showcase links kit.css live, so its swatches can't drift.
+
 - **Emoji carry their own palette.** taste-translator (2026-10-15) marks
   ratings (❤️ 👍 🙂 😐 👎 🚫) and domains (🎬 🎵 📖 …) with emoji, which bring
   red, yellow and blue that sit outside the kit and can't be contrast-
@@ -206,6 +213,15 @@ before starting a session, not just written to at the end of one.
 
 ### 2026-10-26
 
+- **README cut to a front door.** What the repo is, how to use it, what's
+  in it. The reading list moved into RULES.md beside the rules it backs up
+  (Bringhurst, Lupton, Tim Brown under the baseline grid; Dalton, the A11y
+  Project, Jxnblk and MrMrs under contrast), keeping the color-tool links
+  that informed the system and dropping the rest (duplicates, and general
+  utilities like flexbox and named-color lists). The legacy LESS palette
+  moved to "Color: the original Wjerk palette". The link to the 2016
+  `color-documentation` repo is gone: this repo replaces it.
+
 - **Pasted copies of the palette had drifted; `scripts/drift.py` now finds
   them.** No project reads `kit.css` live, so every copy goes stale when the
   kit changes. The 2026-09-11 rebuild (pink, purple, ground and text) had not
@@ -299,7 +315,7 @@ before starting a session, not just written to at the end of one.
   nearest ramp step. Several sit between steps (Med Gray between `gray-4`/`-5`,
   ΔE 5.2 from anything) — and Med Gray is the main gray of years of work, so
   "nearest step" was quietly losing it. Ramps unchanged; the originals sit
-  beside them. Values are the Figma styles; the legacy LESS ones in README.md
+  beside them. Values are the Figma styles; the legacy LESS ones (now in RULES.md)
   are a unit or so off (Med Gray) or brighter (Pink).
   Open question: should the ramps be re-anchored so each original *is* a step?
   It would break equal lightness per step across hues, which is what makes

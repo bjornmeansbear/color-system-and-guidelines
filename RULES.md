@@ -59,6 +59,12 @@ every breakpoint. Use flex (not grid) so a short last row grows to fill
 instead of leaving a line-colored hole. First used for a.wjerk.shop's
 header nav (2026-09-27).
 
+**The surface tokens start equal to the ground.** `--color-surface` and
+`--color-surface-2` both default to `--color-bg`: the kit has no elevation
+ladder. Don't build a card hierarchy that assumes they differ. A project that
+needs cards to read as sheets sets them on purpose, a deeper paper under them
+(see "A canvas is a deeper paper", in "Data on screen").
+
 Buttons and interactive elements show state by inverting foreground/
 background on press, not by adding elevation or a hover-glow.
 
@@ -1068,6 +1074,10 @@ and not a rewrite:
 | `--color-info` | `--dark-gray-6` | `--dark-gray-3` |
 | `--color-*-bg` (status panels) | step 0 of each family | step 8 of each family |
 | `--color-accent-subtle` | `--pink-0` | `--pink-8` (text on it 15.37:1) |
+
+Light mode has two text tiers, not three: `--color-text-subtle` equals
+`--color-text-muted` (`gray-6`) and only splits from it in dark. Don't design a
+three-step text hierarchy that only exists at night.
 
 Status colors follow the text's logic (added 2026-09-11): in the dark they
 flip to the light end of their own hue. On `--brown-9` they measure 9.98–10.76:1

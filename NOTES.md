@@ -6,6 +6,23 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **Projects off the system** (from DASHBOARD-SPEC.md, re-audited
+  2026-10-26; the fixes belong in those repos, not here):
+  - **oblique's focus ring is invisible: fix it.** `:focus-visible` and link
+    underlines use `--color-accent` (legacy `@ookb-pink`, `rgb(236,64,121)`)
+    on its own ground (`@ookb-gray`, `rgb(132,132,120)`): 1.00:1, the same
+    luminance. Fails WCAG 1.4.11. Untouched since 2026-07-17.
+  - **oblique's other differences are deliberate.** The `@ookb-gray` ground
+    (text 4.80:1), breakpoints at 30/50/70rem instead of 40/55, a 3px focus
+    ring, and `--color-accent-hover` used as a *fill* behind white text
+    (the kit uses it as a darker text color). Leave them unless a rebuild
+    comes up, but don't copy them.
+  - **onething predates the type scale.** px throughout, no `--text-*`
+    tokens. Follow `kit.css`, not onething.
+  - **chair-ness's slideshows hard-code the dark palette** as literals
+    (`rgb(8,5,4)` and the rest). They come from the `tools/slideshow`
+    templates; now that `kit.css` ships dark, those templates could use the
+    tokens instead.
 - **A generated palette page.** The 2016 `color-documentation` experiment
   (after Jxnblk's "Color palette documentation for living style guides")
   parsed a stylesheet and rendered every swatch plus every passing pair.
@@ -206,6 +223,18 @@ before starting a session, not just written to at the end of one.
 ## Changelog
 
 ### 2026-10-26
+
+- **Retired DASHBOARD-SPEC.md** (2026-09-02). Re-audited its twelve
+  findings against the projects. Fixed since: dark mode (shipped today);
+  blue as the accent (a.wjerk.shop has kit tokens now; bjornpaedia restyled
+  to the kit, its links deliberately `cornflower-6`); onething's three
+  sources of truth (`palette.css` gone) and its dead Mac-chrome shadows;
+  bjornpaedia unstyled; the RULES.md merge markers. Still open, moved to
+  "Projects off the system": oblique's focus ring (1.00:1), oblique's other
+  outliers, onething's px, chair-ness's literals. Its design guidance was a
+  pasted copy of `kit.css` and RULES.md, already drifting; the two pieces
+  RULES.md lacked moved in (surface tokens start equal to the ground; light
+  mode has two text tiers, not three).
 
 - **Dark mode ships in `kit.css`.** It's the RULES.md mapping, plus
   `--color-accent-subtle` → `pink-8` (text on it 15.37:1). It follows the

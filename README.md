@@ -31,7 +31,6 @@ of shadows, open/libre type, a 6px baseline grid.
 | `slideshow-template.html` | A one-file unattended slideshow. RULES.md "Slideshows / unattended players". |
 | `tools/slideshow/` | Builds slideshows from an are.na archive. |
 | `tools/commons/` | Finds public-domain slide imagery from a metaphorical brief. |
-| `DASHBOARD-SPEC.md` | A handoff brief for building a dashboard in the system. |
 | `SKILL.md` | The `bjorn-design` skill: the always-loaded summary that points into RULES.md. |
 
 The writing side lives in its own repo, `~/Code/bjorn-voice`.

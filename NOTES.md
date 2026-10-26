@@ -218,6 +218,28 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-10-23
+
+- **Kind tints for cards** (sentence-a-day TiddlyWiki river; RULES.md
+  "Color: tints behind text"). Step 2 is the faintest step that separates
+  from the cream ground; about five step-2 hues stay distinct (≥7.1 OKLab
+  apart); pink is out because the accent fails on `pink-2` (2.76:1). Three
+  in use: `yellow-2` words, `cornflower-2` things, `orange-2` people, each
+  with a step-7 label. Your own writing stays on the ground. Local wiki only,
+  not the static site. Not yet looked at on screen; check the river before
+  treating the pairing as settled.
+- **Dashed edge for raw material; tinted collection doors.** Same day: raw
+  notes and scraps get a dashed card edge (second channel, not a fourth tint),
+  and bjornpaedia's homepage doors are reordered so the collection (Definitions,
+  Quotes, Sources, People) is the last row, tinted with the river colors.
+- **Definitions get `gray-2`, apart from quotes.** Purple was the first pick
+  but sat 5.1 from the Sources blue; gray keeps all four tints ≥7.1 apart.
+  That uses up the step-2 tints that stay distinct.
+- **Objects share the Sources blue.** A new kind (specific made things:
+  chairs, packaging) went into the existing "thing" tint with its own label,
+  not a fifth tint. Homepage doors split into two lists, your writing 3×3
+  and a "Collected" row of five.
+
 ### 2026-10-19
 
 - **Wjerk Med Gray as a ground: what survives on it** (onething, measured

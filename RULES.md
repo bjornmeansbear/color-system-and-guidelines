@@ -1176,6 +1176,44 @@ through orange, too near the pink.
   row's first cell carries the rule's width transparently so columns don't
   shift. 9.6 apart from the stripe (8.4 dark), so the two never blur.
 
+**Kind tints for cards** (sentence-a-day's TiddlyWiki river, 2026-10-23) —
+the first categorical card fills, after Rec League's per-person card colors:
+
+- **Step 2, not 0–1.** Steps 1 sit only 5–8 from the `white-0` ground, so
+  a card barely registers. Step 2 sits 10–19 away.
+- **About five step-2 tints stay apart.** Best five: cornflower, yellow,
+  orange, gray, pink (≥7.1 from each other). A sixth drops the minimum
+  to 5.2. Blue/gray, orange/red and yellow/goldenrod sit within ~2.5 of
+  each other, so each pair counts as one color.
+- **No pink card.** `pink-5` on `pink-2` is 2.76:1, so the accent (links,
+  focus) fails on it. The accent stays the accent.
+- **Color what was brought in; leave your own work on the ground.** Most
+  cards stay uncolored, and a tint means "someone else's words" (`yellow-2`),
+  "a thing" (`cornflower-2`) or "a person" (`orange-2`).
+- **On those three tints:** `--wjerk-black` 9.4–10.1:1, link
+  `#355188` 5.1–5.4, `gray`-family muted text 5.1–5.4, `pink-5` 3.3–3.5
+  (fills and focus rings only), same-hue step-7 label ink ~8.6.
+- **Bands inside the card go one step darker, in the card's own hue**
+  (step 3: header strips such as "Inbound" and table key cells). Neutral
+  bands clash with the tint. Step 3 sits ~8 from step 2 and carries text at
+  7.3–7.6:1, but links only at 3.9–4.1:1, so use it under plain text only.
+- **The kind is also written** as a small uppercase label in that step-7
+  ink, so color never carries it alone.
+- **Only where cards sit side by side.** A one-item-per-page site gains
+  nothing from a page tint; a label in the top matter does that job.
+- **Four is the ceiling.** Definitions split off from quotes into `gray-2`
+  (a definition is often your own writing, so "someone else's words" did not
+  fit it). With yellow, cornflower and orange that is every step-2 hue that
+  stays ≥7.1 apart. Purple was tried: `purple-2` sits 5.1 from
+  `cornflower-2`, so it was dropped. On `gray-3` bands the muted text tone
+  falls to 4.0:1; keep those bands to the main text color (7.5:1).
+- **A second distinction goes on a second channel.** Raw versus worked-up
+  material is marked by a dashed card edge, not a fourth tint: a raw quote
+  is yellow and dashed. One idea per channel, as in "Data on screen".
+- **A grid of categories can carry the same tints** (bjornpaedia's homepage
+  doors): your own kinds on the ground, the collection doors tinted and
+  ordered last so they form one band. Muted text on the tints is 5.1–5.4:1.
+
 ## Data on screen
 
 From wjeather (2026-09-10), the first project where the kit carries data

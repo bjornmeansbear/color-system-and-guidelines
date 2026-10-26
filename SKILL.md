@@ -135,7 +135,9 @@ Copy `kit.css` in and link it plainly; there is no build step and no package. Co
 file, never a hand-pasted subset of the scale. After a kit change, run
 `python3 scripts/sync.py --all` (add `--dry-run` to look first): it re-copies
 every project's `kit.css` that has no local edits, then runs the drift check
-over pasted fragments it can't fix.
+over pasted fragments. `python3 scripts/drift.py --fix <path>` rewrites those
+to the kit's values in the file's own notation — contrast-check the pairings
+first if the change is a hue rebuild rather than a rounding fix.
 Override `--color-accent`, `--color-bg`, `--font-display` per project if there's
 a reason — the semantic layer exists so a project can differ without forking the
 scale. Don't invent a parallel token vocabulary: the names (`--color-accent`,

@@ -12,6 +12,8 @@ tokens (`--color-accent`) are a project's to override, so they're skipped.
 Usage:
     drift.py                      check this repo
     drift.py <path>...            check files or folders (other projects too)
+    drift.py --fix <path>...      rewrite each stale copy to kit.css's value,
+                                  in the same notation (hex stays hex)
 
 Exits nonzero if anything drifted.
 """
@@ -42,19 +44,32 @@ def files(paths):
                     yield f
 
 
-def check(paths):
-    """Print every stale copy under paths; return how many."""
+def written_like(old, rgb):
+    """Format rgb the way old was written: hex, rgb(a,b,c) or rgb(a, b, c)."""
+    if old.startswith("#"):
+        h = "#" + "".join(f"{c:02x}" for c in rgb)
+        return h.upper() if old[1:].isupper() else h
+    sep = ", " if ", " in old else ","
+    return f"rgb({sep.join(map(str, rgb))})"
+
+
+def check(paths, fix=False):
+    """Print every stale copy under paths; return how many.
+    With fix, rewrite each one to kit.css's value."""
     tokens = parse_kit()
     drifted = 0
     for f in files(paths):
         if f.resolve() == KIT:
             continue
         try:
-            lines = f.read_text().splitlines()
+            text = f.read_text()
         except UnicodeDecodeError:
             continue
+        lines = text.splitlines(keepends=True)
+        changed = False
         for n, line in enumerate(lines, 1):
-            for name, literal in COPY.findall(line):
+            for m in COPY.finditer(line):
+                name, literal = m.groups()
                 if name not in tokens:
                     continue
                 want = to_rgb(name, tokens)
@@ -62,15 +77,25 @@ def check(paths):
                     drifted += 1
                     print(f"{f}:{n}  --{name} is {literal}, "
                           f"kit.css has rgb({','.join(map(str, want))})")
+                    if fix:
+                        new = m.group(0)[:m.start(2) - m.start()] + written_like(literal, want)
+                        lines[n - 1] = lines[n - 1].replace(m.group(0), new, 1)
+                        changed = True
+        if changed:
+            f.write_text("".join(lines))
     if drifted:
-        print(f"\n{drifted} stale cop{'y' if drifted == 1 else 'ies'} of kit.css colors.")
+        verb = "fixed" if fix else "stale"
+        print(f"\n{drifted} {verb} cop{'y' if drifted == 1 else 'ies'} of kit.css colors.")
     else:
         print("No drift: every pasted kit color matches kit.css.")
     return drifted
 
 
 def main():
-    return 1 if check(sys.argv[1:] or [REPO]) else 0
+    args = sys.argv[1:]
+    fix = "--fix" in args
+    paths = [a for a in args if a != "--fix"] or [REPO]
+    return 1 if check(paths, fix) and not fix else 0
 
 
 if __name__ == "__main__":

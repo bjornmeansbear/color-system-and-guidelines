@@ -213,6 +213,12 @@ before starting a session, not just written to at the end of one.
   `DASHBOARD-SPEC.md`, `print/print.css` or the commons contact sheet: 48
   stale values in all. All fixed; README now points at `kit.css` instead of
   carrying a copy. `drift.py <path>` checks other projects too.
+- **All projects clean; `drift.py --fix` added.** The last 41 old-pink copies
+  (lectureScripts, syllabiBuilder, vinylCutter) are rewritten, each in its own
+  notation. Checked first, old vs new, on every ground they sit on: all hold
+  their AA/AAA level, and no ratio moves more than 0.15 (pink-5 on `gray-0`
+  4.87 → 4.73, still AA). `sync.py --all` now reports no drift anywhere, so a
+  drift report from here on means something changed.
 - **`scripts/sync.py` re-copies the kit into projects.** Finds each
   project's `kit.css`, overwrites it only if it matches a committed version of
   this one (a copy with local edits is skipped and reported), then runs

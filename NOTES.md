@@ -99,11 +99,6 @@ before starting a session, not just written to at the end of one.
   (layout, type, screenshot treatment) the way the talk-deck genre now
   is — would need its own pass through `WorkingTeachingLecture.pdf`-style
   references if that's ever worth codifying.
-- **`print/` hasn't been run end-to-end yet** — it's a direct
-  generalization of `syllabiBuilder/build/`'s working script, but nobody's
-  built an actual PDF from the generalized copy to confirm the pandoc/
-  WeasyPrint invocation still works with the MICA-specific bits (font
-  paths, `--color-tint` token) removed.
 - **Find/build a libre Friz Quadrata alternative.** Friz Quadrata is a
   longtime personal pick but proprietary, so it's deliberately excluded
   from the shared typeface roster (RULES.md "Typography: the roster").
@@ -181,15 +176,6 @@ before starting a session, not just written to at the end of one.
   524MB of `SampleSlides/CC-SSS-*.svg` in history (~3.4MB each), not
   photography. Worth knowing before anyone "fixes" image storage there —
   the images were never the problem.
-- **Consolidate the palette HTML files.** `palette-1.html`, `palette-2.html`,
-  and `palette-docs.html` read as three sequential drafts of the same
-  living-style-guide page, not three distinct tools. `showcase.html` (added
-  2026-07-23) covers the "applied, in practice" half of this — type/color
-  tokens rendered as real components, not an abstract inventory — but the
-  three palette files still duplicate each other and haven't been folded
-  in or retired. Decide: merge their swatch/contrast-pair inventory into
-  `showcase.html`, or keep the two kinds of document (inventory vs.
-  applied) separate on purpose?
 - **`.panel-header`'s font-size (`1.25rem`) doesn't land on a type-scale
   rung** — it sits between `--text-md` (1.125rem) and `--text-lg`
   (1.375rem). Left alone rather than silently resized (see RULES.md
@@ -217,6 +203,51 @@ before starting a session, not just written to at the end of one.
   way; the mapping held, plus dark tints for data at steps 7–9.
 
 ## Changelog
+
+### 2026-10-26
+
+- **Pasted copies of the palette had drifted; `scripts/drift.py` now finds
+  them.** No project reads `kit.css` live, so every copy goes stale when the
+  kit changes. The 2026-09-11 rebuild (pink, purple, ground and text) had not
+  reached README.md (a full copy of the old scale headed "Source of truth"),
+  `DASHBOARD-SPEC.md`, `print/print.css` or the commons contact sheet: 48
+  stale values in all. All fixed; README now points at `kit.css` instead of
+  carrying a copy. `drift.py <path>` checks other projects too.
+- **`scripts/sync.py` re-copies the kit into projects.** Finds each
+  project's `kit.css`, overwrites it only if it matches a committed version of
+  this one (a copy with local edits is skipped and reported), then runs
+  `drift.py`. First dry run: di200-fieldnotes, taste-translator, wjeather and
+  wjorth were one change behind (no `--wjerk-*` originals). Pasted fragments
+  still on the old hot pink, which sync can't fix: lectureScripts (book.css
+  and the di200 decks), syllabiBuilder (GD420 deck, faculty handbook),
+  vinylCutter `app.css`.
+- **Deleted `palette-1.html`, `palette-2.html` and `palette-docs.html`**
+  (closes "Consolidate the palette HTML files"). Three July drafts of one page,
+  linked from nowhere, carrying the pre-rebuild palette and a 3.34:1 muted
+  gray; `palette-docs.html` was still shipping in the claude.ai skill bundle.
+  `showcase.html` links `kit.css` and covers all of it live.
+- **`print/` runs end to end** (closes the open question). Built a test PDF
+  through `md2pdf.sh` with `-x`; it works. It left two temp files per run,
+  now fixed (one temp dir, removed on exit). It also needs `pdfinfo`, now
+  listed.
+
+- **Section labels dark, card footers quiet** (bjornpaedia homepage). The
+  section bands went from `surface-muted` to `surface-dark` with cream text
+  (7.34:1), and the Start here card footers went from dark slabs to a rule on
+  the card's own cream. The labels now carry the hierarchy; the footers stop
+  competing with the card titles. Pink text on the muted band was 4.11:1, so
+  footer links hover by inverting (accent fill), as the cards do.
+- **Line up parts inside cards with subgrid, not a fixed height.** Flexbox
+  already gives cards in a row equal heights, but not the parts inside them:
+  footers of one, two or three lines put their top rules at different heights,
+  and a min-height in lines broke at narrower widths. A 12-column grid with
+  each card a two-row subgrid shares one footer row per row of cards.
+- **The kind tints as an abstract picture of an archive.** bjornpaedia's
+  homepage now lists all 2,083 pages as touching tiles, each tinted by kind
+  (about 44% colored). Sorted by title, the timestamped daily entries come
+  first as a long cream run, then the collection scatters through A–Z. The
+  Collected doors act as the key. Block count per row follows width
+  (`flex: 1 1 calc(10rem + gutter*2)`), not a breakpoint.
 
 ### 2026-10-23
 

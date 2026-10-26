@@ -19,11 +19,11 @@ mkdir -p "$STAGE/scripts" "$STAGE/print"
 
 # --- core: what the skill actually reads -----------------------------------
 cp "$REPO/RULES.md" "$REPO/NOTES.md" "$REPO/kit.css" "$STAGE/"
-cp "$REPO/scripts/contrast.py" "$STAGE/scripts/"
+cp "$REPO/scripts/contrast.py" "$REPO/scripts/drift.py" "$STAGE/scripts/"
 
 # --- templates the SKILL.md points at --------------------------------------
 cp "$REPO/slideshow-template.html" "$STAGE/"
-cp "$REPO/showcase.html" "$REPO/palette-docs.html" "$STAGE/"
+cp "$REPO/showcase.html" "$STAGE/"
 cp "$REPO/print/print.css" "$REPO/print/pandoc-template.html" \
    "$REPO/print/md2pdf.sh" "$STAGE/print/"
 

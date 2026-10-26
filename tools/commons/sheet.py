@@ -10,8 +10,9 @@ CSS = """
 :root{
   --gray-0:rgb(247,248,238); --gray-1:rgb(234,234,224); --gray-6:rgb(83,83,72);
   --brown-1:rgb(238,232,229); --brown-8:rgb(25,21,19); --brown-9:rgb(8,5,4);
-  --pink-3:rgb(255,129,169); --pink-5:rgb(214,0,97); --pink-6:rgb(164,0,65);
-  --bg:var(--gray-0); --text:var(--brown-8); --accent:var(--pink-5);
+  --pink-3:rgb(240,141,170); --pink-5:rgb(197,57,101); --pink-6:rgb(150,41,70);
+  --white-0:rgb(248,250,231); --black-9:rgb(45,40,38);
+  --bg:var(--white-0); --text:var(--black-9); --accent:var(--pink-5);
   --font:system-ui,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
   --mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
 }

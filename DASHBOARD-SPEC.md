@@ -4,7 +4,8 @@ A short, self-contained brief for building an HTML dashboard that matches the
 family. Canonical source is `kit.css` + `RULES.md` in this repo; this file is
 the subset a dashboard actually needs, plus the places the repos disagree.
 
-Verified against: `color-system-and-guidelines`, `onething`, `oblique`,
+Values updated 2026-10-26 to the 2026-09-11 palette rebuild (`scripts/drift.py`
+checks them). Repo findings below verified against: `color-system-and-guidelines`, `onething`, `oblique`,
 `a.wjerk.shop`, `bjornpaedia`, `chair-ness` (2026-09-02).
 
 ---
@@ -28,16 +29,16 @@ Two things about the ramps that surprise people:
 
 | Token | Value | On `--color-bg` |
 |---|---|---|
-| `--color-bg` | `--gray-0` `rgb(247,248,238)` | — |
-| `--color-surface` | `--gray-0` | — |
-| `--color-surface-2` | `--gray-0` | — |
-| `--color-text` | `--brown-8` `rgb(25,21,19)` | **16.94:1** AAA |
-| `--color-text-muted` | `--gray-6` `rgb(83,83,72)` | **7.27:1** AAA |
-| `--color-text-subtle` | `--gray-6` | **7.27:1** AAA |
+| `--color-bg` | `--wjerk-white` (`--white-0`) `#F8FAE7` | — |
+| `--color-surface` | `--wjerk-white` | — |
+| `--color-surface-2` | `--wjerk-white` | — |
+| `--color-text` | `--wjerk-black` (`--black-9`) `#2D2826` | **13.73:1** AAA |
+| `--color-text-muted` | `--gray-6` `rgb(83,83,72)` | **7.34:1** AAA |
+| `--color-text-subtle` | `--gray-6` | **7.34:1** AAA |
 | `--color-border` | = `--color-text` | — |
 | `--color-frame` | = `--color-text` | — |
-| `--color-accent` | `--pink-5` `rgb(214,0,97)` | **4.87:1** AA |
-| `--color-accent-hover` | `--pink-6` `rgb(164,0,65)` | 7.39:1 AAA |
+| `--color-accent` | `--pink-5` `rgb(197,57,101)` | **4.78:1** AA |
+| `--color-accent-hover` | `--pink-6` `rgb(150,41,70)` | 7.33:1 AAA |
 | `--color-accent-subtle` | `--pink-0` | background use only |
 
 Status colors, each measured on its own `-bg` companion:
@@ -62,17 +63,17 @@ but steps down to `--pink-3`.
 
 | Token | Light | Dark | Dark ratio on `--brown-9` |
 |---|---|---|---|
-| `--color-bg` | `--gray-0` | `--brown-9` `rgb(8,5,4)` | — |
-| `--color-text` | `--brown-8` | `--brown-0` `rgb(251,245,242)` | **18.81:1** AAA |
+| `--color-bg` | `--wjerk-white` | `--brown-9` `rgb(8,5,4)` | — |
+| `--color-text` | `--wjerk-black` | `--brown-0` `rgb(251,245,242)` | **18.81:1** AAA |
 | `--color-text-muted` | `--gray-6` | `--brown-3` `rgb(192,185,181)` | **10.49:1** AAA |
 | `--color-text-subtle` | `--gray-6` | `--brown-4` `rgb(158,151,147)` | **7.06:1** AAA |
-| `--color-accent` | `--pink-5` | `--pink-3` `rgb(255,129,169)` | **8.67:1** AAA |
+| `--color-accent` | `--pink-5` | `--pink-3` `rgb(240,141,170)` | **8.80:1** AAA |
 
 **`--brown-4` is the dimness floor.** `--brown-5` measures 4.36:1 — it reads
 like a usable gray on screen and is not one. Nothing dimmer than `--brown-4`
 carries text a reader has to read.
 
-**Do not carry `--pink-5` into dark mode.** It drops to 3.90:1 on `--brown-9`
+**Do not carry `--pink-5` into dark mode.** It drops to 4.01:1 on `--brown-9`
 — large-text only. `--pink-3` is the dark accent.
 
 ---
@@ -203,9 +204,9 @@ parallel palette.
 
 **2. There is no single "the background."** `oblique` runs on a different
 ground entirely — `--color-bg: rgba(132,132,120,1)` (legacy `@ookb-gray`),
-not `--gray-0`. Deliberate, documented, and it drags its text down to 4.80:1
-(AA, versus 16.94:1 everywhere else).
-→ *For the dashboard:* use `--gray-0`. `oblique` is the outlier, not the rule.
+not `--wjerk-white`. Deliberate, documented, and it drags its text down to 4.80:1
+(AA, versus 13.73:1 everywhere else).
+→ *For the dashboard:* use `--wjerk-white`. `oblique` is the outlier, not the rule.
 
 **3. `a.wjerk.shop` and `bjornpaedia` use blue as the interaction color.**
 Seven `blue` literals in `a.wjerk.shop/style.css` — every nav hover, every
@@ -284,9 +285,9 @@ from `kit.css` above it (or inline just the steps referenced here).
 :root {
   color-scheme: light dark;
 
-  --color-bg: var(--gray-0);
-  --color-surface: var(--gray-0);
-  --color-text: var(--brown-8);
+  --color-bg: var(--wjerk-white);
+  --color-surface: var(--wjerk-white);
+  --color-text: var(--wjerk-black);
   --color-text-muted: var(--gray-6);
   --color-text-subtle: var(--gray-6);
   --color-border: var(--color-text);
@@ -325,7 +326,7 @@ from `kit.css` above it (or inline just the steps referenced here).
     --color-text: var(--brown-0);
     --color-text-muted: var(--brown-3);
     --color-text-subtle: var(--brown-4);   /* dimness floor — nothing lower */
-    --color-accent: var(--pink-3);         /* NOT pink-5: 3.90:1, fails */
+    --color-accent: var(--pink-3);         /* NOT pink-5: 4.01:1, fails */
     --color-accent-hover: var(--pink-2);
     --color-accent-subtle: var(--pink-8);
   }

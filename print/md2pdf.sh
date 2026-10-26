@@ -14,7 +14,7 @@
 # "PDF generation" for the toolchain and why print.css restates a kit
 # token subset instead of importing kit.css.
 #
-# Requires pandoc and weasyprint (both installable via Homebrew/pipx).
+# Requires pandoc, weasyprint and pdfinfo (poppler) — Homebrew/pipx.
 set -euo pipefail
 
 DROP=()
@@ -35,9 +35,10 @@ mkdir -p "$(dirname "$OUT")"
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
 export DYLD_FALLBACK_LIBRARY_PATH="/opt/homebrew/lib:${DYLD_FALLBACK_LIBRARY_PATH:-/usr/local/lib:/usr/lib}"
 
-MD="$(mktemp -t md2pdf).md"
-HTML="$(mktemp -t md2pdf).html"
-trap 'rm -f "$MD" "$HTML"' EXIT
+TMP="$(mktemp -d -t md2pdf)"
+MD="$TMP/doc.md"
+HTML="$TMP/doc.html"
+trap 'rm -rf "$TMP"' EXIT
 
 cp "$SRC" "$MD"
 

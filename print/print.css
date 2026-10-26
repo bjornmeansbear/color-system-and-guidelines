@@ -29,16 +29,16 @@
 
 :root {
   /* kit tokens, print subset */
-  --brown-8: rgb(25,21,19);
+  --black-9: rgb(45,40,38);   /* --wjerk-black */
   --brown-6: rgb(88,81,78);
   --gray-1:  rgb(234,234,224);
   --gray-5:  rgb(117,117,105);
-  --pink-5:  rgb(214,0,97);
-  --pink-7:  rgb(116,0,37);
+  --pink-5:  rgb(197,57,101);
+  --pink-7:  rgb(106,26,42);
 
-  --color-text: var(--brown-8);
+  --color-text: var(--black-9);
   --color-accent: var(--pink-5);
-  --color-border: var(--brown-8);
+  --color-border: var(--black-9);
 
   /* Swap in your self-hosted fonts above, then reference them here.
      Until then this is kit.css's own "low-energy" default: system stack,

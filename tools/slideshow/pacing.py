@@ -10,8 +10,8 @@ Reads the real archive through build_slideshow, so the numbers track
 whatever is actually on disk rather than a remembered figure.
 
 Usage:
-    python3 scripts/pacing.py
-    python3 scripts/pacing.py --max-ipq 8
+    python3 tools/slideshow/pacing.py
+    python3 tools/slideshow/pacing.py --max-ipq 8
 """
 import argparse
 import csv

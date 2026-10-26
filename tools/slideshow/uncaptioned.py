@@ -13,8 +13,8 @@ Says *why* each one is bare, which changes what you type:
                          string, a bare UUID, or a scraped HTTP error page
 
 Usage:
-    python3 scripts/uncaptioned.py                  # print
-    python3 scripts/uncaptioned.py --out list.md    # also write markdown
+    python3 tools/slideshow/uncaptioned.py                  # print
+    python3 tools/slideshow/uncaptioned.py --out list.md    # also write markdown
 """
 import argparse
 import csv

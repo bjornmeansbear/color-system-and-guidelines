@@ -92,6 +92,9 @@ correct as tokens change. Exits nonzero on an AA failure — usable in a hook or
 CI. Run it before shipping any new pairing, especially anything named "muted"
 or "subtle."
 
+`python3 scripts/drift.py [path...]` finds pasted copies of kit colors that no
+longer match `kit.css` — in this repo by default, or in another project.
+
 Standing bar is WCAG AA; prefer AAA for body text, which most of this palette
 already clears.
 
@@ -124,11 +127,15 @@ Load the section from `RULES.md` before working in that area.
 
 Templates in this repo to start from rather than rebuild: `slideshow-template.html`
 (ambient/unattended player), `print/` (pandoc → WeasyPrint PDF pipeline),
-`showcase.html` and `palette-docs.html` (what the kit looks like applied).
+`showcase.html` (what the kit looks like applied).
 
 ## Using the kit in another project
 
-Copy `kit.css` in and link it plainly; there is no build step and no package.
+Copy `kit.css` in and link it plainly; there is no build step and no package. Copy the whole
+file, never a hand-pasted subset of the scale. After a kit change, run
+`python3 scripts/sync.py --all` (add `--dry-run` to look first): it re-copies
+every project's `kit.css` that has no local edits, then runs the drift check
+over pasted fragments it can't fix.
 Override `--color-accent`, `--color-bg`, `--font-display` per project if there's
 a reason — the semantic layer exists so a project can differ without forking the
 scale. Don't invent a parallel token vocabulary: the names (`--color-accent`,

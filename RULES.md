@@ -151,6 +151,8 @@ and [color-systems](https://github.com/mrmrs/color-systems), and
 [Randoma11y](https://randoma11y.com/). The `color-expert` skill is MrMrs's
 [skill.color-expert](https://github.com/mrmrs/skill.color-expert).
 
+**Placeholder text is set, never left to the browser.** Chrome’s default placeholder gray (`#757575`) is 4.35:1 on `white-0`, just under AA. Set `::placeholder` to the ink at 70% opacity, the same tone as figure captions: 5.33:1. Found building a.wjerk.shop’s works.html search box (2026-10-29).
+
 ## Color: pink is the accent, not blue
 
 `--color-accent` is Wjerk pink (`--pink-5` / `--pink-6`), the color that's

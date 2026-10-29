@@ -222,6 +222,11 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-10-29
+
+- **Placeholder contrast rule** added to RULES.md “Contrast”: browser-default placeholder gray is 4.35:1 on `white-0` (fails AA), so set it to ink at 70% (5.33:1).
+- **Search-and-sort list pattern**, first built in a.wjerk.shop’s works.html. The full list is rendered in HTML, newest first, so it works with scripts off. List.js 2.3.1 (the copy bjornpaedia vendors) adds a search box and a row of sort buttons, and those controls stay `hidden` until it loads. The buttons are kit compact size (about 32px). The current sort is `aria-pressed="true"` and shown inverted (ink ground, light text, 13.73:1). There's no pink hover fill, because the accent is for the focus ring. Entries reuse the case-study Elsewhere label rows. Candidate for kit.css if a second index page needs it.
+
 ### 2026-10-26
 
 - **Retired DASHBOARD-SPEC.md** (2026-09-02). Re-audited its twelve

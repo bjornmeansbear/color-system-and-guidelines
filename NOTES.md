@@ -225,7 +225,12 @@ before starting a session, not just written to at the end of one.
 ### 2026-10-29
 
 - **Placeholder contrast rule** added to RULES.md “Contrast”: browser-default placeholder gray is 4.35:1 on `white-0` (fails AA), so set it to ink at 70% (5.33:1).
-- **Search-and-sort list pattern**, first built in a.wjerk.shop’s works.html. The full list is rendered in HTML, newest first, so it works with scripts off. List.js 2.3.1 (the copy bjornpaedia vendors) adds a search box and a row of sort buttons, and those controls stay `hidden` until it loads. The buttons are kit compact size (about 32px). The current sort is `aria-pressed="true"` and shown inverted (ink ground, light text, 13.73:1). There's no pink hover fill, because the accent is for the focus ring. Entries reuse the case-study Elsewhere label rows. Candidate for kit.css if a second index page needs it.
+- **Index table pattern**, first built in a.wjerk.shop’s works.html, after romellogoodman.com/software.
+  - **Columns and layout:** one row per project (Year · Title · Kind · About · Links), 1px rules between rows and nothing else. It runs full width, left-aligned with the h1, up to 90rem. Below 55rem each row stacks into a block: year and kind on one small-caps line, then title, about and links.
+  - **Scripts:** the whole table is rendered in HTML, newest first, so it works with scripts off. List.js 2.3.1 (the copy bjornpaedia vendors) adds a search box, which stays `hidden` until it loads. It also turns the sortable column headers into buttons. The current column carries `aria-sort` and is shown bold with a solid underline and an arrow (`content: " ↓" / ""`, so the arrow isn't read twice). The other headers get a dotted underline.
+  - **Links column:** only short small-caps labels (“GET IT →”). The full description goes in `aria-label`/`title`, which starts with the visible text, per WCAG 2.5.3.
+  - **Colors:** no pink fills; pink stays the focus ring. Credits are ink at 70% (5.33:1).
+  - **Next:** a candidate for kit.css if a second index page needs it.
 
 ### 2026-10-26
 

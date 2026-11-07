@@ -114,7 +114,8 @@ def looks_like_garbage_title(title, check_length=True):
     """
     if not title:
         return True
-    if re.search(r"\.(jpe?g|png|gif|webp)(\?|$)", title, re.I):
+    # anywhere, not just at the end: a browser tab's "74B01.jpg (850×453)"
+    if re.search(r"\.(jpe?g|png|gif|webp)\b", title, re.I):
         return True
     if re.search(r"_nc_(ht|cat|ohc)=", title):
         return True
@@ -166,6 +167,9 @@ def clean_caption(text):
     # caption should say what the picture is and stop.
     t = re.sub(r"\s*[-\u2013\u2014|]\s*(free\s+)?photo on unsplash\s*$", "", t, flags=re.I)
     t = re.sub(r"\s*[-\u2013\u2014|]\s*unsplash\s*$", "", t, flags=re.I)
+    # Commons file pages: "File:Carl Larsson Model 1906.jpg - Wikimedia Commons"
+    t = re.sub(r"^File:(.+?)\.(jpe?g|png|gif|webp|tiff?)\s*[-\u2013\u2014|]\s*wikimedia commons\s*$",
+               lambda m: m.group(1).replace("_", " "), t, flags=re.I)
     t = t.strip(" -\u2013\u2014|")
     # Length is judged after taking the first line, so a long multi-line title
     # is trimmed to its name rather than thrown away whole.

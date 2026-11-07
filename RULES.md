@@ -132,7 +132,10 @@ links (nav cells, full-width cards): inset the ring (negative
 `outline-offset`) so the screen edge or an `overflow: hidden` parent can't
 cut it off, and give focus the same filled state as hover. On that accent
 fill the ring switches to the text color, since an accent ring on an accent
-ground disappears.
+ground disappears. Likewise on an inverted (ink-filled) cell, such as a
+selected tab, the ring switches to the ground color: pink on ink is 2.87:1
+light (`pink-5` on `wjerk-black`) and 2.14:1 dark (`pink-3` on `brown-0`),
+under the 3:1 a focus indicator needs.
 
 Sources: Alan Dalton,
 ["Good designers, bad websites: a proposal"](https://alistapart.com/article/good-designers-bad-websites-a-proposal/)
@@ -236,6 +239,11 @@ workhorse across every 2026 deck), **Pilowlava** (Velvetyne, OFL — display),
 Added 2026-10-15, from taste-translator: **Fraunces** (Undercase Type, OFL —
 a soft, wonky old-style serif with an optical-size axis), weight axis only,
 for titles and the wordmark over the system-sans body.
+
+Added 2026-11-03, from Wjord's Pages site: **Bricolage Grotesque** (Atelier
+Triay, OFL — a grotesque with an optical-size axis that turns quirky at
+display sizes), weights 400–800, for the wordmark and headings over the
+system-sans body. Self-hosted as the Latin-subset variable woff2 (~77 KB).
 
 PicNic carries a flag the others don't. It is published under Velvetyne's
 **CUTE** licence (Conditions d'utilisations typographiques engageantes), not
@@ -883,6 +891,23 @@ the generalized, drop-in version: no build step, edit the `CONFIG`,
   designing a build around it, and prefer sources whose own CDN is meant
   to be hotlinked (an image upload) over a link/screenshot capture of
   someone else's page.
+- **A live are.na channel can be the deck.** The are.na v3 API answers
+  browsers directly (`Access-Control-Allow-Origin: *`, guest limit 30
+  requests a minute, 100 blocks a page), so a player can read a channel
+  each time it opens instead of baking a snapshot: reorder blocks on are.na
+  and the show reorders. `sort=position_desc` is the order the channel
+  shows on are.na, top-left first. First built as `~/Code/wjall`
+  (2026-11-05). Its authoring rule: a text block sits over the image right
+  after it, on an opaque tilted card; text followed by text plays as a full
+  text slide; an image with no text before it plays alone. This is authored
+  adjacency, chosen by whoever arranges the channel, so it doesn't conflict
+  with the caption rule above: captions still come only from the block's
+  own fields.
+- **Space means different things by pacing, on purpose.** In a show you
+  advance yourself, space moves forward (like the DI200 decks and every
+  presentation app). On a timer, space pauses, so a press never pushes a
+  wall piece forward. Arrows step in both, and pause the timer when they do.
+  Page Up/Down step too, because that's what most clickers send.
 - **A fetched archive is a cache, not a deliverable — ignore it before the
   first commit, not after.** These players are usually fed by a script that
   pulls someone else's channel down to disk (`chair-ness/scripts/
@@ -1190,6 +1215,10 @@ rows — the budget, measured 2026-09-10:
   `--wjerk-black` (≥7.8:1, weakest on `pink-2`), `--gray-6` labels (≥5.2) and
   a `--pink-5` line (≥3.1 on every tint but pink's own; weakest `red-2`). Step 3
   fails — `blue-3` drops labels to 4.05 and the pink line to 2.71.
+  That pink figure is for a *line*. Pink-5 as small *text* fails on the
+  paper tints: 4.29:1 on `white-3`, 4.11:1 on `white-4` (Wjord, 2026-11-03).
+  Keep pink text on the ground (4.78:1), or frame the panel with rules
+  instead of a fill.
 - **Dark:** steps 7–9 pass against `--brown-0`, `--brown-3` and a `--pink-3`
   line (weakest, `yellow-7`: 11.59 / 6.47; the pink line ≥5.4 on any step 7–9).
 
@@ -1442,6 +1471,17 @@ verbatim copy; the project's own CSS maps it in:
   bundles the woff2 into the build, so no third-party request and the licence
   ships in `node_modules`. Quicker than hand-copying files into `static/fonts`
   as wjeather does, and it replaces a Google Fonts `<link>` one-for-one.
+- **Next.js works the same way** (Wjaffle, `~/Code/fridgechef`, 2026-11-06):
+  the identical `@import "./kit.css" layer(base)` + `@theme` mapping in
+  `app/globals.css`, Tailwind 4 through PostCSS. `next/font/google` counts as
+  self-hosted too — it downloads the OFL face at build time and serves it from
+  the app's own origin. Put the font's `variable` class on `<html>`, not
+  `<body>`, so a `:root { --font-display: … }` override can see it.
+- **The kit's `p` and heading margins beat Preflight.** Both sit in
+  `layer(base)` and the kit loads second, so every `<p>` gets a 1.5rem bottom
+  margin that a stock Tailwind page never had. Inside `space-y-*` the utility
+  wins anyway; anywhere else, add `m-0` (or a deliberate `mb-*`). Converting
+  an existing Tailwind page, check every `<p>` and `<h*>`.
 
 ## Using the kit in a TiddlyWiki static site
 
@@ -1557,6 +1597,13 @@ taste-translator (2026-10-15) keeps the frame and takes a custom fill: a
 dusty rose, `#C98F8E`, darker than any kit pink step 0–2. The brown line work
 measures 6.74:1 on it. Its mark is the app's own subject, a hub of radiating
 nodes, with a "TT" monogram at the centre.
+
+Wjaffle (2026-11-06) takes a kit tint: `goldenrod-1` (#FFEAAE), toast-colored
+for an app named after a toasted sandwich, the brown at 15.23:1 on it. The
+monogram is an italic W outlined from Newsreader (OFL) at weight 500, the app's
+display face. 300 matched the page's headline but went spindly at tab size.
+Next.js serves `app/icon.svg` and `app/apple-icon.png` by file name, no
+`<link>` needed.
 
 **Export, all from one SVG**
 

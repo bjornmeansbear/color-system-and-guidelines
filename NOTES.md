@@ -6,6 +6,12 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **Should the shared player and channel-show merge?** `tools/slideshow/`
+  bakes a snapshot (local files, offline, font rotation); `~/Code/wjall`
+  reads the channel live in the browser. The projector-with-no-wifi case is
+  what keeps the baked build alive. Open: give channel-show a "save a frozen
+  copy" export and retire the Python build, or keep both.
+
 - **Projects off the system** (from DASHBOARD-SPEC.md, re-audited
   2026-10-26; the fixes belong in those repos, not here):
   - **oblique's focus ring is invisible: fix it.** `:focus-visible` and link
@@ -23,6 +29,14 @@ before starting a session, not just written to at the end of one.
     (`rgb(8,5,4)` and the rest). They come from the `tools/slideshow`
     templates; now that `kit.css` ships dark, those templates could use the
     tokens instead.
+- **Kit class names collide with project classes.** `kit.css` styles bare
+  `.tag` (a pill with an accent border) and `.btn` globally. Wjord's Pages site
+  (2026-11-03) already had its own `.tag` (a Story Editor gutter label) and
+  `.btn`; linking the kit turned the labels into pills until the page renamed
+  its class to `.ps`. Any older page that adopts the kit can hit the same
+  thing. Open: prefix the kit's component classes (`.k-tag`, `.k-btn`), or
+  accept it and say "check for `.tag`/`.btn`/`.panel`/`.divider` clashes" in
+  the adoption steps?
 - **A generated palette page.** The 2016 `color-documentation` experiment
   (after Jxnblk's "Color palette documentation for living style guides")
   parsed a stylesheet and rendered every swatch plus every passing pair.
@@ -168,6 +182,12 @@ before starting a session, not just written to at the end of one.
   thin a sample. `di200-wk1` runs five modes (`.rows`, `.cols`, `ul`,
   `.lead`, `blockquote.big`) with no rule for choosing. Decide against
   the deck archive.
+  Evidence since: the DI200 wk4/wk5 decks settled on seven (`.title-slide`,
+  `.opener`, bare statement, `ul`, `.cols`, `.card`, `.fieldnote`), and the
+  systems-thinking deck (2026-11-02) needed two more — `.blueprint` (service
+  blueprint lanes with an accented dashed line of visibility, built one lane
+  per slide) and `.margin` (an object box shrinking across a three-frame
+  build). Open: are those archetypes, or one-lecture diagrams?
 - **Deck archive pending.** Kristian is selecting ~8 favourite decks
   (Figma exports and old PDFs) as evidence for the Presentations rules —
   PDFs, one per deck, year in the filename, with a note on which he'd
@@ -221,6 +241,110 @@ before starting a session, not just written to at the end of one.
   skipped under `prefers-reduced-motion`. See RULES.md "Motion".
 
 ## Changelog
+
+### 2026-11-07
+
+- **Wjaffle: the dock is the buttons.** The bottom strip no longer holds
+  bordered buttons on a gray ground; its buttons fill it edge to edge, split
+  by 1px ink rules: one full-width pink "Photograph your fridge" on the first screen,
+  then halves ("Another shelf" | pink "Find recipes"), with the tab row
+  full width below. The bottom row's color runs into the phone's
+  home-indicator area. The oblique-gray dock (`--color-dock`) is gone, so the
+  "accent on mid-gray gets an ink border" question below no longer comes from
+  Wjaffle; nothing else raised it. Pink cell against the ground: 4.78:1
+  light, 8.80:1 dark.
+
+### 2026-11-06
+
+- **Wjaffle: three views on a bottom tab bar** (Fridge · Recipes · List),
+  replacing one long scroll. The tabs sit in the dock under that view's
+  actions: three joined square cells with an ink border, the selected one
+  inverted and bold, with a mono count beside each label. It follows the WAI-ARIA tabs pattern:
+  arrow keys, Home and End, and only the selected tab in the Tab order.
+  Photos fold to one "Photos 3 · Show" row inside Fridge. Found while
+  building it: the accent focus ring fails 3:1 on the inverted cell, so that
+  cell's ring is the ground color (13.7:1 light, 18.8:1 dark). Added to the
+  focus rule in RULES.md.
+- **Wjaffle: pink button on the oblique gray.** The bottom action strip is
+  now `--wjerk-med-gray` (oblique's ground), in light and dark. Pink on that
+  gray is 1.34:1 (`pink-5`) and 1.63:1 (`pink-3`, dark), so the button edge
+  dissolves. Fix: the accent button keeps its fill but takes an ink border
+  (`--color-text`: 3.86:1 light, 3.49:1 dark, clears 3:1 non-text). Label
+  contrast is unaffected (it sits on the pink). Open question: whether
+  "accent on a mid-gray ground always gets an ink border" belongs in RULES.md
+  as a general rule; oblique itself uses pink on that gray decoratively only.
+- **Wjaffle: recipe results became bordered cards,** one per dish, 12px
+  apart, photo flush left behind a 1px rule, square corners (a card framing
+  layout is chrome, so no radius), press inverts. No fill or tint: "Kind
+  tints" say your own results stay on the ground. Grouped as "Ready to make"
+  vs. "Need a few things", the group is written as a label, not a color.
+- **Wjaffle (`~/Code/fridgechef`, formerly FridgeChef/mise) moved onto the
+  kit.** Its `app/palette.css` was an old pasted copy of the scales, with no
+  `--wjerk-*` tokens, semantic layer or dark mode; replaced with a verbatim
+  `kit.css` and the Tailwind 4 mapping (first time in a Next.js app). Tailwind
+  `stone-*` grays out: `stone-400` labels were 2.5:1 on white and are now
+  `--color-text-muted` (7.34:1). Pink is the one primary action (Add photos /
+  Take stock, `--color-bg` on `--color-accent`, 4.78:1; 8.80:1 dark). While
+  scanning, that button turns into a bordered `--color-bg` button instead of
+  the kit's 0.4-opacity disabled state, because its label is the progress
+  message and has to stay readable. The bottom action bar takes the 2px top
+  rule. Ingredients are pills. Recipe rows underline on hover instead of
+  filling. Focus fixes: the input no longer suppresses its outline, and the
+  file-picker labels draw the ring with `has-focus-visible:`, since the real
+  input is `opacity: 0` and its own outline is invisible. Newsreader stays as
+  `--font-display`; Geist dropped for the kit's system sans. Project token
+  `--color-well` (`white-3` / `brown-8`) for placeholders and empty tiles,
+  never behind text.
+  New family icon (goldenrod-1 fill, italic Newsreader W); see RULES.md
+  "Icons". Next.js notes added to RULES.md "Using the kit with Tailwind (v4)".
+
+### 2026-11-05
+- RULES.md "Slideshows / unattended players": added a live are.na channel as
+  the deck (CORS-open API, `position_desc` order, the text-over-next-image
+  pairing rule) and the space-key split (advance in a talk, pause on a
+  timer). From `~/Code/wjall`, started this day.
+
+### 2026-11-03
+
+- **Wjord's GitHub Pages site moved onto the kit** (`~/Code/wjord/docs/`).
+  It had its own palette (InDesign frame-edge blue on white, light-gray rules)
+  and loaded Bricolage Grotesque and IBM Plex Mono from Google Fonts. It now
+  links a copied `kit.css`, takes all colors from the semantic tokens (dark
+  mode from the kit, its own dark block deleted), puts sizes on the
+  baseline-grid rungs and uses the 40/55rem breakpoints. Both faces are
+  self-hosted (OFL); Plex Mono came from wjeather's `static/fonts`. The footer
+  links this repo. Bricolage Grotesque added to the roster in RULES.md.
+- **Finding: `pink-5` as small text fails on cream tints.** 4.29:1 on `white-3`,
+  4.11:1 on `white-4`. The tints-behind-text budget had only checked pink as a
+  *line* (≥3:1). The site dropped its tinted wells and frames panes with rules
+  instead, so pink style-name labels sit on the ground (4.78:1). Recorded in
+  RULES.md "Color: tints behind text".
+
+### 2026-11-02
+
+- **Projection: a student asked for dark slides.** At the DI200 systems-thinking rehearsal, a student said dark-on-light is hard to read when projected, so the deck went fully dark: one -7 ground per section (brown, purple, cornflower, green, goldenrod, blue), -0 text (≥11.6:1), -2 muted (≥8.5:1), pink-2 accent (≥6.8:1). The -8 steps all look the same on a projector, so -7 is the darkest step that still reads as a color. Image scrims use the section's own ground at 0.85 (worst case, a white photo: text ≥7.25, muted ≥5.37). This is evidence on the open "deck color vs kit color" question: for projection, dark grounds with the pink accent, picked per section.
+
+- **DI200 systems-thinking deck** (`lectureScripts/lecture-systems-thinking/`):
+  built on the wk5 deck's chrome and tokens. Added a third ground, `s-paper`
+  (`gray-0` / `brown-8` / `gray-7` / `pink-6` — 16.94 / 11.87 / 7.26, all AAA,
+  checked with `contrast.py`), for definitions and diagram slides, following
+  "a plain diagram slide reads as a deliberate reset." Note `pink-6` on `gray-0`
+  is 7.26 since the 2026-09-11 pink rebuild; wk1's header comment still says
+  7.39. Two new layouts logged as open under the archetype-set question.
+- **Handout sheets via `print/md2pdf.sh`**: the default `print.css` (28mm side
+  margins, ruled `h2`, nowrap first column) is sized for syllabi. One-page
+  worksheets needed an inline override: 13–16mm margins, smaller unruled `h2`,
+  `table-layout: fixed`, first column allowed to wrap. Open: should
+  `print/` ship a `worksheet.css` variant?
+
+### 2026-10-30
+
+- **Slideshow caption filter** (`tools/slideshow/build_slideshow.py`): titles
+  with an image extension *anywhere* are now rejected, not only when it ends the
+  title. Browser-tab titles like “74B01.jpg (850×453)” and “…_n.jpg 1,200×800
+  pixels” had been projecting as captions. In chair-ness, 10 captions went blank
+  and none of the others changed. Commons file-page titles (“File:X.jpg - Wikimedia
+  Commons”) are cut down to X, the same way the Unsplash tail is.
 
 ### 2026-10-29
 

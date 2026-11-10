@@ -273,6 +273,21 @@
 }
 /* ---- end dark mode ---- */
 
+/* ---- more contrast ----
+   Someone has asked their system for more contrast (macOS and iOS "Increase
+   contrast", Windows contrast settings). The kit's only softened tokens are
+   the muted and subtle text tiers, so they become the full text color. They
+   point at --color-text, so this holds in light and dark mode alike. A
+   project with softer tones of its own does the same for them. See RULES.md
+   "Viewer settings: theirs to set". scripts/contrast.py skips this block. */
+@media (prefers-contrast: more) {
+  :root {
+    --color-text-muted: var(--color-text);
+    --color-text-subtle: var(--color-text);
+  }
+}
+/* ---- end more contrast ---- */
+
 /* ---- base reset ---- */
 *, *::before, *::after {
   box-sizing: border-box;

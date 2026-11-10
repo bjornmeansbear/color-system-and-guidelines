@@ -1,0 +1,21 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "wjavelength",
+	"account_id": "04b8381616db8b4cf5ca0bac4f1f675a",
+	"main": ".svelte-kit/cloudflare/_worker.js",
+	"compatibility_date": "2026-10-01",
+	"routes": [{ "pattern": "wjavelength.wjerk.shop", "custom_domain": true }],
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".svelte-kit/cloudflare"
+	},
+	// Votes from /vote.
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "wjavelength",
+			"database_id": "ed8ae500-1033-4dda-8de7-ee18e288880b",
+			"migrations_dir": "migrations"
+		}
+	]
+}

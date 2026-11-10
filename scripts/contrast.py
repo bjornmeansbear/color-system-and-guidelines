@@ -39,9 +39,13 @@ DARK = re.compile(r"/\* ---- dark mode ----.*?/\* ---- end dark mode ---- \*/", 
 TOKEN = re.compile(r"--([\w-]+)\s*:\s*([^;]+);")
 
 
+# Viewer-requested overrides (prefers-contrast) aren't the default palette.
+MORE_CONTRAST = re.compile(r"/\* ---- more contrast ----.*?/\* ---- end more contrast ---- \*/", re.S)
+
+
 def parse_kit():
     """--name: value pairs from kit.css :root (light), in file order."""
-    return dict(TOKEN.findall(DARK.sub("", KIT.read_text())))
+    return dict(TOKEN.findall(MORE_CONTRAST.sub("", DARK.sub("", KIT.read_text()))))
 
 
 def parse_dark():

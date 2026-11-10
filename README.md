@@ -32,6 +32,7 @@ of shadows, open/libre type, a 6px baseline grid.
 | `tools/slideshow/` | Builds slideshows from an are.na archive. |
 | `tools/commons/` | Finds public-domain slide imagery from a metaphorical brief. |
 | `SKILL.md` | The `bjorn-design` skill: the always-loaded summary that points into RULES.md. |
+| `site/` | Wjavelength, the website for the system: palette, contrast cheat sheet, rules, and a voter for color sets. SvelteKit on Cloudflare Workers; reads `kit.css` and `RULES.md` at build. See `site/README.md`. |
 
 The writing side lives in its own repo, `~/Code/bjorn-voice`.
 

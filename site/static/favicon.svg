@@ -1,0 +1,14 @@
+<svg width="1082" height="1082" viewBox="0 0 1082 1082" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- Icon family frame (RULES.md "Icons"). The mark: the spectrum, as five
+     bands of kit step-3 colors, red to purple. -->
+<rect width="1082" height="1082" fill="white"/>
+<rect x="146" y="147" width="694" height="694" fill="#FFF7DE"/>
+<rect x="166" y="167" width="130.8" height="654" fill="#FD9B98"/>
+<rect x="296.8" y="167" width="130.8" height="654" fill="#D5B862"/>
+<rect x="427.6" y="167" width="130.8" height="654" fill="#ADC497"/>
+<rect x="558.4" y="167" width="130.8" height="654" fill="#9EBBF3"/>
+<rect x="689.2" y="167" width="130.8" height="654" fill="#C7B2D1"/>
+<rect x="146" y="147" width="694" height="694" stroke="#191513" stroke-width="40"/>
+<path d="M936 214V935H215" stroke="#191513" stroke-width="30"/>
+<path d="M891 170V891H170" stroke="#191513" stroke-width="30"/>
+</svg>

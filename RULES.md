@@ -156,6 +156,55 @@ and [color-systems](https://github.com/mrmrs/color-systems), and
 
 **Placeholder text is set, never left to the browser.** Chrome’s default placeholder gray (`#757575`) is 4.35:1 on `white-0`, just under AA. Set `::placeholder` to the ink at 70% opacity, the same tone as figure captions: 5.33:1. Found building a.wjerk.shop’s works.html search box (2026-10-29).
 
+## Viewer settings: theirs to set, always honored
+
+The style is the designer's call: colors, type, mood, and whether a page is
+light or dark by default. A dark-by-design page is a legitimate choice. But
+some settings a visitor makes are about being able to see, read or use the
+page at all, and those win over the style, every time, in every project.
+Decided 2026-11-09, while rebuilding toreallyappreciatedesignyou.
+
+1. **Text size and zoom.** Every size is in rem and `kit.css` sets no root
+   font-size (see "Typography: baseline grid"), so a larger browser text
+   setting scales the whole system. Never `maximum-scale` or
+   `user-scalable=no` in the viewport tag. Layouts reflow at 200% zoom
+   without sideways scrolling.
+2. **Reduced motion.** `prefers-reduced-motion: reduce` skips a flourish
+   outright and slows an auto-advancing medium rather than removing it.
+   Details in "Motion".
+3. **Increased contrast.** `prefers-contrast: more` is asked for on purpose
+   (macOS and iOS "Increase contrast", Windows contrast settings). `kit.css`
+   answers it by making the muted and subtle text tiers the full text color.
+   A project with softer tones of its own (captions at 70% ink, tinted
+   wells, rules in a mid color) brings those to full ink too. A project
+   that picks among color sets narrows the draw to sets that reach AAA.
+4. **Forced colors.** Windows high-contrast themes replace every color
+   with the visitor's own. Nothing survives that only as a color: the
+   ending on toreallyappreciatedesignyou is pink *and* italic, a selected
+   tab is inverted *and* bold, links are underlined. Borders and outlines
+   carry structure, so they keep working (the browser recolors them).
+   Shadows and background tints disappear, which is one more reason the kit
+   builds structure from rules.
+5. **Dark mode, one way.** `prefers-color-scheme: dark` is usually a
+   deliberate choice (comfort, light sensitivity, or "Auto" switching at
+   sunset), so never flash a bright page at it. `kit.css` flips its tokens.
+   A page that changes its ground draws only from dark grounds, and "dark"
+   is measured, not eyeballed: a mid-tone like `pink-5` carries light type
+   but is not a dark ground. Light mode is the default most people never
+   changed, so it isn't a request: a dark-by-design page stays dark for
+   everyone. Respond to the setting changing while the page is open, too.
+
+Contrast numbers are symmetric (`pink-2` on `cornflower-7` scores the same
+as `cornflower-7` on `pink-2`), so any passing pair has a dark-mode twin
+with its roles swapped. The eye isn't symmetric: light type on dark reads
+heavier and can bloom, especially thin weights, so a dark twin may want a
+slightly lighter weight or more letter-spacing. APCA, the proposed WCAG 3
+method, scores the two directions differently for this reason.
+
+Optional, not owed: following a light-mode setting on a dark-by-design
+page, and a light/dark toggle (worth it on pages read at length; the recipe
+is in "Dark mode").
+
 ## Color: pink is the accent, not blue
 
 `--color-accent` is Wjerk pink (`--pink-5` / `--pink-6`), the color that's
@@ -1604,6 +1653,10 @@ monogram is an italic W outlined from Newsreader (OFL) at weight 500, the app's
 display face. 300 matched the page's headline but went spindly at tab size.
 Next.js serves `app/icon.svg` and `app/apple-icon.png` by file name, no
 `<link>` needed.
+
+toreallyappreciatedesignyou (2026-11-09) takes `yellow-1` (#F1EEAB, the brown
+at 15.16:1) and swaps the monogram for three dots, the ellipsis in its
+sentence. A mark drawn from shapes skips the outlining step.
 
 **Export, all from one SVG**
 

@@ -242,6 +242,92 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-11-09
+
+- **Wjavelength: the system gets a website** (`site/`). "Colors are
+  wavelengths of light." Pages: a spectrum grid of every scale, the palette
+  with click-to-copy tokens, the step contrast cheat sheet plus a pair checker
+  that shows each pair's dark twin, `RULES.md` rendered (local paths
+  stripped; `NOTES.md` stays private), a `kit.css` download, and a voter. The
+  voter shows random sets of ground, text and accent, each a mini trady
+  poster, all passing AA (text and accent ≥4.5:1, the accent a real color at
+  OKLCH chroma ≥0.07 and ≥30° of hue from a colored text), and asks yes or no.
+  Contrast numbers show only after the vote. Results rank sets by the Wilson
+  lower bound and tally by ground scale, accent scale, and light vs dark
+  ground. In the spirit of MrMrs's Randoma11y (cited under Contrast): readable
+  is the floor; the vote asks what's good. SvelteKit 3 on Cloudflare Workers
+  with D1; it reads `kit.css` and `RULES.md` at build, so the root stays a plain
+  file with no build step. Plain kit.css, no Tailwind: the site is the
+  kit's own demo. Live at https://wjavelength.wjerk.shop/ (2026-11-09):
+  Worker `wjavelength` and D1 database `wjavelength` on the OOKB Cloudflare
+  account, custom domain attached by `wrangler deploy`.
+  SvelteKit 3 notes, for next time: config lives in `vite.config.ts`
+  (`sveltekit({ adapter })`), the lib alias is `#lib/` and needs the file
+  extension (`#lib/palette.ts`), and Cloudflare bindings come from
+  `import { env } from 'cloudflare:workers'`, not `platform.env`.
+- **Open: should votes feed back into the kit?** Once a set has enough votes,
+  the best could become named kits (like trady's 13) or a documented set of
+  approved trios in RULES.md.
+- **Viewer settings are a standing rule now.** New RULES.md section "Viewer
+  settings: theirs to set, always honored": text size and zoom, reduced
+  motion, increased contrast, forced colors, and dark mode (one way: honor
+  dark, treat light as no preference). `kit.css` gained a `prefers-contrast:
+  more` block that makes the muted and subtle text tiers full text color, in
+  both modes. `scripts/contrast.py` skips that block so its audit still reads
+  the default palette (verified: output unchanged). toreallyappreciatedesignyou
+  narrows its kit draw to AAA kits under increased contrast and re-picks live
+  when either setting changes. Copied into that project; `sync.py --all` will
+  update the other seven copies (di200-fieldnotes, fridgechef,
+  taste-translator, wjall, wjeather, wjord, wjorth). It also flagged two stale
+  brown values pasted into the DI200 systems-thinking deck.
+- **Contrast by step, measured.** Every pair in the kit (177 colors, 15,576
+  pairs: 3,385 AAA, 1,796 more AA) shows the shared lightness grid makes the
+  step numbers decide contrast whatever the hues. Worst case over all hue
+  combinations: steps 0–1 against 7–9, and 2–3 against 8–9, are AAA; 0–1
+  against 6, 2–3 against 7, and 4 against 8–9 are AA. Step-7 grounds of every
+  hue carry their own step 0 at 10.7–11.9:1 and `pink-2` at 6.8–7.3:1, which
+  is why the decks' per-section dark grounds and this site's dark kits agree.
+  Not yet written into RULES.md.
+
+- **toreallyappreciatedesignyou: a new color kit on every ending.** The 2009
+  Blauvelt-workshop "poster" (`~/Code/toreallyappreciatedesignyou`, sibling of
+  oblique) dropped jQuery, Bootstrap, Google Fonts and a dead Universal
+  Analytics tag, and links a plain copy of `kit.css`. A first pass on the kit
+  defaults (cream ground, oblique's double frame) read as "too much cream". The
+  rebuild brings back what the Drupal original did: load a different color kit
+  each time. That's 13 kits, each just ground / ink / ending color, mapped onto
+  `--color-bg`, `--color-text` and `--color-accent` so links, focus and rules follow.
+  Every ink and every ending clears 4.5:1 on its ground (lowest: pink-8 ending on
+  `--wjerk-purple`, 5.44; Black ink on `pink-4` was 4.67 and on `--wjerk-orange` 4.12, so
+  orange didn't make it). Pink is the ending on light grounds (`pink-5`–`8`) and
+  on most dark ones; on pink or red grounds the ending goes `yellow-0`. No frame,
+  solid ground, system sans for now, headline up to 104/108px (on the 6px grid,
+  off the token scale), dropping a size for endings over 70 characters. Dark mode
+  is handled by the kit picker, not the kit's dark block: if the system asks for
+  dark, only the four dark grounds are in the draw. Icon: the family frame, a
+  `yellow-1` fill and an ellipsis as the mark, so it needs no font.
+- **Recipe: one line that fills its column exactly, in any font.** Same project:
+  "To really appreciate design you" spans the column edge to edge. CSS:
+  `container-type: inline-size` on the parent, then on the line `white-space:
+  nowrap; width: max-content; font-size: calc(100cqi / var(--lead-em, 13.6))`,
+  where `--lead-em` is the line's width in ems (13.32 in the Mac system font,
+  13.6 for slack). After `document.fonts.ready`, a script measures width ÷
+  font-size and sets the real `--lead-em` (+1%). The ratio depends only on the
+  font, so it never needs redoing on resize, and swapping typefaces re-fits by
+  itself. Plain `vw` can't do this, because system fonts differ in width by
+  platform. The size is off the 6px grid by nature; the lines under it stay on it.
+  **Tried and dropped here, same day:** the fitted line came out bigger than
+  the line below it on desktop and much smaller on phones, and the mismatch
+  read as a mistake. The site went back to one size and leading for the whole
+  headline. The recipe holds where a line should fill the width and stand
+  alone, like a masthead, not where it runs on into more text.
+- **Open: is "a new kit every load" a pattern?** It's the opposite of the one-ground
+  default, but it's still one accent family with computed pairs. If a second
+  project wants it, the kit list and the picker belong here.
+- **Testing tip:** headless Chrome won't lay out narrower than 500px, even with
+  `--window-size=390,…`. Screenshot phone widths through a 390px `<iframe>`
+  instead.
+
 ### 2026-11-07
 
 - **Wjaffle: the dock is the buttons.** The bottom strip no longer holds

@@ -1,10 +1,10 @@
-# chapbook
+# Bjook
 
 Poems as plain text in, three things out: a typeset PDF in reading order, a
 booklet PDF imposed for saddle stitch, and a preview of the book as facing
 pages that reloads when you save.
 
-The design reasoning lives in `RULES.md`, **"Chapbooks"**. This file is how to
+The design reasoning lives in `RULES.md`, **"Bjook"**. This file is how to
 run it.
 
 ## Built with it
@@ -19,25 +19,25 @@ pipx inject weasyprint pypdf
 brew install poppler          # pdftoppm, for the preview images
 ```
 
-`./chapbook` runs `chapbook.py` on the Python inside that pipx venv. An alias
+`./bjook` runs `bjook.py` on the Python inside that pipx venv. An alias
 saves typing:
 
 ```sh
-alias chapbook=~/Code/color-system-and-guidelines/tools/chapbook/chapbook
+alias bjook=~/Code/color-system-and-guidelines/tools/bjook/bjook
 ```
 
 ## Use
 
 ```sh
-chapbook new ~/Code/my-book --channel <are.na-slug>
+bjook new ~/Code/my-book --channel <are.na-slug>
 cd ~/Code/my-book
 
-chapbook fetch                 # text blocks -> poems/*.md, listed in order.txt
-chapbook watch                 # http://127.0.0.1:8642/preview.html, rebuilds on save
-chapbook build                 # one build, no server
-chapbook build --snap "note"   # also keep a timestamped copy in snapshots/
-chapbook specimen              # one poem in eight faces -> build/specimen.pdf
-chapbook specimen "Spectral" "Inria Serif" --poem some-poem.md
+bjook fetch                 # text blocks -> poems/*.md, listed in order.txt
+bjook watch                 # http://127.0.0.1:8642/preview.html, rebuilds on save
+bjook build                 # one build, no server
+bjook build --snap "note"   # also keep a timestamped copy in snapshots/
+bjook specimen              # one poem in eight faces -> build/specimen.pdf
+bjook specimen "Spectral" "Inria Serif" --poem some-poem.md
 ```
 
 Every command takes `--root` before it, defaulting to the current folder.
@@ -46,7 +46,7 @@ Every command takes `--root` before it, defaulting to the current folder.
 
 | | |
 |---|---|
-| `book.toml` | Title, author, page size, margins, typeface, size, leading. |
+| `book.toml` | Title, author, page size, margins, typeface, size, leading; where the page number sits (`[folio]`); an optional running head (`[head]`). The template lists every setting. |
 | `order.txt` | The sequence, one poem filename per line. Move lines to reorder. `#` in front of a line leaves that poem out. |
 | `poems/*.md` | One poem each: a few `key: value` lines between `---` (title, are.na id, date), then the lines. A blank line is a stanza break. `*italic*` and `**bold**` work; leading spaces indent. |
 | `style.css` | This book's overrides, applied after the tool's `book.css`. |

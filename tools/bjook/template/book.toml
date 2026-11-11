@@ -1,0 +1,43 @@
+# One book. Everything about the page lives here; `bjook build` reads it.
+
+title  = "Untitled"
+author = ""
+arena  = ""          # are.na channel slug that `bjook fetch` pulls from
+
+[page]
+width   = "5.5in"    # half letter: folds from a letter sheet
+height  = "8.5in"
+top     = "1.0in"
+bottom  = "1.5in"   # the folio sits in this margin
+inside  = "1.25in"  # the fold side
+outside = "1.0in"
+
+[type]
+text    = "Gentium"  # a family name as the font itself spells it
+display = ""         # titles; empty = same as text
+title   = ""         # the title page; empty = same as display
+size    = "10pt"
+leading = "15pt"     # keep (height - top - bottom) a whole number of these
+fonts_dir = "~/Code/libreFontLibrary/Families"
+
+[folio]                 # the page number
+font     = ""           # empty = same as text
+size     = "9pt"
+position = "bottom-outside"   # top or bottom, then outside, inside or center
+from_edge = ""          # distance from the paper's edge to the number, e.g. "1in"
+drop     = ""           # or: gap between the text block and the number; empty = one line
+
+[head]                  # the running head; leave verso and recto empty for none
+verso    = ""           # left-hand pages. {title}, {author} and {poem} fill in
+recto    = ""           # right-hand pages
+font     = ""           # empty = same as text
+size     = "8pt"
+position = "top-center"
+from_edge = ""          # distance from the paper's edge, e.g. "0.5in"s
+
+[book]
+contents     = true
+smart_quotes = true  # curl straight quotes at build; poem files stay as typed
+ink          = "#000"  # text prints as solid black, not a brown mix
+colophon     = ""
+closing      = ""    # a line set like the title, on the last page

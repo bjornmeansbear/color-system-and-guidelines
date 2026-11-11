@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 """
-chapbook — poems as plain text -> a typeset book PDF, a printer's booklet,
+bjook — poems as plain text -> a typeset book PDF, a printer's booklet,
 and a spread preview in the browser.
 
-    chapbook new ~/Code/my-book --channel <are.na-slug>
-    chapbook fetch            # pull are.na text blocks into poems/
-    chapbook build            # build/<slug>.pdf, -booklet.pdf, preview.html
-    chapbook build --snap "first proof"
-    chapbook watch            # rebuild on save, preview reloads itself
-    chapbook specimen Gentium Spectral "Libre Caslon Text"
+    bjook new ~/Code/my-book --channel <are.na-slug>
+    bjook fetch            # pull are.na text blocks into poems/
+    bjook build            # build/<slug>.pdf, -booklet.pdf, preview.html
+    bjook build --snap "first proof"
+    bjook watch            # rebuild on save, preview reloads itself
+    bjook specimen Gentium Spectral "Libre Caslon Text"
 
 Run from inside a book folder, or pass --root. The design reasoning lives
-in RULES.md, "Chapbooks"; README.md here is how to run it.
+in RULES.md, "Bjook"; README.md here is how to run it.
 
-Runs on the Python inside WeasyPrint's pipx venv (the `chapbook` wrapper
+Runs on the Python inside WeasyPrint's pipx venv (the `bjook` wrapper
 next to this file finds it), which also carries fontTools and pypdf.
 """
 import argparse
@@ -22,6 +22,7 @@ import functools
 import html
 import http.server
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -36,6 +37,8 @@ HERE = Path(__file__).resolve().parent
 API = "https://api.are.na/v3"
 USER_AGENT = "arena-archive-script/1.0 (personal are.na export)"
 
+# Fallbacks only, for a setting a book leaves out. Changing these does nothing
+# to a book whose book.toml sets the same thing: edit that book.toml instead.
 DEFAULTS = {
     "title": "Untitled",
     "author": "",
@@ -43,17 +46,36 @@ DEFAULTS = {
     "arena": "",
     "page": {
         "width": "5.5in", "height": "8.5in",
-        "top": "0.75in", "bottom": "0.875in",
-        "inside": "0.75in", "outside": "0.625in",
+        "top": "1.0in", "bottom": "1.5in",
+        "inside": "1.25in", "outside": "1.0in",
     },
     "type": {
-        "text": "Gentium", "display": "",
+        "text": "Gentium", "display": "", "title": "",
         "size": "10pt", "leading": "15pt",
         "fonts_dir": "~/Code/libreFontLibrary/Families",
+    },
+    "folio": {
+        "font": "",                     # empty = the text face
+        "size": "9pt",
+        "position": "bottom-outside",   # top|bottom - outside|inside|center
+        "from_edge": "",                # distance from the paper's edge; wins over drop
+        "drop": "",                     # or: gap from the text block; empty = one line
+    },
+    "head": {                           # the running head; off unless verso/recto is set
+        "verso": "",                    # left-hand pages: text, with {title} {author} {poem}
+        "recto": "",                    # right-hand pages
+        "font": "",                     # empty = the text face
+        "size": "8pt",
+        "weight": "normal",
+        "position": "top-center",       # top|bottom - outside|inside|center
+        "from_edge": "",                # distance from the paper's edge; wins over drop
+        "drop": "",                     # or: gap from the text block; empty = one line
+        "css": "",                      # extra CSS, e.g. "letter-spacing: 0.08em"
     },
     "book": {
         "contents": True,
         "colophon": "",
+        "closing": "",
         "smart_quotes": True,
         "ink": "#000",
     },
@@ -66,7 +88,7 @@ SPECIMEN_FACES = [
 
 
 def die(msg):
-    sys.exit(f"chapbook: {msg}")
+    sys.exit(f"bjook: {msg}")
 
 
 # ---------------------------------------------------------------- config
@@ -75,7 +97,7 @@ def load_config(root):
     path = root / "book.toml"
     if not path.is_file():
         die(f"no book.toml in {root} — run from a book folder, pass --root, "
-            "or start one with `chapbook new <dir>`")
+            "or start one with `bjook new <dir>`")
     user = tomllib.loads(path.read_text())
     cfg = {}
     for key, default in DEFAULTS.items():
@@ -85,6 +107,19 @@ def load_config(root):
             cfg[key] = user.get(key, default)
     cfg["slug"] = cfg["slug"] or slugify(cfg["title"])
     cfg["type"]["display"] = cfg["type"]["display"] or cfg["type"]["text"]
+    cfg["type"]["title"] = cfg["type"]["title"] or cfg["type"]["display"]
+    f = cfg["folio"]
+    f["font"] = f["font"] or user.get("type", {}).get("folio", "") or cfg["type"]["text"]
+    f["drop"] = f["drop"] or cfg["type"]["leading"]
+    h = cfg["head"]
+    h["font"] = h["font"] or cfg["type"]["text"]
+    h["drop"] = h["drop"] or cfg["type"]["leading"]
+    for name, box in (("folio", f), ("head", h)):
+        if not re.fullmatch(r"(top|bottom)-(outside|inside|center)", box["position"]):
+            die(f"{name} position {box['position']!r} isn't one of "
+                "top|bottom-outside|inside|center")
+    if (h["verso"] or h["recto"]) and h["position"] == f["position"]:
+        die(f"the running head and the page number are both at {f['position']}")
     return cfg
 
 
@@ -125,7 +160,7 @@ def ordered_poems(root):
     with # are left out of the book, so dropping a poem is commenting it."""
     order = root / "order.txt"
     if not order.is_file():
-        die("no order.txt — run `chapbook fetch`, or list poem filenames in it")
+        die("no order.txt — run `bjook fetch`, or list poem filenames in it")
     poems = []
     for line in order.read_text().splitlines():
         name = line.strip()
@@ -223,7 +258,18 @@ def find_family(family, fonts_dir):
         + (f" — that folder has: {', '.join(names)}" if dirs and names else ""))
 
 
-def font_faces(family, fonts_dir, alias=None):
+def alias(family):
+    """The CSS name a family is registered under. One name per family, however
+    many roles (text, titles, folios) it plays, so each font file is
+    registered once."""
+    return "bj-" + slugify(family)
+
+
+def all_faces(families, fonts_dir):
+    return "\n".join(font_faces(f, fonts_dir) for f in dict.fromkeys(families))
+
+
+def font_faces(family, fonts_dir):
     faces, done = [], set()
     for fam, weight, italic, wght, path in find_family(family, fonts_dir):
         key = (wght or weight, italic)
@@ -232,38 +278,79 @@ def font_faces(family, fonts_dir, alias=None):
         done.add(key)
         w = f"{wght[0]} {wght[1]}" if wght else weight
         faces.append(
-            f"@font-face {{ font-family: '{alias or family}'; src: url('{path.as_uri()}'); "
+            f"@font-face {{ font-family: '{alias(family)}'; src: url('{path.as_uri()}'); "
             f"font-weight: {w}; font-style: {'italic' if italic else 'normal'}; }}")
     return "\n".join(faces)
 
 
 # ------------------------------------------------------------------ html
 
+def margin_box(box, weight="normal", extra=""):
+    """Where a folio or running head sits, as (box on left-hand pages, box on
+    right-hand pages, CSS). It lives in the top or bottom margin: `from_edge`
+    in from the paper's edge, or else `drop` away from the text block."""
+    edge, side = box["position"].split("-")
+    if box["from_edge"]:
+        place = f"vertical-align: {edge}; padding-{edge}: {box['from_edge']};"
+    else:
+        toward = "bottom" if edge == "top" else "top"
+        place = f"vertical-align: {toward}; padding-{toward}: {box['drop']};"
+    on_left, on_right = {"outside": ("left", "right"), "inside": ("right", "left"),
+                         "center": ("center", "center")}[side]
+    style = (f"font-family: '{alias(box['font'])}'; font-size: {box['size']}; "
+             f"font-weight: {weight}; line-height: 1; color: var(--ink); {place} {extra}")
+    return f"@{edge}-{on_left}", f"@{edge}-{on_right}", style
+
+
+def head_content(text, cfg):
+    """A running head's text as a CSS content value. {title} and {author} are
+    filled in here; {poem} becomes the title of the poem on that page."""
+    text = text.replace("{title}", cfg["title"]).replace("{author}", cfg["author"])
+    if cfg["book"]["smart_quotes"]:
+        text = smarten(text)
+    parts = []
+    for i, chunk in enumerate(text.split("{poem}")):
+        if i:
+            parts.append("string(poem)")
+        if chunk:
+            parts.append('"' + chunk.replace("\\", "\\\\").replace('"', '\\"') + '"')
+    return " ".join(parts) or "none"
+
+
 def page_css(cfg, label=None):
-    p, t = cfg["page"], cfg["type"]
-    folio = ("font-family: 'text'; font-size: 8pt; color: var(--ink); "
-             "vertical-align: top; padding-top: %s;" % t["leading"])
-    left = right = f'string(face) "  ·  {label}"' if label else "counter(page)"
+    p, t, f, h = cfg["page"], cfg["type"], cfg["folio"], cfg["head"]
+    lbox, rbox, style = margin_box(f)
+    content = f'string(face) "  ·  {label}"' if label else "counter(page)"
+    left = [f"{lbox} {{ content: {content}; {style} }}"]
+    right = [f"{rbox} {{ content: {content}; {style} }}"]
+    off_left, off_right = [lbox], [rbox]
+    if (h["verso"] or h["recto"]) and not label:
+        hl, hr, hstyle = margin_box(h, h["weight"], h["css"])
+        left.append(f"{hl} {{ content: {head_content(h['verso'], cfg)}; {hstyle} }}")
+        right.append(f"{hr} {{ content: {head_content(h['recto'], cfg)}; {hstyle} }}")
+        off_left.append(hl)
+        off_right.append(hr)
+    none = lambda boxes: " ".join(f"{b} {{ content: none; }}" for b in boxes)
     return f"""
 :root {{
   --size: {t['size']}; --leading: {t['leading']};
   --ink: {cfg['book']['ink']};
+  --font-text: '{alias(t['text'])}';
+  --font-display: '{alias(t['display'])}';
+  --font-title: '{alias(t['title'])}';
 }}
 @page {{ size: {p['width']} {p['height']}; }}
 @page :left {{
   margin: {p['top']} {p['inside']} {p['bottom']} {p['outside']};
-  @bottom-left {{ content: {left}; {folio} }}
+  {" ".join(left)}
 }}
 @page :right {{
   margin: {p['top']} {p['outside']} {p['bottom']} {p['inside']};
-  @bottom-right {{ content: {right}; {folio} }}
+  {" ".join(right)}
 }}
-@page plain:left {{ @bottom-left {{ content: none; }} }}
-@page plain:right {{ @bottom-right {{ content: none; }} }}
-@page :blank {{
-  @bottom-left {{ content: none; }}
-  @bottom-right {{ content: none; }}
-}}
+@page plain:left {{ {none(off_left)} }}
+@page plain:right {{ {none(off_right)} }}
+@page :blank {{ {none(dict.fromkeys(off_left + off_right))} }}
 """
 
 
@@ -303,8 +390,7 @@ def document(cfg, body, faces, root, label=None):
 def book_html(cfg, poems, root, blanks=0):
     smart = cfg["book"]["smart_quotes"]
     t = cfg["type"]
-    faces = font_faces(t["text"], t["fonts_dir"], "text")
-    faces += "\n" + font_faces(t["display"], t["fonts_dir"], "display")
+    faces = all_faces([t["text"], t["display"], t["title"], cfg["folio"]["font"], cfg["head"]["font"]], t["fonts_dir"])
     parts = [f"""<section class="title-page">
 <h1 class="book-title">{inline(cfg['title'], smart)}</h1>
 <p class="book-author">{inline(cfg['author'], smart)}</p>
@@ -321,10 +407,15 @@ def book_html(cfg, poems, root, blanks=0):
                      f'<ol>{"".join(rows)}</ol></nav>')
     parts += [poem_html(poem, smart) for poem in poems]
     parts += ['<div class="blank"></div>'] * blanks
-    if cfg["book"]["colophon"]:
-        paras = "".join(f"<p>{inline(p.strip(), smart)}</p>"
-                        for p in cfg["book"]["colophon"].strip().split("\n\n"))
-        parts.append(f'<section class="colophon">{paras}</section>')
+    if cfg["book"]["colophon"] or cfg["book"]["closing"]:
+        back = ""
+        if cfg["book"]["closing"]:
+            back += f'<p class="book-closing">{inline(cfg["book"]["closing"], smart)}</p>'
+        if cfg["book"]["colophon"]:
+            paras = "".join(f"<p>{inline(p.strip(), smart)}</p>"
+                            for p in cfg["book"]["colophon"].strip().split("\n\n"))
+            back += f'<div class="colophon">{paras}</div>'
+        parts.append(f'<section class="back-page">{back}</section>')
     return document(cfg, "\n".join(parts), faces, root)
 
 
@@ -457,19 +548,21 @@ def specimen(root, families, poem_name=None):
     poem = poem or max((p for p in poems if p["title"]),
                        key=lambda p: -abs(sum(map(len, p["stanzas"])) - 22))
     t = cfg["type"]
-    faces, parts = [], []
-    for i, fam in enumerate(families or SPECIMEN_FACES):
-        faces.append(font_faces(fam, t["fonts_dir"], f"spec{i}"))
-        style = (f' style="font-family: \'spec{i}\'; --font-display: \'spec{i}\'; '
+    families = list(dict.fromkeys(families or SPECIMEN_FACES))
+    parts = []
+    for i, fam in enumerate(families):
+        a = alias(fam)
+        style = (f' style="font-family: \'{a}\'; --font-display: \'{a}\'; '
                  f'string-set: face \'{fam}\'"')
         one = dict(poem, slug=f"spec{i}")
         parts.append(poem_html(one, cfg["book"]["smart_quotes"], style))
-    faces.append(font_faces(t["text"], t["fonts_dir"], "text"))
+    faces = all_faces(families + [t["text"], t["display"], t["title"], cfg["folio"]["font"], cfg["head"]["font"]],
+                      t["fonts_dir"])
     label = f'{t["size"]}/{t["leading"]}'
     out = root / "build"
     out.mkdir(exist_ok=True)
     pdf = out / "specimen.pdf"
-    render(document(cfg, "\n".join(parts), "\n".join(faces), root, label), root).write_pdf(pdf)
+    render(document(cfg, "\n".join(parts), faces, root, label), root).write_pdf(pdf)
     rasterize(pdf, out / "specimen")
     print(f"-> {pdf}\n   “{poem['title']}” in {len(parts)} faces at {label}")
 
@@ -554,14 +647,14 @@ def new(dest, channel):
     (dest / "book.toml").write_text(toml)
     shutil.copy2(HERE / "template" / "style.css", dest / "style.css")
     (dest / ".gitignore").write_text("build/\n.DS_Store\n")
-    print(f"-> {dest}\n   edit book.toml, then `chapbook fetch` and `chapbook build`")
+    print(f"-> {dest}\n   edit book.toml, then `bjook fetch` and `bjook build`")
 
 
 # ----------------------------------------------------------------- watch
 
 def sources(root):
     files = [root / "book.toml", root / "order.txt", root / "style.css",
-             HERE / "book.css", HERE / "preview.html", HERE / "chapbook.py"]
+             HERE / "book.css", HERE / "preview.html", HERE / "bjook.py"]
     files += list((root / "poems").glob("*.md"))
     return {str(f): f.stat().st_mtime for f in files if f.exists()}
 
@@ -582,6 +675,7 @@ def watch(root, port):
             pass
 
     handler = functools.partial(Quiet, directory=str(root / "build"))
+    http.server.ThreadingHTTPServer.allow_reuse_address = True
     server = http.server.ThreadingHTTPServer(("127.0.0.1", port), handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
     print(f"preview: http://127.0.0.1:{port}/preview.html   (ctrl-c to stop)", flush=True)
@@ -591,6 +685,14 @@ def watch(root, port):
             time.sleep(0.6)
             now = sources(root)
             if now != seen:
+                # The tool itself changed: this process is running the old
+                # code, so start over with the new code instead of building
+                # with a stale half.
+                if now.get(str(HERE / "bjook.py")) != seen.get(str(HERE / "bjook.py")):
+                    print("bjook.py changed, restarting", flush=True)
+                    server.shutdown()
+                    server.server_close()
+                    os.execv(sys.executable, [sys.executable] + sys.argv)
                 seen = now
                 attempt()
     except KeyboardInterrupt:
@@ -598,7 +700,7 @@ def watch(root, port):
 
 
 def main():
-    ap = argparse.ArgumentParser(prog="chapbook", description=__doc__.split("\n\n")[0])
+    ap = argparse.ArgumentParser(prog="bjook", description=__doc__.split("\n\n")[0])
     ap.add_argument("--root", default=".", help="the book folder (default: here)")
     sub = ap.add_subparsers(dest="cmd", required=True)
     n = sub.add_parser("new", help="start a book folder")

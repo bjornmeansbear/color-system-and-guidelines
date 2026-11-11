@@ -846,9 +846,9 @@ On macOS, WeasyPrint's pango dependency needs
 md2pdf.sh` sets this itself rather than assuming it's already in the
 shell environment.
 
-## Chapbooks: poems → HTML → WeasyPrint
+## Bjook: poems → HTML → WeasyPrint
 
-Poetry books are built by `tools/chapbook/`, a sibling of the `print/`
+Poetry books are built by `tools/bjook/`, a sibling of the `print/`
 pipeline with the same engine (WeasyPrint) and the same reasons: plain text
 in git, a design that is a CSS file, a rebuild in seconds. It skips pandoc.
 A poem is lines and stanzas, and Markdown's paragraph model fights that, so
@@ -868,11 +868,11 @@ book:
 - **Snapshot a proof worth keeping** (`build --snap "note"`): a timestamped
   copy of the PDF and the booklet in `snapshots/`. `build/` is disposable
   and gitignored.
-- **Judge it as spreads.** `chapbook watch` serves a preview of the built
+- **Judge it as spreads.** `bjook watch` serves a preview of the built
   PDF as facing pages and reloads on save. It shows WeasyPrint's actual
   pages, not a browser's guess at them. Its Guides button draws the text
   block and baselines.
-- **Start from the template** (`chapbook new`), not from the last book.
+- **Start from the template** (`bjook new`), not from the last book.
 - **Sequence in `order.txt`.** Reordering is moving a line; cutting a poem
   is commenting it out. The poem file is never deleted to drop it.
 
@@ -896,8 +896,16 @@ Typesetting defaults, each one a line in `book.toml` or `book.css`:
   stock's job in print.
 - **Quotes are curled at build**; the poem files stay as typed.
 - **Fonts come from `~/Code/libreFontLibrary/Families` by family name**, read
-  from the font's own name table, embedded from the file. `chapbook specimen`
+  from the font's own name table, embedded from the file. `bjook specimen`
   sets one poem in several faces at the book's size before choosing.
+- **The page number is placed from the paper's edge** (`[folio] from_edge`),
+  at the outside corner. Measuring from the trim is how a folio gets
+  specified and checked with a ruler; it also stays put when the bottom
+  margin changes.
+- **A running head is off by default.** With one poem to a page, each page
+  already opens with its own title, and a head above it is a second title.
+  It earns its place in a prose book, where pages have no other label.
+  `[head]` turns it on: author on the left page, title on the right.
 - **Contents puts the page number first**, then the title: no leaders, no
   eye-travel across the measure. An untitled poem is listed by its first
   line in italic.

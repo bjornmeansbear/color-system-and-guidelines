@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chapbook preview</title>
+<title>Bjook preview</title>
 <style>
   /* kit.css tokens, the subset this page needs. */
   :root {
@@ -94,7 +94,7 @@
 </head>
 <body>
 <header>
-  <h1 id="title">Chapbook</h1>
+  <h1 id="title">Bjook</h1>
   <p class="spec" id="spec"></p>
   <div class="controls">
     <button type="button" id="guides" aria-pressed="false">Guides</button>
@@ -106,7 +106,7 @@
 /*DATA*/
 (function () {
   var B = window.BOOK;
-  if (!B) { document.getElementById('book').textContent = 'No build yet. Run `chapbook build`.'; return; }
+  if (!B) { document.getElementById('book').textContent = 'No build yet. Run `bjook build`.'; return; }
   document.title = B.title + ' — preview';
   document.getElementById('title').textContent = B.title;
   document.getElementById('spec').textContent = B.spec + ' · ' + B.images.length + ' pages';
@@ -175,21 +175,21 @@
     function set(on) {
       document.body.classList.toggle(cls, on);
       btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-      store('chapbook-' + cls, on ? '1' : '0');
+      store('bjook-' + cls, on ? '1' : '0');
       setLead();
     }
     btn.addEventListener('click', function () { set(!document.body.classList.contains(cls)); });
-    set(store('chapbook-' + cls) === '1');
+    set(store('bjook-' + cls) === '1');
   }
   toggle('guides', 'guided');
   toggle('actual', 'actual');
 
   // Keep the reader's place across the reload that follows a rebuild.
   try {
-    var y = sessionStorage.getItem('chapbook-y');
+    var y = sessionStorage.getItem('bjook-y');
     if (y) window.scrollTo(0, +y);
     window.addEventListener('beforeunload', function () {
-      sessionStorage.setItem('chapbook-y', window.scrollY);
+      sessionStorage.setItem('bjook-y', window.scrollY);
     });
   } catch (e) {}
 

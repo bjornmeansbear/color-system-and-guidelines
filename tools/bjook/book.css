@@ -1,17 +1,17 @@
-/* Chapbook page styling — poems, title page, contents, colophon.
+/* Bjook page styling — poems, title page, contents, colophon.
    Page size, margins, fonts and the folio come from the book's book.toml
-   (chapbook.py writes those @page and @font-face rules above this file).
+   (bjook.py writes those @page and @font-face rules above this file).
    A book overrides anything here in its own style.css.
 
    Everything vertical is a multiple of --leading, so lines on facing
    pages and on both sides of a leaf sit on the same baselines.
-   See RULES.md "Chapbooks". */
+   See RULES.md "Bjook". */
 
 html { font-size: var(--size); }
 
 body {
   margin: 0;
-  font-family: 'text', serif;
+  font-family: var(--font-text), serif;
   font-size: var(--size);
   line-height: var(--leading);
   color: var(--ink);
@@ -33,13 +33,14 @@ strong { font-weight: 700; }
 .contents + .poem { break-before: right; }
 
 .poem-title {
-  font-family: var(--font-display, 'display'), serif;
+  font-family: var(--font-display), serif;
   font-size: 1.2em;
   font-style: italic;
   font-weight: normal;
   line-height: var(--leading);
   margin: 0 0 var(--leading);
   break-after: avoid;
+  string-set: poem content();
 }
 /* An untitled poem keeps the title's two lines empty, so every poem's
    first line starts at the same height. */
@@ -60,10 +61,10 @@ strong { font-weight: 700; }
 /* ---- Title page ---- */
 .title-page {
   page: plain;
+  font-family: var(--font-title), serif;
   padding-top: calc(var(--leading) * 8);
 }
 .book-title {
-  font-family: var(--font-display, 'display'), serif;
   font-size: 2.4em;
   font-weight: normal;
   line-height: calc(var(--leading) * 2);
@@ -77,7 +78,7 @@ strong { font-weight: 700; }
   break-before: right;
 }
 .contents-title {
-  font-family: var(--font-display, 'display'), serif;
+  font-family: var(--font-display), serif;
   font-size: 1.2em;
   font-style: italic;
   font-weight: normal;
@@ -107,10 +108,20 @@ strong { font-weight: 700; }
   height: 1pt;
 }
 
-/* ---- Colophon: small, at the foot of the last page ---- */
-.colophon {
+/* ---- Last page: an optional closing line set like the title, and the
+   colophon small at the foot ---- */
+.back-page {
   page: plain;
   break-before: page;
+}
+.book-closing {
+  font-family: var(--font-title), serif;
+  font-size: 2.4em;
+  line-height: calc(var(--leading) * 2);
+  margin: 0;
+  padding-top: calc(var(--leading) * 8);
+}
+.colophon {
   position: absolute;
   bottom: 0;
   left: 0;

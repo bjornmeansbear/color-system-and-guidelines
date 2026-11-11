@@ -6,13 +6,13 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
-- **One book tool or two?** `tools/chapbook/` sets poems (lines and stanzas,
+- **One book tool or two?** `tools/bjook/` sets poems (lines and stanzas,
   half letter, saddle stitch). `~/Code/lectureScripts/book/` already sets
   essays (chapter `.md` files → pandoc → WeasyPrint, 6 × 9in, grouped
   footnotes) and built the nine-essay `booklet-new-design-commons`. The
   destination named 2026-11-10 is a design essay collection, working title
   "The bits that make up a design philosophy", from lectureScripts and
-  Bjornpaedia. Likely path: the chapbook tool gains a prose template and
+  Bjornpaedia. Likely path: Bjook gains a prose template and
   takes over the parts the essay pipeline lacks (font lookup from
   libreFontLibrary, spread preview, snapshots, imposition), then gets a
   wider name. Not started; the poetry book comes first.
@@ -255,16 +255,38 @@ before starting a session, not just written to at the end of one.
 
 ### 2026-11-10
 
-- **Chapbook tool** (`tools/chapbook/`): poems as plain text → HTML →
+- **Bjook** (`tools/bjook/`, built as `chapbook` and renamed 2026-11-11: Bjorn + book, in the Bj family with Bjornpaedia and bjorn-voice, and not tied to one kind of book): poems as plain text → HTML →
   WeasyPrint → a reader's PDF, a saddle-stitch booklet imposed with pypdf,
   and a spread preview that reloads on save. Commands: `new`, `fetch` (are.na
   text blocks → one file per poem), `build [--snap]`, `watch`, `specimen`.
-  Rules in RULES.md "Chapbooks". First book: `~/Code/a-poem-a-day`, 56 poems
+  Rules in RULES.md "Bjook". First book: `~/Code/a-poem-a-day`, 56 poems
   from the are.na channel, half letter, Gentium 10/15, 72 pages on 18 sheets.
   The idea came from looking at OSP's html2print (the page in the browser is
   the proof) and Romello Goodman's Crown (multiples of four, snapshots, a
   starter template); the engine stayed WeasyPrint over Crown's PrinceXML
   because it is free, installed and stamps nothing.
+- 2026-11-11: `[type] title` in `book.toml` sets the title page's face on its
+  own (falls back to `display`, then `text`). First use: Basteleur, from
+  oblique. Its two cuts carry odd weights: `font-weight: 400` is Basteleur
+  Bold, `300` is Moonlight. The sizes live in the book's `style.css`.
+- 2026-11-11: `[book] closing` sets one line on the last page in the title
+  face, above the colophon, so a book can open on one phrase and close on its
+  answer (first use: "Nothing Is Happening" / "Attention Kept", two adjacent
+  lines of one poem). Same change fixed the colophon, which had been sitting
+  at the foot of the last poem's page instead of on a page of its own.
+- 2026-11-11: `[type] folio` sets the page numbers' face (first use:
+  Basteleur Bold at 8pt). Each family is now registered once under one CSS
+  name and roles point at it through `--font-text`, `--font-display`,
+  `--font-title`. `bjook watch` restarts itself when `bjook.py`
+  changes: a watcher left running overnight had kept rebuilding with old
+  code against the new stylesheet, which set the whole book in Times.
+- 2026-11-11: page number and running head are `book.toml` settings.
+  `[folio]`: font, size, position (`top|bottom`-`outside|inside|center`), and
+  either `from_edge` (measured from the paper's edge, the way it gets
+  specified out loud: "about 1in from the bottom") or `drop` (from the text
+  block). `[head]`: `verso` and `recto` text with `{title}`, `{author}`,
+  `{poem}`, same placement keys, off unless set. Open: whether a poetry book
+  wants a running head at all (see RULES "Bjook").
 - Open, all in the first book: the typeface (Gentium is a placeholder; the
   specimen sets eight candidates), margins and type size (defaults, not yet
   chosen), which of the alternate takes stay in, the title, and a cover. 18

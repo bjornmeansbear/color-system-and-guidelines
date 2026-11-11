@@ -300,6 +300,10 @@ before starting a session, not just written to at the end of one.
   each poem's last line, kept with the last stanza. It costs two lines, so a
   poem that just fit its page tips its last stanza onto the next one: two
   did in the first book.
+- 2026-11-11: the first book's continues mark reduced to a bare → at text
+  size. Finding: Sligoil's U+2192 is drawn as a chevron (reads as ">"), so a
+  lone arrow is set in Gentium; check a font's arrow glyph before using it
+  alone as a sign.
 - Open, all in the first book: the typeface (Gentium is a placeholder; the
   specimen sets eight candidates), margins and type size (defaults, not yet
   chosen), which of the alternate takes stay in, the title, and a cover. 18

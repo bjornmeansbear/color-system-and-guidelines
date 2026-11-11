@@ -1,0 +1,26 @@
+# One book. Everything about the page lives here; `chapbook build` reads it.
+
+title  = "Untitled"
+author = ""
+arena  = ""          # are.na channel slug that `chapbook fetch` pulls from
+
+[page]
+width   = "5.5in"    # half letter: folds from a letter sheet
+height  = "8.5in"
+top     = "0.75in"
+bottom  = "0.875in"  # the folio sits in this margin
+inside  = "0.75in"   # the fold side
+outside = "0.625in"
+
+[type]
+text    = "Gentium"  # a family name as the font itself spells it
+display = ""         # titles; empty = same as text
+size    = "10pt"
+leading = "15pt"     # keep (height - top - bottom) a whole number of these
+fonts_dir = "~/Code/libreFontLibrary/Families"
+
+[book]
+contents     = true
+smart_quotes = true  # curl straight quotes at build; poem files stay as typed
+ink          = "#000"  # text prints as solid black, not a brown mix
+colophon     = ""

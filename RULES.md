@@ -846,6 +846,65 @@ On macOS, WeasyPrint's pango dependency needs
 md2pdf.sh` sets this itself rather than assuming it's already in the
 shell environment.
 
+## Chapbooks: poems → HTML → WeasyPrint
+
+Poetry books are built by `tools/chapbook/`, a sibling of the `print/`
+pipeline with the same engine (WeasyPrint) and the same reasons: plain text
+in git, a design that is a CSS file, a rebuild in seconds. It skips pandoc.
+A poem is lines and stanzas, and Markdown's paragraph model fights that, so
+the tool writes one `<div class="line">` per line itself.
+
+A book is a folder outside this repo (this repo is public; a manuscript
+isn't the kit's to publish): `book.toml` for the page and type, `poems/`
+with one file per poem, `order.txt` for the sequence, `style.css` for that
+book's overrides. The tool holds everything shared.
+
+Conventions, borrowed from Crown and OSP's html2print and kept on the next
+book:
+
+- **The page count is a multiple of four.** A folded sheet is four pages.
+  The build pads with blanks before the colophon and says how many, so the
+  colophon lands on the back and the padding is a visible decision.
+- **Snapshot a proof worth keeping** (`build --snap "note"`): a timestamped
+  copy of the PDF and the booklet in `snapshots/`. `build/` is disposable
+  and gitignored.
+- **Judge it as spreads.** `chapbook watch` serves a preview of the built
+  PDF as facing pages and reloads on save. It shows WeasyPrint's actual
+  pages, not a browser's guess at them. Its Guides button draws the text
+  block and baselines.
+- **Start from the template** (`chapbook new`), not from the last book.
+- **Sequence in `order.txt`.** Reordering is moving a line; cutting a poem
+  is commenting it out. The poem file is never deleted to drop it.
+
+Typesetting defaults, each one a line in `book.toml` or `book.css`:
+
+- **Everything vertical is a multiple of the leading**, the print form of
+  the baseline grid above. Lines on facing pages, and on the two sides of a
+  leaf, share baselines, which matters on thin paper where the back shows
+  through. Keep the text block (page height minus top and bottom margins) a
+  whole number of lines: half letter at 15pt leading is 33 lines.
+- **Poems are flush left, never centered**, one to a page, each starting at
+  the same height. An untitled poem keeps the title's lines empty.
+- **A poem breaks between stanzas**, not inside one, when it runs over. The
+  build lists every poem that runs past a page; that list is the first thing
+  to read after changing a margin or a size.
+- **A long line turns over with a hanging indent** (2em), so a turnover
+  can't be mistaken for a new line.
+- **No hyphenation, no justification.** The poet broke the lines.
+- **Text prints solid black**, not `--wjerk-black`. A brown mix on an office
+  laser is a halftone, and 10pt serifs go soft. The warm ground is the paper
+  stock's job in print.
+- **Quotes are curled at build**; the poem files stay as typed.
+- **Fonts come from `~/Code/libreFontLibrary/Families` by family name**, read
+  from the font's own name table, embedded from the file. `chapbook specimen`
+  sets one poem in several faces at the book's size before choosing.
+- **Contents puts the page number first**, then the title: no leaders, no
+  eye-travel across the measure. An untitled poem is listed by its first
+  line in italic.
+
+The booklet PDF is imposed two-up for saddle stitch: print double-sided,
+flip on the short edge, fold, staple. It does not correct for creep.
+
 ## Slideshows / unattended players
 
 Auto-advancing decks meant to run unattended for hours (a gallery

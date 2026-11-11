@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# chapbook — runs chapbook.py on the Python inside WeasyPrint's pipx venv,
+# which is where weasyprint, fontTools and pypdf live.
+#   one-time setup:  pipx install weasyprint && pipx inject weasyprint pypdf
+# Set CHAPBOOK_PYTHON to use a different interpreter.
+set -euo pipefail
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PY="${CHAPBOOK_PYTHON:-$HOME/.local/pipx/venvs/weasyprint/bin/python}"
+[[ -x "$PY" ]] || { echo "chapbook: no Python at $PY — pipx install weasyprint && pipx inject weasyprint pypdf" >&2; exit 1; }
+# WeasyPrint's pango needs this on macOS/Homebrew (same as print/md2pdf.sh).
+export PATH="/opt/homebrew/bin:$PATH"
+export DYLD_FALLBACK_LIBRARY_PATH="/opt/homebrew/lib:${DYLD_FALLBACK_LIBRARY_PATH:-/usr/local/lib:/usr/lib}"
+exec "$PY" "$DIR/chapbook.py" "$@"

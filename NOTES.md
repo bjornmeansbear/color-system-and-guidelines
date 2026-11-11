@@ -6,6 +6,17 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **One book tool or two?** `tools/chapbook/` sets poems (lines and stanzas,
+  half letter, saddle stitch). `~/Code/lectureScripts/book/` already sets
+  essays (chapter `.md` files → pandoc → WeasyPrint, 6 × 9in, grouped
+  footnotes) and built the nine-essay `booklet-new-design-commons`. The
+  destination named 2026-11-10 is a design essay collection, working title
+  "The bits that make up a design philosophy", from lectureScripts and
+  Bjornpaedia. Likely path: the chapbook tool gains a prose template and
+  takes over the parts the essay pipeline lacks (font lookup from
+  libreFontLibrary, spread preview, snapshots, imposition), then gets a
+  wider name. Not started; the poetry book comes first.
+
 - **Should the shared player and channel-show merge?** `tools/slideshow/`
   bakes a snapshot (local files, offline, font rotation); `~/Code/wjall`
   reads the channel live in the browser. The projector-with-no-wifi case is
@@ -241,6 +252,28 @@ before starting a session, not just written to at the end of one.
   skipped under `prefers-reduced-motion`. See RULES.md "Motion".
 
 ## Changelog
+
+### 2026-11-10
+
+- **Chapbook tool** (`tools/chapbook/`): poems as plain text → HTML →
+  WeasyPrint → a reader's PDF, a saddle-stitch booklet imposed with pypdf,
+  and a spread preview that reloads on save. Commands: `new`, `fetch` (are.na
+  text blocks → one file per poem), `build [--snap]`, `watch`, `specimen`.
+  Rules in RULES.md "Chapbooks". First book: `~/Code/a-poem-a-day`, 56 poems
+  from the are.na channel, half letter, Gentium 10/15, 72 pages on 18 sheets.
+  The idea came from looking at OSP's html2print (the page in the browser is
+  the proof) and Romello Goodman's Crown (multiples of four, snapshots, a
+  starter template); the engine stayed WeasyPrint over Crown's PrinceXML
+  because it is free, installed and stamps nothing.
+- Open, all in the first book: the typeface (Gentium is a placeholder; the
+  specimen sets eight candidates), margins and type size (defaults, not yet
+  chosen), which of the alternate takes stay in, the title, and a cover. 18
+  sheets is thick for saddle stitch and the booklet doesn't shingle for
+  creep; past about 12 sheets either cut the selection, trim the fore-edge,
+  or add creep correction to `impose()`. Typst or LaTeX (`verse`, `memoir`)
+  stay the upgrade if WeasyPrint's typography runs out; neither is installed.
+  The preview page has not been checked in a browser yet, only that it serves
+  and reloads.
 
 ### 2026-11-09
 

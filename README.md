@@ -31,6 +31,7 @@ of shadows, open/libre type, a 6px baseline grid.
 | `slideshow-template.html` | A one-file unattended slideshow. RULES.md "Slideshows / unattended players". |
 | `tools/slideshow/` | Builds slideshows from an are.na archive. |
 | `tools/commons/` | Finds public-domain slide imagery from a metaphorical brief. |
+| `tools/chapbook/` | Poems as plain text → a typeset book PDF, a saddle-stitch booklet, and a spread preview. RULES.md "Chapbooks". |
 | `SKILL.md` | The `bjorn-design` skill: the always-loaded summary that points into RULES.md. |
 | `site/` | Wjavelength, the website for the system: palette, contrast cheat sheet, rules, and a voter for color sets. SvelteKit on Cloudflare Workers; reads `kit.css` and `RULES.md` at build. See `site/README.md`. |
 

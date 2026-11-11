@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapbook preview</title>
+<style>
+  /* kit.css tokens, the subset this page needs. */
+  :root {
+    --color-bg: rgb(248,250,231);
+    --color-text: rgb(45,40,38);
+    --color-accent: rgb(197,57,101);
+    --font-sans: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: rgb(8,5,4);
+      --color-text: rgb(251,245,242);
+      --color-accent: rgb(240,141,170);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  header {
+    position: sticky; top: 0; z-index: 2;
+    display: flex; flex-wrap: wrap; gap: 0.375rem 1.5rem; align-items: center;
+    padding: 0.75rem 1rem;
+    background: var(--color-bg);
+    border-bottom: 2px solid var(--color-text);
+  }
+  h1 { font-size: 1.125rem; line-height: 1.5rem; margin: 0; font-weight: 700; }
+  .spec { font-family: var(--font-mono); font-size: 0.8125rem; margin: 0; }
+  .controls { display: flex; gap: 0.75rem; margin-left: auto; }
+  button {
+    font: inherit; font-size: 0.875rem; line-height: 1.5rem;
+    min-height: 2.75rem; padding: 0 0.75rem;
+    color: var(--color-text); background: var(--color-bg);
+    border: 2px solid var(--color-text); cursor: pointer;
+  }
+  button[aria-pressed="true"] { background: var(--color-text); color: var(--color-bg); }
+  :focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+
+  main { padding: 1.5rem 1rem 4.5rem; }
+  .spread {
+    display: grid; grid-template-columns: 1fr;
+    gap: 1.5rem; margin: 0 auto 1.5rem; max-width: 34rem;
+  }
+  figure { margin: 0; }
+  .sheet {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--color-text);
+  }
+  .sheet img { display: block; width: 100%; height: auto; }
+  .empty { display: none; }
+  figcaption { font-family: var(--font-mono); font-size: 0.8125rem; padding-top: 0.375rem; }
+  .verso figcaption { text-align: left; }
+  .recto figcaption { text-align: right; }
+
+  /* Facing pages once there is room for two. */
+  @media (min-width: 48rem) {
+    .spread { grid-template-columns: 1fr 1fr; gap: 0; max-width: 68rem; margin-bottom: 3rem; }
+    .recto .sheet { border-left-width: 0; }
+    .verso:only-child .sheet, .empty + .recto .sheet { border-left-width: 1px; }
+    .empty { display: block; }
+    body.actual .spread { width: calc(var(--page-w) * 2); max-width: none; }
+  }
+  body.actual .spread { overflow-x: visible; }
+
+  /* Guides: the text block and its baselines, drawn over the page. */
+  .guides { display: none; position: absolute; inset: 0; pointer-events: none; }
+  body.guided .guides { display: block; }
+  .block {
+    position: absolute;
+    top: var(--m-top); bottom: var(--m-bottom);
+    outline: 1px solid var(--guide);
+    background: repeating-linear-gradient(to bottom,
+      transparent 0, transparent calc(var(--lead) - 1px),
+      var(--guide-faint) calc(var(--lead) - 1px), var(--guide-faint) var(--lead));
+  }
+  .sheet { --guide: rgb(197,57,101); --guide-faint: rgba(197,57,101,0.35); }
+  .recto .block { left: var(--m-inside); right: var(--m-outside); }
+  .verso .block { left: var(--m-outside); right: var(--m-inside); }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title">Chapbook</h1>
+  <p class="spec" id="spec"></p>
+  <div class="controls">
+    <button type="button" id="guides" aria-pressed="false">Guides</button>
+    <button type="button" id="actual" aria-pressed="false">Actual size</button>
+  </div>
+</header>
+<main id="book"></main>
+<script>
+/*DATA*/
+(function () {
+  var B = window.BOOK;
+  if (!B) { document.getElementById('book').textContent = 'No build yet. Run `chapbook build`.'; return; }
+  document.title = B.title + ' — preview';
+  document.getElementById('title').textContent = B.title;
+  document.getElementById('spec').textContent = B.spec + ' · ' + B.images.length + ' pages';
+
+  function store(key, value) {
+    try {
+      if (value === undefined) return localStorage.getItem(key);
+      localStorage.setItem(key, value);
+    } catch (e) { return null; }
+  }
+
+  function page(n) {
+    var fig = document.createElement('figure');
+    if (!n) { fig.className = 'empty'; return fig; }
+    fig.className = n % 2 ? 'recto' : 'verso';
+    var sheet = document.createElement('div');
+    sheet.className = 'sheet';
+    var img = document.createElement('img');
+    img.src = 'pages/' + B.images[n - 1] + '?' + B.stamp;
+    img.alt = 'Page ' + n;
+    img.loading = n > 4 ? 'lazy' : 'eager';
+    img.style.aspectRatio = B.ratio;
+    var guides = document.createElement('div');
+    guides.className = 'guides';
+    var block = document.createElement('div');
+    block.className = 'block';
+    guides.appendChild(block);
+    sheet.appendChild(img);
+    sheet.appendChild(guides);
+    var cap = document.createElement('figcaption');
+    cap.textContent = n;
+    fig.appendChild(sheet);
+    fig.appendChild(cap);
+    return fig;
+  }
+
+  var book = document.getElementById('book');
+  var m = B.margins;
+  book.style.setProperty('--m-top', m.top + '%');
+  book.style.setProperty('--m-bottom', m.bottom + '%');
+  book.style.setProperty('--m-inside', m.inside + '%');
+  book.style.setProperty('--m-outside', m.outside + '%');
+  document.body.style.setProperty('--page-w', B.width);
+
+  var total = B.images.length;
+  for (var left = 0; left <= total; left += 2) {
+    var spread = document.createElement('div');
+    spread.className = 'spread';
+    spread.appendChild(page(left));
+    if (left + 1 <= total) spread.appendChild(page(left + 1));
+    book.appendChild(spread);
+  }
+
+  // Baseline spacing is a share of the page height, so it needs the
+  // rendered height of a page to become a pixel step.
+  function setLead() {
+    var first = book.querySelector('.sheet');
+    if (first) book.style.setProperty('--lead', (first.clientHeight * B.leading / 100) + 'px');
+  }
+  window.addEventListener('resize', setLead);
+  book.addEventListener('load', setLead, true);
+  setLead();
+
+  function toggle(id, cls) {
+    var btn = document.getElementById(id);
+    function set(on) {
+      document.body.classList.toggle(cls, on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      store('chapbook-' + cls, on ? '1' : '0');
+      setLead();
+    }
+    btn.addEventListener('click', function () { set(!document.body.classList.contains(cls)); });
+    set(store('chapbook-' + cls) === '1');
+  }
+  toggle('guides', 'guided');
+  toggle('actual', 'actual');
+
+  // Keep the reader's place across the reload that follows a rebuild.
+  try {
+    var y = sessionStorage.getItem('chapbook-y');
+    if (y) window.scrollTo(0, +y);
+    window.addEventListener('beforeunload', function () {
+      sessionStorage.setItem('chapbook-y', window.scrollY);
+    });
+  } catch (e) {}
+
+  if (location.protocol.indexOf('http') === 0) {
+    setInterval(function () {
+      fetch('stamp.txt', { cache: 'no-store' })
+        .then(function (r) { return r.text(); })
+        .then(function (t) { if (t && t !== B.stamp) location.reload(); })
+        .catch(function () {});
+    }, 1000);
+  }
+})();
+</script>
+</body>
+</html>

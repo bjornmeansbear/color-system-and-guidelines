@@ -1,0 +1,121 @@
+/* Chapbook page styling — poems, title page, contents, colophon.
+   Page size, margins, fonts and the folio come from the book's book.toml
+   (chapbook.py writes those @page and @font-face rules above this file).
+   A book overrides anything here in its own style.css.
+
+   Everything vertical is a multiple of --leading, so lines on facing
+   pages and on both sides of a leaf sit on the same baselines.
+   See RULES.md "Chapbooks". */
+
+html { font-size: var(--size); }
+
+body {
+  margin: 0;
+  font-family: 'text', serif;
+  font-size: var(--size);
+  line-height: var(--leading);
+  color: var(--ink);
+  hyphens: none;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures;
+  font-variant-numeric: oldstyle-nums;
+  orphans: 2;
+  widows: 2;
+}
+
+a { color: inherit; text-decoration: none; }
+em { font-style: italic; }
+strong { font-weight: 700; }
+
+/* ---- Poems: one to a page, set flush left, broken between stanzas ---- */
+.poem { break-before: page; }
+.title-page + .poem,
+.contents + .poem { break-before: right; }
+
+.poem-title {
+  font-family: var(--font-display, 'display'), serif;
+  font-size: 1.2em;
+  font-style: italic;
+  font-weight: normal;
+  line-height: var(--leading);
+  margin: 0 0 var(--leading);
+  break-after: avoid;
+}
+/* An untitled poem keeps the title's two lines empty, so every poem's
+   first line starts at the same height. */
+
+.stanza {
+  margin: 0 0 var(--leading);
+  break-inside: avoid;
+}
+.stanza:last-child { margin-bottom: 0; }
+
+/* A line too long for the measure turns over with a hanging indent. */
+.line {
+  padding-left: 2em;
+  text-indent: -2em;
+  white-space: pre-wrap;
+}
+
+/* ---- Title page ---- */
+.title-page {
+  page: plain;
+  padding-top: calc(var(--leading) * 8);
+}
+.book-title {
+  font-family: var(--font-display, 'display'), serif;
+  font-size: 2.4em;
+  font-weight: normal;
+  line-height: calc(var(--leading) * 2);
+  margin: 0 0 var(--leading);
+}
+.book-author { margin: 0; }
+
+/* ---- Contents: page number first, then the title ---- */
+.contents {
+  page: plain;
+  break-before: right;
+}
+.contents-title {
+  font-family: var(--font-display, 'display'), serif;
+  font-size: 1.2em;
+  font-style: italic;
+  font-weight: normal;
+  line-height: var(--leading);
+  margin: 0 0 var(--leading);
+}
+.contents ol { list-style: none; margin: 0; padding: 0; }
+.contents li { break-inside: avoid; }
+.contents a {
+  display: block;
+  padding-left: 3em;
+  text-indent: -3em;
+}
+.contents a::before {
+  content: target-counter(attr(href url), page);
+  display: inline-block;
+  width: 2em;
+  margin-right: 1em;
+  text-align: right;
+  text-indent: 0;
+}
+
+/* ---- Blank pages added to reach a multiple of four ---- */
+.blank {
+  page: plain;
+  break-before: page;
+  height: 1pt;
+}
+
+/* ---- Colophon: small, at the foot of the last page ---- */
+.colophon {
+  page: plain;
+  break-before: page;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 0.8em;
+  line-height: calc(var(--leading) * 0.8);
+}
+.colophon p { margin: calc(var(--leading) * 0.8) 0 0; }

@@ -57,6 +57,7 @@ DEFAULTS = {
     "folio": {
         "font": "",                     # empty = the text face
         "size": "9pt",
+        "weight": "normal",
         "position": "bottom-outside",   # top|bottom - outside|inside|center
         "from_edge": "",                # distance from the paper's edge; wins over drop
         "drop": "",                     # or: gap from the text block; empty = one line
@@ -72,10 +73,21 @@ DEFAULTS = {
         "drop": "",                     # or: gap from the text block; empty = one line
         "css": "",                      # extra CSS, e.g. "letter-spacing: 0.08em"
     },
+    "continues": {                      # a mark where a poem runs on to the next page
+        "text": "",                     # e.g. "continues"; empty = no mark
+        "font": "",                     # empty = the text face
+        "size": "7pt",
+        "weight": "normal",
+        "position": "bottom-inside",
+        "from_edge": "",
+        "drop": "",                     # empty = one line under the text block
+        "css": "",
+    },
     "book": {
         "contents": True,
         "colophon": "",
         "closing": "",
+        "end_mark": "",                 # a sign under each poem's last line, e.g. "‡"
         "smart_quotes": True,
         "ink": "#000",
     },
@@ -114,12 +126,17 @@ def load_config(root):
     h = cfg["head"]
     h["font"] = h["font"] or cfg["type"]["text"]
     h["drop"] = h["drop"] or cfg["type"]["leading"]
-    for name, box in (("folio", f), ("head", h)):
+    c = cfg["continues"]
+    c["font"] = c["font"] or cfg["type"]["text"]
+    c["drop"] = c["drop"] or cfg["type"]["leading"]
+    for name, box in (("folio", f), ("head", h), ("continues", c)):
         if not re.fullmatch(r"(top|bottom)-(outside|inside|center)", box["position"]):
             die(f"{name} position {box['position']!r} isn't one of "
                 "top|bottom-outside|inside|center")
     if (h["verso"] or h["recto"]) and h["position"] == f["position"]:
         die(f"the running head and the page number are both at {f['position']}")
+    if c["text"] and c["position"] in (f["position"], h["position"]):
+        die(f"the continues mark shares {c['position']} with the page number or running head")
     return cfg
 
 
@@ -185,10 +202,16 @@ def first_line(poem, limit=48):
 
 
 def smarten(text):
-    text = re.sub(r"(?<=\w)'(?=\w)", "’", text)
-    text = re.sub(r"(^|[\s(\[—–-])\"", r"\1“", text)
+    """Typographer's marks for typed ones: curly quotes, real apostrophes, a
+    one-character ellipsis. Dashes are left exactly as the poet typed them."""
+    text = re.sub(r"\.\.\.+", "…", text)
+    text = re.sub(r"(?<=\w)'(?=\w)", "’", text)                  # don't, harbor's
+    text = re.sub(r"'(?=\d0s\b|\d\d\b)", "’", text)               # '90s, '71
+    text = re.sub(r"(?<!\w)'(?=(?:em|til|tis|twas|cause|n)\b)", "’", text, flags=re.I)
+    opens = r"(^|[\s(\[{—–\-*_“‘])"                              # what a quote opens after
+    text = re.sub(opens + '"', r"\1“", text)
     text = text.replace('"', "”")
-    text = re.sub(r"(^|[\s(\[—–-])'(?=\w)", r"\1‘", text)
+    text = re.sub(opens + r"'(?=\S)", r"\1‘", text)
     return text.replace("'", "’")
 
 
@@ -319,7 +342,7 @@ def head_content(text, cfg):
 
 def page_css(cfg, label=None):
     p, t, f, h = cfg["page"], cfg["type"], cfg["folio"], cfg["head"]
-    lbox, rbox, style = margin_box(f)
+    lbox, rbox, style = margin_box(f, f["weight"])
     content = f'string(face) "  ·  {label}"' if label else "counter(page)"
     left = [f"{lbox} {{ content: {content}; {style} }}"]
     right = [f"{rbox} {{ content: {content}; {style} }}"]
@@ -330,6 +353,20 @@ def page_css(cfg, label=None):
         right.append(f"{hr} {{ content: {head_content(h['recto'], cfg)}; {hstyle} }}")
         off_left.append(hl)
         off_right.append(hr)
+    more = ""
+    c = cfg["continues"]
+    if c["text"] and not label:
+        # Each poem switches the mark on where it starts and off where it
+        # ends. A page shows whatever was set last on it, so the mark prints
+        # only on pages a poem leaves unfinished.
+        cl, cr, cstyle = margin_box(c, c["weight"], c["css"])
+        text = smarten(c["text"]) if cfg["book"]["smart_quotes"] else c["text"]
+        quoted = '"' + text.replace("\\", "\\\\").replace('"', '\\"') + '"'
+        left.append(f"{cl} {{ content: string(more, last); {cstyle} }}")
+        right.append(f"{cr} {{ content: string(more, last); {cstyle} }}")
+        off_left.append(cl)
+        off_right.append(cr)
+        more = f'.poem {{ string-set: more {quoted}; }}\n.poem-end {{ string-set: more ""; }}'
     none = lambda boxes: " ".join(f"{b} {{ content: none; }}" for b in boxes)
     return f"""
 :root {{
@@ -351,10 +388,11 @@ def page_css(cfg, label=None):
 @page plain:left {{ {none(off_left)} }}
 @page plain:right {{ {none(off_right)} }}
 @page :blank {{ {none(dict.fromkeys(off_left + off_right))} }}
+{more}
 """
 
 
-def poem_html(poem, smart, extra=""):
+def poem_html(poem, smart, extra="", end_mark=""):
     out = [f'<section class="poem" id="{poem["slug"]}"{extra}>']
     if poem["title"]:
         out.append(f'<h2 class="poem-title">{inline(poem["title"], smart)}</h2>')
@@ -365,6 +403,10 @@ def poem_html(poem, smart, extra=""):
         for line in stanza:
             out.append(f'<div class="line">{inline(line, smart) or "&nbsp;"}</div>')
         out.append("</div>")
+    if end_mark:
+        out.append(f'<div class="poem-end marked" aria-hidden="true">{html.escape(end_mark)}</div>')
+    else:
+        out.append('<div class="poem-end"></div>')
     out.append("</section>")
     return "\n".join(out)
 
@@ -390,7 +432,8 @@ def document(cfg, body, faces, root, label=None):
 def book_html(cfg, poems, root, blanks=0):
     smart = cfg["book"]["smart_quotes"]
     t = cfg["type"]
-    faces = all_faces([t["text"], t["display"], t["title"], cfg["folio"]["font"], cfg["head"]["font"]], t["fonts_dir"])
+    faces = all_faces([t["text"], t["display"], t["title"], cfg["folio"]["font"], cfg["head"]["font"],
+                       cfg["continues"]["font"]], t["fonts_dir"])
     parts = [f"""<section class="title-page">
 <h1 class="book-title">{inline(cfg['title'], smart)}</h1>
 <p class="book-author">{inline(cfg['author'], smart)}</p>
@@ -405,7 +448,7 @@ def book_html(cfg, poems, root, blanks=0):
             rows.append(f'<li><a href="#{poem["slug"]}"><span class="toc-title">{label}</span></a></li>')
         parts.append('<nav class="contents"><h2 class="contents-title">Contents</h2>'
                      f'<ol>{"".join(rows)}</ol></nav>')
-    parts += [poem_html(poem, smart) for poem in poems]
+    parts += [poem_html(poem, smart, end_mark=cfg["book"]["end_mark"]) for poem in poems]
     parts += ['<div class="blank"></div>'] * blanks
     if cfg["book"]["colophon"] or cfg["book"]["closing"]:
         back = ""
@@ -447,9 +490,10 @@ def impose(src, dest, cfg):
 
 
 def rasterize(pdf, out_dir, dpi=144):
-    if out_dir.exists():
-        shutil.rmtree(out_dir)
-    out_dir.mkdir(parents=True)
+    # Tolerant of a second build running at once (`bjook watch` in another
+    # terminal rebuilds on the same save).
+    shutil.rmtree(out_dir, ignore_errors=True)
+    out_dir.mkdir(parents=True, exist_ok=True)
     subprocess.run(["pdftoppm", "-png", "-r", str(dpi), str(pdf), str(out_dir / "p")],
                    check=True)
     return sorted(p.name for p in out_dir.glob("p-*.png"))
@@ -556,7 +600,8 @@ def specimen(root, families, poem_name=None):
                  f'string-set: face \'{fam}\'"')
         one = dict(poem, slug=f"spec{i}")
         parts.append(poem_html(one, cfg["book"]["smart_quotes"], style))
-    faces = all_faces(families + [t["text"], t["display"], t["title"], cfg["folio"]["font"], cfg["head"]["font"]],
+    faces = all_faces(families + [t["text"], t["display"], t["title"], cfg["folio"]["font"], cfg["head"]["font"],
+                       cfg["continues"]["font"]],
                       t["fonts_dir"])
     label = f'{t["size"]}/{t["leading"]}'
     out = root / "build"

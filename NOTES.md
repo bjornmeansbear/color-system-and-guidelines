@@ -287,6 +287,19 @@ before starting a session, not just written to at the end of one.
   block). `[head]`: `verso` and `recto` text with `{title}`, `{author}`,
   `{poem}`, same placement keys, off unless set. Open: whether a poetry book
   wants a running head at all (see RULES "Bjook").
+- 2026-11-11: build-time typography widened from quotes to apostrophes
+  (leading ones too) and ellipses; verified by reading the PDF's text back
+  for any straight mark. Dashes untouched on purpose.
+- 2026-11-11: `[continues]` prints a mark at the foot of any page a poem
+  leaves unfinished (first use: "CONTINUES →" in Sligoil Micro 7pt caps,
+  inside corner, one line under the text block). `[folio] weight` added
+  (Basteleur Moonlight for the page numbers). Open: start two-page poems on a
+  left page so they sit on one spread; in the first book 10 of 15 run-ons
+  need a page turn.
+- 2026-11-11: `[book] end_mark` prints a sign (first use: ‡) one line under
+  each poem's last line, kept with the last stanza. It costs two lines, so a
+  poem that just fit its page tips its last stanza onto the next one: two
+  did in the first book.
 - Open, all in the first book: the typeface (Gentium is a placeholder; the
   specimen sets eight candidates), margins and type size (defaults, not yet
   chosen), which of the alternate takes stay in, the title, and a cover. 18

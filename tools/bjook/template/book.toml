@@ -22,7 +22,8 @@ fonts_dir = "~/Code/libreFontLibrary/Families"
 
 [folio]                 # the page number
 font     = ""           # empty = same as text
-size     = "9pt"
+size     = "10pt"
+weight   = "normal"
 position = "bottom-outside"   # top or bottom, then outside, inside or center
 from_edge = ""          # distance from the paper's edge to the number, e.g. "1in"
 drop     = ""           # or: gap between the text block and the number; empty = one line
@@ -35,9 +36,16 @@ size     = "8pt"
 position = "top-center"
 from_edge = ""          # distance from the paper's edge, e.g. "0.5in"s
 
+[continues]             # a mark at the foot of a page where a poem runs on
+text     = ""           # e.g. "continues"; empty = no mark
+font     = ""           # empty = same as text
+size     = "7pt"
+position = "bottom-inside"
+
 [book]
 contents     = true
 smart_quotes = true  # curl straight quotes at build; poem files stay as typed
 ink          = "#000"  # text prints as solid black, not a brown mix
 colophon     = ""
 closing      = ""    # a line set like the title, on the last page
+end_mark     = ""    # a sign under each poem's last line, e.g. "‡"

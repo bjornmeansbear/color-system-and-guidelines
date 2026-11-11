@@ -51,6 +51,13 @@ strong { font-weight: 700; }
 }
 .stanza:last-child { margin-bottom: 0; }
 
+/* The sign that a poem is over: one empty line, then the mark, kept on the
+   same page as the last stanza. */
+.poem-end.marked {
+  margin-top: var(--leading);
+  break-before: avoid;
+}
+
 /* A line too long for the measure turns over with a hanging indent. */
 .line {
   padding-left: 2em;

@@ -888,13 +888,27 @@ Typesetting defaults, each one a line in `book.toml` or `book.css`:
 - **A poem breaks between stanzas**, not inside one, when it runs over. The
   build lists every poem that runs past a page; that list is the first thing
   to read after changing a margin or a size.
+- **A poem that runs on says so.** `[continues]` prints a small mark at the
+  foot of the page it leaves unfinished, at the inside corner, toward the
+  page it continues on. Without it the foot of a page can't tell the reader
+  whether the poem ended. Because the break always falls between stanzas, the
+  mark never has to say whether the gap is a stanza break.
+- **A poem can end with a sign** (`[book] end_mark`, e.g. ‡): one empty
+  line, then the mark, flush left. With the continues mark it makes the foot
+  of every page unambiguous. It takes two lines, so check the build's list of
+  poems that run over after turning it on.
 - **A long line turns over with a hanging indent** (2em), so a turnover
   can't be mistaken for a new line.
 - **No hyphenation, no justification.** The poet broke the lines.
 - **Text prints solid black**, not `--wjerk-black`. A brown mix on an office
   laser is a halftone, and 10pt serifs go soft. The warm ground is the paper
   stock's job in print.
-- **Quotes are curled at build**; the poem files stay as typed.
+- **Typographer's marks are set at build**; the poem files stay as typed.
+  Straight quotes become curly, `'` becomes a real apostrophe (including the
+  leading ones: ’90s, ’em), and three dots become one ellipsis. This covers
+  the title, contents, running heads and colophon too. Dashes are left as
+  the poet typed them: the choice between `—`, ` — ` and ` – ` is punctuation,
+  not typesetting.
 - **Fonts come from `~/Code/libreFontLibrary/Families` by family name**, read
   from the font's own name table, embedded from the file. `bjook specimen`
   sets one poem in several faces at the book's size before choosing.

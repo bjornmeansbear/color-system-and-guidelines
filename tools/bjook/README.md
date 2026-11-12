@@ -46,7 +46,7 @@ Every command takes `--root` before it, defaulting to the current folder.
 
 | | |
 |---|---|
-| `book.toml` | Title, author, page size, margins, typeface, size, leading; where the page number sits (`[folio]`); an optional running head (`[head]`). The template lists every setting. |
+| `book.toml` | Title, author, page size, margins, typeface, size, leading; where the page number sits (`[folio]`); an optional running head (`[head]`) and continues mark (`[continues]`). The template lists every setting. |
 | `order.txt` | The sequence, one poem filename per line. Move lines to reorder. `#` in front of a line leaves that poem out. |
 | `poems/*.md` | One poem each: a few `key: value` lines between `---` (title, are.na id, date), then the lines. A blank line is a stanza break. `*italic*` and `**bold**` work; leading spaces indent. |
 | `style.css` | This book's overrides, applied after the tool's `book.css`. |

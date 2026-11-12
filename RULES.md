@@ -906,9 +906,13 @@ Typesetting defaults, each one a line in `book.toml` or `book.css`:
 - **Typographer's marks are set at build**; the poem files stay as typed.
   Straight quotes become curly, `'` becomes a real apostrophe (including the
   leading ones: ’90s, ’em), and three dots become one ellipsis. This covers
-  the title, contents, running heads and colophon too. Dashes are left as
-  the poet typed them: the choice between `—`, ` — ` and ` – ` is punctuation,
-  not typesetting.
+  the title, contents, running heads and colophon too.
+- **Em dashes are spaced.** A dash stands clear of its neighbours: `word —
+  word`, never `word—word`. At build, `--`, a spaced hyphen and a spaced en
+  dash all become a spaced em dash, and an unspaced one gets its spaces. The
+  space before is a no-break one, so a turned-over line never starts with the
+  dash; a dash that ends a line keeps the space before it. An unspaced en
+  dash in a range (1990–1995) and a hyphen inside a word are left alone.
 - **Fonts come from `~/Code/libreFontLibrary/Families` by family name**, read
   from the font's own name table, embedded from the file. `bjook specimen`
   sets one poem in several faces at the book's size before choosing.

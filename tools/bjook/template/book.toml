@@ -20,31 +20,42 @@ size    = "10pt"
 leading = "15pt"     # keep (height - top - bottom) a whole number of these
 fonts_dir = "~/Code/libreFontLibrary/Families"
 
+# The page number, the running head and the continues mark are each a line
+# of text in the top or bottom margin, and take the same settings:
+#   font      a family name; empty = same as text
+#   size, weight
+#   position  top or bottom, then outside, inside or center
+#   from_edge distance from the paper's edge, e.g. "1in"
+#   drop      or: gap from the text block; empty = one line
+#   css       extra CSS, e.g. "text-transform: uppercase; letter-spacing: 0.08em;"
+# No two of them can share a position.
+
 [folio]                 # the page number
-font     = ""           # empty = same as text
-size     = "10pt"
-weight   = "normal"
-position = "bottom-outside"   # top or bottom, then outside, inside or center
-from_edge = ""          # distance from the paper's edge to the number, e.g. "1in"
-drop     = ""           # or: gap between the text block and the number; empty = one line
+font      = ""
+size      = "9pt"
+weight    = "normal"
+position  = "bottom-outside"
+from_edge = ""
+drop      = ""
 
 [head]                  # the running head; leave verso and recto empty for none
-verso    = ""           # left-hand pages. {title}, {author} and {poem} fill in
-recto    = ""           # right-hand pages
-font     = ""           # empty = same as text
-size     = "8pt"
-position = "top-center"
-from_edge = ""          # distance from the paper's edge, e.g. "0.5in"s
+verso     = ""          # left-hand pages. {title}, {author} and {poem} fill in
+recto     = ""          # right-hand pages
+font      = ""
+size      = "8pt"
+position  = "top-center"
+from_edge = ""
 
 [continues]             # a mark at the foot of a page where a poem runs on
-text     = ""           # e.g. "continues"; empty = no mark
-font     = ""           # empty = same as text
-size     = "7pt"
-position = "bottom-inside"
+text      = ""          # e.g. "→"; empty = no mark
+font      = ""          # check the font draws the mark you expect
+size      = "7pt"
+position  = "bottom-inside"
 
 [book]
 contents     = true
-smart_quotes = true  # curl straight quotes at build; poem files stay as typed
+smart_quotes = true  # typographer's quotes, apostrophes, ellipses and spaced
+                     # em dashes at build; poem files stay as typed
 ink          = "#000"  # text prints as solid black, not a brown mix
 colophon     = ""
 closing      = ""    # a line set like the title, on the last page

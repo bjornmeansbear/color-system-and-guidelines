@@ -304,6 +304,15 @@ before starting a session, not just written to at the end of one.
   size. Finding: Sligoil's U+2192 is drawn as a chevron (reads as ">"), so a
   lone arrow is set in Gentium; check a font's arrow glyph before using it
   alone as a sign.
+- 2026-11-11: dashes decided, reversing "untouched on purpose" above: house
+  style is a spaced em dash, set at build (RULES.md, Bjook). All 42 dashes in
+  the first book changed with no change in page count.
+- 2026-11-11: `bjook.py` tidied with no change to the output (the built PDF's
+  text and positions compared equal before and after). The page number,
+  running head and continues mark now share one settings shape and one code
+  path, so a fourth margin box is a few lines; the overflow report reads
+  WeasyPrint's public page anchors instead of its private box tree; the
+  legacy `[type] folio` setting is gone (use `[folio] font`).
 - Open, all in the first book: the typeface (Gentium is a placeholder; the
   specimen sets eight candidates), margins and type size (defaults, not yet
   chosen), which of the alternate takes stay in, the title, and a cover. 18

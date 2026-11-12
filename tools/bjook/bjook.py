@@ -37,6 +37,19 @@ HERE = Path(__file__).resolve().parent
 API = "https://api.are.na/v3"
 USER_AGENT = "arena-archive-script/1.0 (personal are.na export)"
 
+# What the page number, the running head and the continues mark have in
+# common: each is a line of text in the top or bottom margin.
+BOX = {
+    "font": "",         # empty = the text face
+    "size": "8pt",
+    "weight": "normal",
+    "position": "",     # top|bottom - outside|inside|center
+    "from_edge": "",    # distance from the paper's edge; wins over drop
+    "drop": "",         # or: gap from the text block; empty = one line
+    "css": "",          # extra CSS, e.g. "letter-spacing: 0.08em"
+}
+BOX_NAMES = {"folio": "page number", "head": "running head", "continues": "continues mark"}
+
 # Fallbacks only, for a setting a book leaves out. Changing these does nothing
 # to a book whose book.toml sets the same thing: edit that book.toml instead.
 DEFAULTS = {
@@ -54,34 +67,15 @@ DEFAULTS = {
         "size": "10pt", "leading": "15pt",
         "fonts_dir": "~/Code/libreFontLibrary/Families",
     },
-    "folio": {
-        "font": "",                     # empty = the text face
-        "size": "9pt",
-        "weight": "normal",
-        "position": "bottom-outside",   # top|bottom - outside|inside|center
-        "from_edge": "",                # distance from the paper's edge; wins over drop
-        "drop": "",                     # or: gap from the text block; empty = one line
-    },
+    "folio": {**BOX, "size": "9pt", "position": "bottom-outside"},
     "head": {                           # the running head; off unless verso/recto is set
+        **BOX, "position": "top-center",
         "verso": "",                    # left-hand pages: text, with {title} {author} {poem}
         "recto": "",                    # right-hand pages
-        "font": "",                     # empty = the text face
-        "size": "8pt",
-        "weight": "normal",
-        "position": "top-center",       # top|bottom - outside|inside|center
-        "from_edge": "",                # distance from the paper's edge; wins over drop
-        "drop": "",                     # or: gap from the text block; empty = one line
-        "css": "",                      # extra CSS, e.g. "letter-spacing: 0.08em"
     },
     "continues": {                      # a mark where a poem runs on to the next page
-        "text": "",                     # e.g. "continues"; empty = no mark
-        "font": "",                     # empty = the text face
-        "size": "7pt",
-        "weight": "normal",
-        "position": "bottom-inside",
-        "from_edge": "",
-        "drop": "",                     # empty = one line under the text block
-        "css": "",
+        **BOX, "size": "7pt", "position": "bottom-inside",
+        "text": "",                     # e.g. "→"; empty = no mark
     },
     "book": {
         "contents": True,
@@ -120,24 +114,31 @@ def load_config(root):
     cfg["slug"] = cfg["slug"] or slugify(cfg["title"])
     cfg["type"]["display"] = cfg["type"]["display"] or cfg["type"]["text"]
     cfg["type"]["title"] = cfg["type"]["title"] or cfg["type"]["display"]
-    f = cfg["folio"]
-    f["font"] = f["font"] or user.get("type", {}).get("folio", "") or cfg["type"]["text"]
-    f["drop"] = f["drop"] or cfg["type"]["leading"]
-    h = cfg["head"]
-    h["font"] = h["font"] or cfg["type"]["text"]
-    h["drop"] = h["drop"] or cfg["type"]["leading"]
-    c = cfg["continues"]
-    c["font"] = c["font"] or cfg["type"]["text"]
-    c["drop"] = c["drop"] or cfg["type"]["leading"]
-    for name, box in (("folio", f), ("head", h), ("continues", c)):
+    taken = {}
+    for name, label in BOX_NAMES.items():
+        box = cfg[name]
+        box["font"] = box["font"] or cfg["type"]["text"]
+        box["drop"] = box["drop"] or cfg["type"]["leading"]
         if not re.fullmatch(r"(top|bottom)-(outside|inside|center)", box["position"]):
             die(f"{name} position {box['position']!r} isn't one of "
                 "top|bottom-outside|inside|center")
-    if (h["verso"] or h["recto"]) and h["position"] == f["position"]:
-        die(f"the running head and the page number are both at {f['position']}")
-    if c["text"] and c["position"] in (f["position"], h["position"]):
-        die(f"the continues mark shares {c['position']} with the page number or running head")
+        if box_is_on(name, box):
+            if box["position"] in taken:
+                die(f"the {label} and the {taken[box['position']]} are both at {box['position']}")
+            taken[box["position"]] = label
     return cfg
+
+
+def box_is_on(name, box):
+    """The page number always prints; the other two only when given text."""
+    return (name == "folio" or (name == "head" and bool(box["verso"] or box["recto"]))
+            or (name == "continues" and bool(box["text"])))
+
+
+def book_families(cfg):
+    """Every font family the book names, for registering with @font-face."""
+    t = cfg["type"]
+    return [t["text"], t["display"], t["title"]] + [cfg[name]["font"] for name in BOX_NAMES]
 
 
 def to_pt(value):
@@ -203,7 +204,8 @@ def first_line(poem, limit=48):
 
 def smarten(text):
     """Typographer's marks for typed ones: curly quotes, real apostrophes, a
-    one-character ellipsis. Dashes are left exactly as the poet typed them."""
+    one-character ellipsis, and em dashes that stand clear of their
+    neighbours with a space on each side."""
     text = re.sub(r"\.\.\.+", "…", text)
     text = re.sub(r"(?<=\w)'(?=\w)", "’", text)                  # don't, harbor's
     text = re.sub(r"'(?=\d0s\b|\d\d\b)", "’", text)               # '90s, '71
@@ -212,7 +214,20 @@ def smarten(text):
     text = re.sub(opens + '"', r"\1“", text)
     text = text.replace('"', "”")
     text = re.sub(opens + r"'(?=\S)", r"\1‘", text)
-    return text.replace("'", "’")
+    return space_dashes(text.replace("'", "’"))
+
+
+def space_dashes(text):
+    """Every dash used as punctuation becomes a spaced em dash. `--`, and a
+    hyphen or en dash with a space on each side, count as typed stand-ins.
+    The space before is a no-break one, so a turned-over line never starts
+    with the dash. A dash at the start or end of a line gets no space on its
+    open side, and none is put between a dash and a quote mark or bracket
+    that closes around it."""
+    text = re.sub(r"(?<!-)-{2,3}(?!-)", "—", text)
+    text = re.sub(r"(?<=\S)[ \t]+[-–][ \t]+(?=\S)", "—", text)
+    text = re.sub(r"(?<=[^\s“‘(\[{])[ \t\u00a0]*—", "\u00a0—", text)
+    return re.sub(r"—[ \t]*(?=[^\s”’)\]}.,;:!?])", "— ", text)
 
 
 def inline(text, smart):
@@ -222,10 +237,6 @@ def inline(text, smart):
     text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
     text = re.sub(r"(?<!\w)[*_](.+?)[*_](?!\w)", r"<em>\1</em>", text)
     return text
-
-
-def plain(text, smart):
-    return re.sub(r"<[^>]+>", "", inline(text, smart))
 
 
 # ----------------------------------------------------------------- fonts
@@ -308,8 +319,8 @@ def font_faces(family, fonts_dir):
 
 # ------------------------------------------------------------------ html
 
-def margin_box(box, weight="normal", extra=""):
-    """Where a folio or running head sits, as (box on left-hand pages, box on
+def margin_box(box):
+    """Where a margin box sits, as (its name on left-hand pages, its name on
     right-hand pages, CSS). It lives in the top or bottom margin: `from_edge`
     in from the paper's edge, or else `drop` away from the text block."""
     edge, side = box["position"].split("-")
@@ -321,8 +332,13 @@ def margin_box(box, weight="normal", extra=""):
     on_left, on_right = {"outside": ("left", "right"), "inside": ("right", "left"),
                          "center": ("center", "center")}[side]
     style = (f"font-family: '{alias(box['font'])}'; font-size: {box['size']}; "
-             f"font-weight: {weight}; line-height: 1; color: var(--ink); {place} {extra}")
+             f"font-weight: {box['weight']}; line-height: 1; color: var(--ink); "
+             f"{place} {box['css']}")
     return f"@{edge}-{on_left}", f"@{edge}-{on_right}", style
+
+
+def css_string(text):
+    return '"' + text.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
 def head_content(text, cfg):
@@ -336,38 +352,43 @@ def head_content(text, cfg):
         if i:
             parts.append("string(poem)")
         if chunk:
-            parts.append('"' + chunk.replace("\\", "\\\\").replace('"', '\\"') + '"')
+            parts.append(css_string(chunk))
     return " ".join(parts) or "none"
 
 
-def page_css(cfg, label=None):
-    p, t, f, h = cfg["page"], cfg["type"], cfg["folio"], cfg["head"]
-    lbox, rbox, style = margin_box(f, f["weight"])
-    content = f'string(face) "  ·  {label}"' if label else "counter(page)"
-    left = [f"{lbox} {{ content: {content}; {style} }}"]
-    right = [f"{rbox} {{ content: {content}; {style} }}"]
-    off_left, off_right = [lbox], [rbox]
-    if (h["verso"] or h["recto"]) and not label:
-        hl, hr, hstyle = margin_box(h, h["weight"], h["css"])
-        left.append(f"{hl} {{ content: {head_content(h['verso'], cfg)}; {hstyle} }}")
-        right.append(f"{hr} {{ content: {head_content(h['recto'], cfg)}; {hstyle} }}")
-        off_left.append(hl)
-        off_right.append(hr)
-    more = ""
-    c = cfg["continues"]
-    if c["text"] and not label:
+def margin_content(cfg, label):
+    """What each margin box prints, as (box, content on left-hand pages,
+    content on right-hand pages), plus any CSS the content depends on. A
+    specimen (label set) carries only its face name where the folio goes."""
+    f, h, c = cfg["folio"], cfg["head"], cfg["continues"]
+    if label:
+        face = f'string(face) "  ·  {label}"'
+        return [(f, face, face)], ""
+    boxes, extra = [(f, "counter(page)", "counter(page)")], ""
+    if box_is_on("head", h):
+        boxes.append((h, head_content(h["verso"], cfg), head_content(h["recto"], cfg)))
+    if box_is_on("continues", c):
         # Each poem switches the mark on where it starts and off where it
         # ends. A page shows whatever was set last on it, so the mark prints
         # only on pages a poem leaves unfinished.
-        cl, cr, cstyle = margin_box(c, c["weight"], c["css"])
         text = smarten(c["text"]) if cfg["book"]["smart_quotes"] else c["text"]
-        quoted = '"' + text.replace("\\", "\\\\").replace('"', '\\"') + '"'
-        left.append(f"{cl} {{ content: string(more, last); {cstyle} }}")
-        right.append(f"{cr} {{ content: string(more, last); {cstyle} }}")
-        off_left.append(cl)
-        off_right.append(cr)
-        more = f'.poem {{ string-set: more {quoted}; }}\n.poem-end {{ string-set: more ""; }}'
-    none = lambda boxes: " ".join(f"{b} {{ content: none; }}" for b in boxes)
+        boxes.append((c, "string(more, last)", "string(more, last)"))
+        extra = (f".poem {{ string-set: more {css_string(text)}; }}\n"
+                 '.poem-end { string-set: more ""; }')
+    return boxes, extra
+
+
+def page_css(cfg, label=None):
+    p, t = cfg["page"], cfg["type"]
+    boxes, extra = margin_content(cfg, label)
+    left, right, off_left, off_right = [], [], [], []
+    for box, on_left, on_right in boxes:
+        lname, rname, style = margin_box(box)
+        left.append(f"{lname} {{ content: {on_left}; {style} }}")
+        right.append(f"{rname} {{ content: {on_right}; {style} }}")
+        off_left.append(lname)
+        off_right.append(rname)
+    none = lambda names: " ".join(f"{n} {{ content: none; }}" for n in names)
     return f"""
 :root {{
   --size: {t['size']}; --leading: {t['leading']};
@@ -388,7 +409,7 @@ def page_css(cfg, label=None):
 @page plain:left {{ {none(off_left)} }}
 @page plain:right {{ {none(off_right)} }}
 @page :blank {{ {none(dict.fromkeys(off_left + off_right))} }}
-{more}
+{extra}
 """
 
 
@@ -404,9 +425,10 @@ def poem_html(poem, smart, extra="", end_mark=""):
             out.append(f'<div class="line">{inline(line, smart) or "&nbsp;"}</div>')
         out.append("</div>")
     if end_mark:
-        out.append(f'<div class="poem-end marked" aria-hidden="true">{html.escape(end_mark)}</div>')
+        out.append(f'<div class="poem-end marked" id="{poem["slug"]}--end" aria-hidden="true">'
+                   f'{html.escape(end_mark)}</div>')
     else:
-        out.append('<div class="poem-end"></div>')
+        out.append(f'<div class="poem-end" id="{poem["slug"]}--end"></div>')
     out.append("</section>")
     return "\n".join(out)
 
@@ -431,9 +453,7 @@ def document(cfg, body, faces, root, label=None):
 
 def book_html(cfg, poems, root, blanks=0):
     smart = cfg["book"]["smart_quotes"]
-    t = cfg["type"]
-    faces = all_faces([t["text"], t["display"], t["title"], cfg["folio"]["font"], cfg["head"]["font"],
-                       cfg["continues"]["font"]], t["fonts_dir"])
+    faces = all_faces(book_families(cfg), cfg["type"]["fonts_dir"])
     parts = [f"""<section class="title-page">
 <h1 class="book-title">{inline(cfg['title'], smart)}</h1>
 <p class="book-author">{inline(cfg['author'], smart)}</p>
@@ -559,25 +579,18 @@ def build(root, snap=None, quiet=False):
 
 
 def overflowing(doc, poems):
-    """Poems that run past one page, read back from the rendered layout —
-    the first thing to look at when a margin or type size changes."""
-    first, last = {}, {}
-
-    def walk(box, page_no):
-        eid = getattr(getattr(box, "element", None), "get", lambda k: None)("id")
-        if eid and getattr(box, "element_tag", "") == "section":
-            first.setdefault(eid, page_no)
-            last[eid] = page_no
-        for child in getattr(box, "children", ()):
-            walk(child, page_no)
-
-    for i, page in enumerate(doc.pages, 1):
-        walk(page._page_box, i)
+    """Poems that run past one page — the first thing to look at when a
+    margin or type size changes. Every poem and every poem's end has an id,
+    and WeasyPrint records which page each id landed on."""
+    page_of = {}
+    for number, page in enumerate(doc.pages, 1):
+        for name in page.anchors:
+            page_of.setdefault(name, number)
     out = []
     for poem in poems:
-        s = poem["slug"]
-        if s in first and last[s] > first[s]:
-            out.append((poem["title"] or first_line(poem), last[s] - first[s] + 1))
+        start, end = page_of.get(poem["slug"]), page_of.get(poem["slug"] + "--end")
+        if start and end and end > start:
+            out.append((poem["title"] or first_line(poem), end - start + 1))
     return out
 
 
@@ -600,9 +613,7 @@ def specimen(root, families, poem_name=None):
                  f'string-set: face \'{fam}\'"')
         one = dict(poem, slug=f"spec{i}")
         parts.append(poem_html(one, cfg["book"]["smart_quotes"], style))
-    faces = all_faces(families + [t["text"], t["display"], t["title"], cfg["folio"]["font"], cfg["head"]["font"],
-                       cfg["continues"]["font"]],
-                      t["fonts_dir"])
+    faces = all_faces(families + book_families(cfg), t["fonts_dir"])
     label = f'{t["size"]}/{t["leading"]}'
     out = root / "build"
     out.mkdir(exist_ok=True)

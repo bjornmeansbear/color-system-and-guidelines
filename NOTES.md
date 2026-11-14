@@ -6,16 +6,26 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
-- **One book tool or two?** `tools/bjook/` sets poems (lines and stanzas,
-  half letter, saddle stitch). `~/Code/lectureScripts/book/` already sets
-  essays (chapter `.md` files → pandoc → WeasyPrint, 6 × 9in, grouped
-  footnotes) and built the nine-essay `booklet-new-design-commons`. The
-  destination named 2026-11-10 is a design essay collection, working title
-  "The bits that make up a design philosophy", from lectureScripts and
-  Bjornpaedia. Likely path: Bjook gains a prose template and
-  takes over the parts the essay pipeline lacks (font lookup from
-  libreFontLibrary, spread preview, snapshots, imposition), then gets a
-  wider name. Not started; the poetry book comes first.
+- **One book tool, several kinds of book** (decided 2026-11-13). Poems and
+  essays are different types of book, and the poetry book is the simplest
+  one. `tools/bjook/` sets poems (lines and stanzas, half letter, saddle
+  stitch). `~/Code/lectureScripts/book/` already sets essays (chapter `.md`
+  files → pandoc → WeasyPrint, 6 × 9in, grouped footnotes) and built the
+  nine-essay `booklet-new-design-commons`. The destination named 2026-11-10
+  is a design essay collection, working title "The bits that make up a
+  design philosophy", from lectureScripts and Bjornpaedia. Path: `book.toml`
+  gains `kind = "poems"` (the default) or `"prose"`; prose reads Markdown
+  chapters through pandoc and borrows the essay pipeline's footnote
+  grouping; `bjook.py` splits into the book machinery and one small file per
+  kind when the second kind arrives, not before. The essay pipeline stays
+  until Bjook has rebuilt `booklet-new-design-commons` to match. Prose needs
+  what poems never did: text flowing across pages (hyphenation, widows and
+  orphans), footnotes, images with captions. The website keeps one shape for every
+  kind: the book's front page is its contents, and each poem or chapter is
+  a page of its own with previous and next at the foot; only the inside of
+  that page differs (a chapter is long, with headings and notes). The
+  name stays. Not started; the poetry book comes first, and the first prose
+  test is a single essay.
 
 - **Should the shared player and channel-show merge?** `tools/slideshow/`
   bakes a snapshot (local files, offline, font rotation); `~/Code/wjall`
@@ -331,6 +341,12 @@ before starting a session, not just written to at the end of one.
   browns per mode through `light-dark()`, which works because kit.css sets
   `color-scheme` with its dark mode. `brown-5` is 4.40:1 on the White and
   4.36:1 on `brown-9`, so it serves as the top in light and the face in dark.
+- 2026-11-13: the book site has its own output repo, `~/Code/bjornmeansbook`
+  (private on GitHub), holding only what `bjook site --out ~/Code/bjornmeansbook`
+  writes; each book publishes into it from its own folder, the way
+  sentence-a-day publishes into bjornpaedia. First book pushed. Open: no host
+  connected yet (Cloudflare Pages, no build command) and the domain isn't
+  pointed; a `bjook publish` that builds, commits and pushes in one step.
 - Open, all in the first book: the typeface (Gentium is a placeholder; the
   specimen sets eight candidates), margins and type size (defaults, not yet
   chosen), which of the alternate takes stay in, the title, and a cover. 18

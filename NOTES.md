@@ -263,6 +263,17 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-11-13
+
+- **Slideshow WebP size fix** (`tools/slideshow/build_slideshow.py`):
+  `image_size()` read extended-format WebP (VP8X) dimensions four bytes early,
+  so it took the flags byte as the width. A 2500×3333 photo came out 45px wide,
+  and the upscale cap (`--max-upscale` 2.5) then pinned it to 112.5px on screen.
+  The offsets now skip the flags and reserved bytes. In chair-ness, two of four
+  WebP files were affected (49880124, 49874854). All four now match `sips`.
+  Plain VP8 and VP8L were already right. Any other archive built with this
+  player needs a rebuild to pick it up.
+
 ### 2026-11-10
 
 - **Bjook** (`tools/bjook/`, built as `chapbook` and renamed 2026-11-11: Bjorn + book, in the Bj family with Bjornpaedia and bjorn-voice, and not tied to one kind of book): poems as plain text → HTML →

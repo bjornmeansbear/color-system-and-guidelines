@@ -67,8 +67,9 @@ def image_size(path):
             f.seek(12)
             chunk = f.read(30)
             if chunk[:4] == b"VP8X":
-                w = int.from_bytes(chunk[8:11], "little") + 1
-                h = int.from_bytes(chunk[11:14], "little") + 1
+                # chunk[8] flags, [9:12] reserved, then 24-bit width-1, height-1
+                w = int.from_bytes(chunk[12:15], "little") + 1
+                h = int.from_bytes(chunk[15:18], "little") + 1
                 return w, h
             if chunk[:4] == b"VP8 ":
                 return struct.unpack("<HH", chunk[14:18])[0] & 0x3FFF, \

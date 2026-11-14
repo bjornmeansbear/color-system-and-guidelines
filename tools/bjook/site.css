@@ -1,0 +1,238 @@
+/* Bjook on screen — the same book as book.css sets for paper, reflowed.
+   Loaded after kit.css, which supplies the colours, dark mode and focus
+   ring. The fonts and the --font-* / --head-* / --folio-* values are
+   written above this file by `bjook site`, from the book's book.toml.
+   A book overrides anything here in its own site.css.
+
+   One poem to a page, as in print. Reading sizes are rem on kit.css's 6px
+   rhythm: poems are 18/30, the small type 12/18 and 14/24. Everything that
+   changes with the width of the window does it by itself, through flex
+   wrapping, CSS columns and clamp(): there are no breakpoints in this file.
+   See RULES.md "Bjook". */
+
+body {
+  font-family: var(--font-text), serif;
+  font-size: 1.125rem;
+  line-height: 1.875rem;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures;
+  font-variant-numeric: oldstyle-nums;
+}
+p { font-family: inherit; }
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+a:hover { color: var(--color-accent-hover); }
+
+/* A poem page is one reading column. The front page and the shelf run the
+   full width of the window. */
+.page {
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem) 1.5rem clamp(3rem, 8vw, 6rem);
+}
+.page.wide {
+  max-width: none;
+  padding-inline: clamp(1.5rem, 6vw, 6rem);
+}
+
+/* ---- The running head: where you are, and the way back up ---- */
+.head {
+  font-family: var(--font-head), var(--font-mono);
+  font-weight: var(--head-weight);
+  font-size: 0.75rem;
+  line-height: 1.125rem;
+  text-align: center;
+  margin: 0 0 3rem;
+}
+.head a {
+  display: inline-block;
+  padding: 0.8125rem 0.75rem;   /* a 44px target around 18px of type */
+  text-decoration: none;
+}
+.head a:hover { text-decoration: underline; }
+
+/* ---- A poem: flush left, long lines turn over with a hanging indent ---- */
+.poem-title {
+  font-family: var(--font-display), serif;
+  font-size: 1.375rem;
+  line-height: 1.875rem;
+  font-style: italic;
+  font-weight: normal;
+  margin: 0 0 1.875rem;
+}
+.stanza { margin: 0 0 1.875rem; }
+.line {
+  padding-left: 2em;
+  text-indent: -2em;
+  white-space: pre-wrap;
+}
+.poem-end {
+  text-align: center;
+  margin: 1.875rem 0 0;
+}
+
+/* ---- Foot of a poem: previous, where you are, next ---- */
+.turn {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0 1.5rem;
+  align-items: start;
+  margin-top: 3.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+}
+.turn a {
+  display: block;
+  min-height: 2.75rem;
+  padding: 0.625rem 0;
+  text-decoration: none;
+}
+.turn a:hover { text-decoration: underline; }
+.turn .next { text-align: right; }
+.turn .folio {
+  font-family: var(--font-folio), serif;
+  font-weight: var(--folio-weight);
+  font-size: 1rem;
+  padding: 0.625rem 0;
+}
+
+/* ---- The book's front page: title, author, contents, colophon ---- */
+.book-title {
+  font-family: var(--font-title), serif;
+  font-weight: normal;
+  font-size: clamp(3rem, 1rem + 10vw, 10.5rem);
+  line-height: 1;
+  margin: 0 0 1.5rem;
+}
+.book-author { margin: 0 0 3.75rem; }
+
+.contents h2,
+.colophon h2 {
+  font-family: var(--font-display), serif;
+  font-size: 1.375rem;
+  line-height: 1.875rem;
+  font-style: italic;
+  font-weight: normal;
+  margin: 0 0 1.875rem;
+}
+/* As many columns as fit: one on a phone, four or five on a wide screen. */
+.contents ol {
+  list-style: none; margin: 0 0 3.75rem; padding: 0;
+  columns: 16rem;
+  column-gap: 3rem;
+}
+.contents li { break-inside: avoid; }
+.contents a {
+  display: grid;
+  grid-template-columns: 2em 1fr;
+  gap: 0 1em;
+  padding: 0.4375rem 0;         /* 30px of type in a 44px target */
+  text-decoration: none;
+}
+.contents a:hover .toc-title { text-decoration: underline; }
+.contents .toc-n { text-align: right; }
+
+.book-closing {
+  font-family: var(--font-title), serif;
+  font-size: clamp(3rem, 1rem + 10vw, 10.5rem);
+  line-height: 1;
+  margin: 0 0 3.75rem;
+}
+.colophon { max-width: 36rem; }
+.colophon,
+.shelf-note {
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+}
+.colophon p { margin: 0 0 1.5rem; }
+.colophon a { overflow-wrap: anywhere; }
+
+/* ---- The shelf: every book on the site, standing on shelf boards ----
+   One flex row that wraps. Each book carries its own piece of board, and
+   the pieces meet edge to edge, so a shelf appears under every row however
+   many books fit across. The empty last item takes whatever is left of the
+   last row, so that board runs to the wall too.
+
+   A board is a plank seen from a little above: a thin lighter strip, the
+   top the books stand on, over a thick dark front face. Dark brown on the
+   light ground; in dark mode two lighter browns, since no brown dark enough
+   to be called dark shows against brown-9. */
+.site-title {
+  font-size: clamp(3rem, 1rem + 11vw, 12rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin: 0;
+  padding: clamp(1.5rem, 6vw, 6rem) clamp(1.5rem, 6vw, 6rem) 0;
+}
+.shelf {
+  --inch: clamp(1.5rem, 1rem + 2.2vw, 2.5rem);   /* one inch of a real page */
+  --board: clamp(1.125rem, 0.75rem + 1.5vw, 1.875rem);
+  --board-face: light-dark(var(--wjerk-brown), var(--brown-5));
+  --board-top: light-dark(var(--brown-5), var(--brown-3));
+  list-style: none; margin: 0; padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+.shelf li {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: clamp(3rem, 8vw, 6rem);
+  border-bottom: var(--board) solid var(--board-face);
+}
+.shelf li::after {
+  content: "";
+  align-self: stretch;
+  height: calc(var(--board) * 0.3);
+  background: var(--board-top);
+}
+.shelf .rest { flex: 999 0 0; }
+
+/* A cover is the book's own page, to scale: its width and height in
+   inches, its title and author in its own typefaces, on a pale kit tint.
+   It keeps its paper and ink in dark mode, as an object would. */
+.cover {
+  width: calc(var(--w) * var(--inch));
+  margin-inline: calc(var(--inch) * 0.5);
+  aspect-ratio: var(--w) / var(--h);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: calc(var(--inch) * 0.5) calc(var(--inch) * 0.45);
+  background: var(--cover);
+  color: var(--wjerk-black);
+  border: 2px solid var(--wjerk-black);
+  border-bottom: 0;
+  text-decoration: none;
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+.cover:hover,
+.cover:active { background: var(--wjerk-black); color: var(--cover); }
+.cover-title {
+  font-family: var(--font-title), var(--font-sans);
+  font-size: max(0.8125rem, calc(var(--w) * var(--inch) * 0.11));   /* a share of the cover's width */
+  line-height: 1.05;
+}
+.cover-author {
+  font-family: var(--font-head), var(--font-mono);
+  font-weight: var(--head-weight);
+  font-size: max(0.75rem, calc(var(--inch) * 0.2));
+  line-height: 1.35;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

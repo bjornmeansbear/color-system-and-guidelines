@@ -913,6 +913,33 @@ Typesetting defaults, each one a line in `book.toml` or `book.css`:
   space before is a no-break one, so a turned-over line never starts with the
   dash; a dash that ends a line keeps the space before it. An unspaced en
   dash in a range (1990–1995) and a hyphen inside a word are left alone.
+- **A book is also a website** (`bjook site`). Same text, same typefaces,
+  same typographer's marks; only the stylesheet changes. One poem to a page
+  as in print, with the running head as the link back up and the poem's
+  number, set like the folio, between previous and next. Colours, dark mode
+  and the focus ring come from `kit.css` unchanged, so the ink on screen is
+  the kit's brown, not print's solid black. Sizes are rem on the kit's 6px
+  rhythm (poems 18/30). The print-only signs stay in print: no continues
+  mark, since a web page doesn't run out. Fonts ship as `.woff2` cut down to
+  the characters the book uses. A book's print overrides live in its
+  `style.css`, its web overrides in `site.css`.
+- **The site's front page is a bookshelf**, after the Sustainabilitist
+  library, in the Wjerk palette. Each book is a cover standing on a shelf
+  board: the cover is the book's own page drawn to scale (a 4.25in book is
+  smaller than an 8.5in one), in dark brown line work on a pale kit tint
+  (steps 0–2, the icon family's rule), with the title and author in the
+  book's own typefaces. The boards are dark brown planks (`--wjerk-brown`), thick, with a
+  thin lighter strip on top (`brown-5`) as the surface the books stand on;
+  pink was tried first and read as a rule, not a shelf. In dark mode the
+  plank is `brown-5` under `brown-3`, since no dark brown shows on
+  `brown-9` (`wjerk-brown` is 1.71:1 there, `brown-5` 4.36:1). The page
+  spends no pink outside the focus ring and link hover. A cover keeps its paper and ink in dark mode, as an object
+  would, and inverts on hover and press. `[site] cover` names the tint.
+- **The site has no breakpoints.** The shelf is one wrapping flex row: each
+  book carries its piece of board as a bottom border and the pieces join, so
+  a shelf forms under every row at any width. The contents list is CSS
+  columns, and display type and spacing are `clamp()` (rem at both ends).
+  The reading sizes stay fixed on the grid.
 - **Fonts come from `~/Code/libreFontLibrary/Families` by family name**, read
   from the font's own name table, embedded from the file. `bjook specimen`
   sets one poem in several faces at the book's size before choosing.

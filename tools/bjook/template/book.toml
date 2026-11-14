@@ -60,3 +60,9 @@ ink          = "#000"  # text prints as solid black, not a brown mix
 colophon     = ""
 closing      = ""    # a line set like the title, on the last page
 end_mark     = ""    # a sign under each poem's last line, e.g. "‡"
+
+[site]               # `bjook site`: the book as a website
+path = ""            # the book's folder on the site; empty = made from the title
+pdf  = true          # offer the PDF and the booklet to download
+cover = ""           # the cover's tint on the shelf, a kit colour like
+                     # "goldenrod-1"; empty = picked from the title

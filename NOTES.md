@@ -313,6 +313,24 @@ before starting a session, not just written to at the end of one.
   path, so a fourth margin box is a few lines; the overflow report reads
   WeasyPrint's public page anchors instead of its private box tree; the
   legacy `[type] folio` setting is gone (use `[folio] font`).
+- 2026-11-13: `bjook site` writes a book as a static website (front page
+  with contents and colophon, a page per poem, the PDFs, a shelf page), for
+  bjornmeansbook.com. First book: 43 pages and nine subset fonts in under
+  1 MB, no JavaScript. Checked in screenshots at 390px and 1200px. Open: not
+  deployed yet (static, so Cloudflare Pages); no favicon in the icon family
+  yet; dark mode rests on the kit's tokens and wasn't screenshotted.
+- 2026-11-13: the shelf rebuilt as a full-width bookshelf of to-scale
+  typographic covers on pink boards, and every breakpoint removed from the
+  site (RULES.md, Bjook). Tested with ten made-up books of different page
+  sizes at 390px and 1400px. Open: the site title is the kit's system sans,
+  bold, since the shelf belongs to no one book; search and sort, which the
+  Sustainabilitist library has, wait until there are enough books to need
+  them; a book can't yet supply a cover image in place of the drawn one.
+- 2026-11-13: shelf boards changed from accent pink to dark brown planks,
+  half again as thick, with a lighter top strip (RULES.md, Bjook). Two
+  browns per mode through `light-dark()`, which works because kit.css sets
+  `color-scheme` with its dark mode. `brown-5` is 4.40:1 on the White and
+  4.36:1 on `brown-9`, so it serves as the top in light and the face in dark.
 - Open, all in the first book: the typeface (Gentium is a placeholder; the
   specimen sets eight candidates), margins and type size (defaults, not yet
   chosen), which of the alternate takes stay in, the title, and a cover. 18

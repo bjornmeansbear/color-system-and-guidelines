@@ -9,6 +9,7 @@ and a spread preview in the browser.
     bjook build --snap "first proof"
     bjook watch            # rebuild on save, preview reloads itself
     bjook specimen Gentium Spectral "Libre Caslon Text"
+    bjook site             # build/site: the book as a website
 
 Run from inside a book folder, or pass --root. The design reasoning lives
 in RULES.md, "Bjook"; README.md here is how to run it.
@@ -17,10 +18,12 @@ Runs on the Python inside WeasyPrint's pipx venv (the `bjook` wrapper
 next to this file finds it), which also carries fontTools and pypdf.
 """
 import argparse
+import contextlib
 import datetime
 import functools
 import html
 import http.server
+import io
 import json
 import os
 import re
@@ -85,7 +88,17 @@ DEFAULTS = {
         "smart_quotes": True,
         "ink": "#000",
     },
+    "site": {
+        "path": "",                     # the book's folder on the site; empty = from the title
+        "pdf": True,                    # offer the PDF and the booklet to download
+        "cover": "",                    # the cover's tint on the shelf, a kit colour
+                                        # like "goldenrod-1"; empty = picked for you
+    },
 }
+
+# Pale kit tints a cover can take on the shelf; dark brown ink is AAA on each.
+COVER_TINTS = ["goldenrod-1", "light-gray-1", "cornflower-1", "purple-1",
+               "orange-1", "blue-1", "yellow-1", "pink-1"]
 
 SPECIMEN_FACES = [
     "Gentium", "Spectral", "Libre Caslon Text", "Source Serif 4",
@@ -413,17 +426,23 @@ def page_css(cfg, label=None):
 """
 
 
+def stanzas_html(poem, smart):
+    out = []
+    for stanza in poem["stanzas"]:
+        out.append('<div class="stanza">')
+        for line in stanza:
+            out.append(f'<div class="line">{inline(line, smart) or "&nbsp;"}</div>')
+        out.append("</div>")
+    return out
+
+
 def poem_html(poem, smart, extra="", end_mark=""):
     out = [f'<section class="poem" id="{poem["slug"]}"{extra}>']
     if poem["title"]:
         out.append(f'<h2 class="poem-title">{inline(poem["title"], smart)}</h2>')
     else:
         out.append('<div class="poem-title untitled" aria-hidden="true">&nbsp;</div>')
-    for stanza in poem["stanzas"]:
-        out.append('<div class="stanza">')
-        for line in stanza:
-            out.append(f'<div class="line">{inline(line, smart) or "&nbsp;"}</div>')
-        out.append("</div>")
+    out += stanzas_html(poem, smart)
     if end_mark:
         out.append(f'<div class="poem-end marked" id="{poem["slug"]}--end" aria-hidden="true">'
                    f'{html.escape(end_mark)}</div>')
@@ -623,6 +642,187 @@ def specimen(root, families, poem_name=None):
     print(f"-> {pdf}\n   “{poem['title']}” in {len(parts)} faces at {label}")
 
 
+# ------------------------------------------------------------------ site
+
+def web_page(title, body, css, author="", description="", frame="page"):
+    """One page of the site. `css` is the stylesheets to link, in order;
+    `frame` is the class on the wrapper: "page" is one reading column,
+    "page wide" runs the width of the window, "" leaves the body bare."""
+    meta = "".join(f'\n<meta name="{k}" content="{html.escape(v)}">'
+                   for k, v in (("author", author), ("description", description)) if v)
+    links = "".join(f'\n<link rel="stylesheet" href="{href}">' for href in css)
+    return f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{html.escape(title)}</title>{meta}{links}
+</head><body><div class="{frame}">
+{body}
+</div></body></html>
+"""
+
+
+def web_fonts(cfg, dest, chars):
+    """The book's fonts as .woff2 files holding only the characters the site
+    uses, and the @font-face rules for them. The text face keeps regular and
+    bold, upright and italic; the others keep every cut they have."""
+    from fontTools import subset
+    t = cfg["type"]
+    body = {t["text"], t["display"]}
+    rules = []
+    for family in dict.fromkeys([t["text"], t["display"], t["title"],
+                                 cfg["head"]["font"], cfg["folio"]["font"]]):
+        done = set()
+        for _, weight, italic, wght, path in find_family(family, t["fonts_dir"]):
+            key = (wght or weight, italic)
+            if key in done or (family in body and not wght and weight not in (400, 700)):
+                continue
+            done.add(key)
+            name = f"{alias(family)}-{weight}{'i' if italic else ''}.woff2"
+            opts = subset.Options(flavor="woff2", layout_features=["*"])
+            opts.drop_tables += ["Silf", "Silt", "Sill", "Glat", "Gloc", "Feat"]  # Graphite: unused on the web
+            font = subset.load_font(str(path), opts)
+            cut = subset.Subsetter(opts)
+            cut.populate(unicodes=chars)
+            cut.subset(font)
+            subset.save_font(font, str(dest / name), opts)
+            w = f"{wght[0]} {wght[1]}" if wght else weight
+            rules.append(
+                f"@font-face {{ font-family: '{alias(family)}'; "
+                f"src: url('fonts/{name}') format('woff2'); font-weight: {w}; "
+                f"font-style: {'italic' if italic else 'normal'}; font-display: swap; }}")
+    return "\n".join(rules)
+
+
+def linked(text):
+    """Web addresses in already-escaped text, made into links."""
+    return re.sub(r"(?:https?://|(?<![\w/.])(?=[\w-]+\.(?:com|org|net|co)/))[^\s<]+[^\s<.,;:!?)”’]",
+                  lambda m: '<a href="{0}{1}">{1}</a>'.format(
+                      "" if m.group(0).startswith("http") else "https://", m.group(0)),
+                  text)
+
+
+def site(root, out=None, shelf_title="Bjorn Means Book"):
+    """The book as a website: a front page with the contents, one page per
+    poem, the PDFs to download, and a shelf page listing every book that has
+    been written into the same folder."""
+    with contextlib.redirect_stdout(io.StringIO()):     # the PDFs, without build's report
+        cfg = build(root, quiet=True)
+    poems = ordered_poems(root)
+    book, smart = cfg["book"], cfg["book"]["smart_quotes"]
+    kit = HERE.parent.parent / "kit.css"
+    if not kit.is_file():
+        die(f"can't find kit.css at {kit}")
+    out = Path(out).expanduser().resolve() if out else root / "build" / "site"
+    path = cfg["site"]["path"] or slugify(cfg["title"])
+    dest = out / path
+    if dest.exists() and not (dest / "book.json").is_file():
+        die(f"{dest} exists and isn't a book this tool wrote — not replacing it")
+    if any(p["slug"] == "index" for p in poems):
+        die("a poem file named index.md would overwrite the book's front page")
+    shutil.rmtree(dest, ignore_errors=True)
+    (dest / "fonts").mkdir(parents=True)
+
+    title = inline(cfg["title"], smart)
+    css = ["../kit.css", "../bjook.css", "fonts.css", "book.css"]
+    cover = cfg["site"]["cover"] or COVER_TINTS[sum(cfg["title"].encode()) % len(COVER_TINTS)]
+    if not re.fullmatch(r"[a-z]+(-[a-z]+)*-\d", cover):
+        die(f"[site] cover {cover!r} isn't a kit colour like \"goldenrod-1\"")
+    names = [inline(p["title"], smart) if p["title"]
+             else f"<em>{inline(first_line(p), smart)}</em>" for p in poems]
+    pages = {}
+    for i, poem in enumerate(poems):
+        plain = re.sub(r"<[^>]+>", "", names[i])
+        heading = (f'<h1 class="poem-title">{names[i]}</h1>' if poem["title"]
+                   else f'<h1 class="visually-hidden">{plain}</h1>')
+        end = (f'<div class="poem-end" aria-hidden="true">{html.escape(book["end_mark"])}</div>'
+               if book["end_mark"] else "")
+        prev = (f'<a class="prev" rel="prev" href="{poems[i - 1]["slug"]}.html">'
+                f'<span aria-hidden="true">← </span>{names[i - 1]}</a>' if i
+                else '<a class="prev" href="index.html"><span aria-hidden="true">← </span>Contents</a>')
+        nxt = (f'<a class="next" rel="next" href="{poems[i + 1]["slug"]}.html">'
+               f'{names[i + 1]}<span aria-hidden="true"> →</span></a>' if i + 1 < len(poems)
+               else '<a class="next" href="index.html">Contents<span aria-hidden="true"> →</span></a>')
+        body = "\n".join([
+            f'<header class="head"><a href="index.html">{title}</a></header>',
+            f'<main><article class="poem">{heading}', *stanzas_html(poem, smart), end,
+            "</article></main>",
+            f'<nav class="turn" aria-label="Poems">{prev}'
+            f'<span class="folio"><span class="visually-hidden">Poem </span>{i + 1}'
+            f'<span class="visually-hidden"> of {len(poems)}</span></span>{nxt}</nav>'])
+        pages[f'{poem["slug"]}.html'] = web_page(
+            f'{html.unescape(plain)} — {cfg["title"]}', body, css, cfg["author"])
+
+    rows = "".join(f'<li><a href="{p["slug"]}.html"><span class="toc-n">{i}</span>'
+                   f'<span class="toc-title">{names[i - 1]}</span></a></li>'
+                   for i, p in enumerate(poems, 1))
+    front = [f'<header class="head"><a href="../index.html">{inline(shelf_title, smart)}</a></header>',
+             f'<main><h1 class="book-title">{title}</h1>',
+             f'<p class="book-author">{inline(cfg["author"], smart)}</p>',
+             f'<nav class="contents" aria-label="Contents"><h2>Contents</h2><ol>{rows}</ol></nav>']
+    if book["closing"]:
+        front.append(f'<p class="book-closing">{inline(book["closing"], smart)}</p>')
+    colophon = [f"<p>{linked(inline(p.strip(), smart))}</p>"
+                for p in book["colophon"].strip().split("\n\n") if p.strip()]
+    if cfg["site"]["pdf"]:
+        for suffix in ("", "-booklet"):
+            shutil.copy2(root / "build" / f"{cfg['slug']}{suffix}.pdf", dest / f"{path}{suffix}.pdf")
+        colophon.append(
+            f'<p>To print a copy: <a href="{path}.pdf">the book, page by page</a> (PDF), or '
+            f'<a href="{path}-booklet.pdf">the booklet</a> (PDF) on letter paper, '
+            "double-sided, flipped on the short edge, then folded and stapled.</p>")
+    if colophon:
+        front.append(f'<section class="colophon" id="colophon"><h2>Colophon</h2>{"".join(colophon)}</section>')
+    front.append("</main>")
+    pages["index.html"] = web_page(cfg["title"], "\n".join(front), css, cfg["author"],
+                                   f'{len(poems)} poems by {cfg["author"]}' if cfg["author"] else "",
+                                   frame="page wide")
+
+    for name, text in pages.items():
+        (dest / name).write_text(text)
+    chars = {ord(c) for text in pages.values() for c in html.unescape(text)}
+    t, h, f = cfg["type"], cfg["head"], cfg["folio"]
+    own = root / "site.css"
+    (dest / "fonts.css").write_text(
+        web_fonts(cfg, dest / "fonts", chars | set(range(0x20, 0x7F))) + "\n")
+    (dest / "book.css").write_text("\n".join([
+        ":root {",
+        f"  --font-text: '{alias(t['text'])}'; --font-display: '{alias(t['display'])}';",
+        f"  --font-title: '{alias(t['title'])}';",
+        f"  --font-head: '{alias(h['font'])}'; --head-weight: {h['weight']};",
+        f"  --font-folio: '{alias(f['font'])}'; --folio-weight: {f['weight']};",
+        "}",
+        f".head {{ {h['css']} }}",
+        own.read_text() if own.is_file() else ""]))
+    (dest / "book.json").write_text(json.dumps({
+        "title": cfg["title"], "author": cfg["author"], "path": path, "poems": len(poems),
+        "updated": datetime.date.today().isoformat(),
+        # What the shelf needs to draw this book's cover.
+        "inches": [round(to_pt(cfg["page"][k]) / 72, 3) for k in ("width", "height")],
+        "cover": cover, "title_font": alias(t["title"]), "head_font": alias(h["font"]),
+        "head_weight": h["weight"], "head_css": h["css"]}, indent=2) + "\n")
+
+    # Shared by every book in the folder, and rewritten by whichever was built last.
+    shutil.copy2(kit, out / "kit.css")
+    shutil.copy2(HERE / "site.css", out / "bjook.css")
+    books = sorted((json.loads(p.read_text()) for p in out.glob("*/book.json")),
+                   key=lambda b: b["updated"], reverse=True)
+    shelf = "".join(
+        f'<li><a class="cover" href="{b["path"]}/index.html" style="--w: {b["inches"][0]}; '
+        f'--h: {b["inches"][1]}; --cover: var(--{b["cover"]}); --font-title: \'{b["title_font"]}\'; '
+        f'--font-head: \'{b["head_font"]}\'; --head-weight: {b["head_weight"]}">'
+        f'<span class="cover-title">{inline(b["title"], smart)}</span>'
+        f'<span class="cover-author" style="{html.escape(b["head_css"])}">{inline(b["author"], smart)}</span>'
+        "</a></li>" for b in books)
+    (out / "index.html").write_text(web_page(
+        shelf_title,
+        f'<main><h1 class="site-title">{inline(shelf_title, smart)}</h1>'
+        f'<ul class="shelf">{shelf}<li class="rest" role="presentation"></li></ul></main>',
+        ["kit.css", "bjook.css"] + [f'{b["path"]}/fonts.css' for b in books], frame=""))
+    print(f"-> {dest / 'index.html'}\n   {len(poems)} poems, {len(pages)} pages, "
+          f"{len(list((dest / 'fonts').iterdir()))} fonts")
+    print(f"-> {out / 'index.html'}\n   the shelf: {len(books)} book{'s' if len(books) != 1 else ''}")
+
+
 # ----------------------------------------------------------------- fetch
 
 def get_json(url):
@@ -773,6 +973,11 @@ def main():
     s = sub.add_parser("specimen", help="one poem set in several faces")
     s.add_argument("families", nargs="*")
     s.add_argument("--poem", help="poem filename to use")
+    web = sub.add_parser("site", help="the book as a website, one page per poem")
+    web.add_argument("--out", help="the site folder; each book gets a folder inside "
+                                   "(default: build/site in the book)")
+    web.add_argument("--shelf", default="Bjorn Means Book", metavar="TITLE",
+                     help="the name on the page that lists every book")
     args = ap.parse_args()
     root = Path(args.root).expanduser().resolve()
     if args.cmd == "new":
@@ -785,6 +990,8 @@ def main():
         watch(root, args.port)
     elif args.cmd == "specimen":
         specimen(root, args.families, args.poem)
+    elif args.cmd == "site":
+        site(root, args.out, args.shelf)
 
 
 if __name__ == "__main__":

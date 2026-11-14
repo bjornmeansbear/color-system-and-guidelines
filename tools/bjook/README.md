@@ -38,6 +38,8 @@ bjook build                 # one build, no server
 bjook build --snap "note"   # also keep a timestamped copy in snapshots/
 bjook specimen              # one poem in eight faces -> build/specimen.pdf
 bjook specimen "Spectral" "Inria Serif" --poem some-poem.md
+bjook site                  # the book as a website -> build/site/
+bjook site --out ~/Code/bjornmeansbook   # into a shared site folder
 ```
 
 Every command takes `--root` before it, defaulting to the current folder.
@@ -49,7 +51,8 @@ Every command takes `--root` before it, defaulting to the current folder.
 | `book.toml` | Title, author, page size, margins, typeface, size, leading; where the page number sits (`[folio]`); an optional running head (`[head]`) and continues mark (`[continues]`). The template lists every setting. |
 | `order.txt` | The sequence, one poem filename per line. Move lines to reorder. `#` in front of a line leaves that poem out. |
 | `poems/*.md` | One poem each: a few `key: value` lines between `---` (title, are.na id, date), then the lines. A blank line is a stanza break. `*italic*` and `**bold**` work; leading spaces indent. |
-| `style.css` | This book's overrides, applied after the tool's `book.css`. |
+| `style.css` | This book's print overrides, applied after the tool's `book.css`. |
+| `site.css` | Optional. This book's website overrides, applied after the tool's `site.css`. |
 | `build/` | Output. Disposable, gitignored. |
 | `snapshots/` | Proofs kept on purpose. |
 
@@ -65,6 +68,14 @@ replaces local text with the channel's.
   double-sided, **flip on the short edge**, fold the stack, staple the spine.
 - `build/preview.html` — facing pages. **Guides** draws the text block and
   baselines; **Actual size** shows the page at its printed width.
+
+- `build/site/` — from `bjook site`: a front page with the contents and
+  colophon, one page per poem, the two PDFs to download, and `index.html`,
+  a bookshelf with a cover for every book in the folder (`[site] cover`
+  sets a cover's tint). Plain static files with no
+  JavaScript; open `index.html` directly or upload the folder to any host.
+  With `--out`, several books share one site folder, each in a folder named
+  from its title (or `[site] path`), and the shelf lists them all.
 
 The build pads the page count to a multiple of four and lists any poem that
 runs past one page.

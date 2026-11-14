@@ -17,7 +17,11 @@ before starting a session, not just written to at the end of one.
   gains `kind = "poems"` (the default) or `"prose"`; prose reads Markdown
   chapters through pandoc and borrows the essay pipeline's footnote
   grouping; `bjook.py` splits into the book machinery and one small file per
-  kind when the second kind arrives, not before. The essay pipeline stays
+  kind when the second kind arrives, not before. Bjook moves out of this repo into its own
+  `bjook` repo at the same point (decided 2026-11-14): it already publishes
+  into a repo of its own, and it reuses the kit by copying `kit.css` like
+  every other project, so the move is small; this repo keeps the rules for
+  books in RULES.md. The essay pipeline stays
   until Bjook has rebuilt `booklet-new-design-commons` to match. Prose needs
   what poems never did: text flowing across pages (hyphenation, widows and
   orphans), footnotes, images with captions. The website keeps one shape for every

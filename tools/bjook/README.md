@@ -80,6 +80,23 @@ replaces local text with the channel's.
 The build pads the page count to a multiple of four and lists any poem that
 runs past one page.
 
+## Publishing the site
+
+The live site is `~/Code/bjornmeansbook`, a git repo that holds only built
+output (GitHub `bjornmeansbear/bjornmeansbook`, served at
+https://www.bjornmeansbook.com/). Never edit it by hand. To publish or update
+a book, from that book's folder:
+
+```sh
+bjook site --out ~/Code/bjornmeansbook
+cd ~/Code/bjornmeansbook
+git add -A && git commit -m "Update <book>" && git push
+```
+
+Cloudflare redeploys on every push to `main`. The shelf is rebuilt from every
+book already in the repo, so publishing a second book leaves the first alone.
+The repo's own README has the hosting setup.
+
 ## Typefaces
 
 `[type] text = "Gentium"` is a family name as the font spells it, looked up

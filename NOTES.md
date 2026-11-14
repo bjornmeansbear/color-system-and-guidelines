@@ -337,9 +337,9 @@ before starting a session, not just written to at the end of one.
 - 2026-11-13: `bjook site` writes a book as a static website (front page
   with contents and colophon, a page per poem, the PDFs, a shelf page), for
   bjornmeansbook.com. First book: 43 pages and nine subset fonts in under
-  1 MB, no JavaScript. Checked in screenshots at 390px and 1200px. Open: not
-  deployed yet (static, so Cloudflare Pages); no favicon in the icon family
-  yet; dark mode rests on the kit's tokens and wasn't screenshotted.
+  1 MB, no JavaScript. Checked in screenshots at 390px and 1200px. Open: no
+  favicon in the icon family yet; dark mode rests on the kit's tokens (the
+  shelf was screenshotted in dark on 2026-11-13, the book's pages were not).
 - 2026-11-13: the shelf rebuilt as a full-width bookshelf of to-scale
   typographic covers on pink boards, and every breakpoint removed from the
   site (RULES.md, Bjook). Tested with ten made-up books of different page
@@ -355,9 +355,18 @@ before starting a session, not just written to at the end of one.
 - 2026-11-13: the book site has its own output repo, `~/Code/bjornmeansbook`
   (private on GitHub), holding only what `bjook site --out ~/Code/bjornmeansbook`
   writes; each book publishes into it from its own folder, the way
-  sentence-a-day publishes into bjornpaedia. First book pushed. Open: no host
-  connected yet (Cloudflare Pages, no build command) and the domain isn't
-  pointed; a `bjook publish` that builds, commits and pushes in one step.
+  sentence-a-day publishes into bjornpaedia. Live at
+  https://www.bjornmeansbook.com/ the same day, on Cloudflare Workers as
+  static assets with no build step: Workers Builds deploys every push to
+  `main` (deploy command `npx wrangler deploy`, preview command
+  `npx wrangler versions upload`, no build command, no variables), set up by
+  `wrangler.jsonc` and `.assetsignore` in that repo. The domain's DNS is on
+  Cloudflare; www is the canonical address, added under the Worker's Domains
+  & Routes. Open: the bare `bjornmeansbook.com` still returned 522 from
+  outside on 2026-11-13 after a placeholder `AAAA 100::` (proxied) and a
+  redirect rule were added, so the rule isn't matching; it should send
+  `https://bjornmeansbook.com/*` to `https://www.bjornmeansbook.com/${1}`,
+  301; and a `bjook publish` that builds, commits and pushes in one step.
 - Open, all in the first book: the typeface (Gentium is a placeholder; the
   specimen sets eight candidates), margins and type size (defaults, not yet
   chosen), which of the alternate takes stay in, the title, and a cover. 18

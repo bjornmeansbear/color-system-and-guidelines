@@ -733,6 +733,45 @@ photographs run darker, so actual contrast only improves. Dial the scrim
 per-slide for an already-dark image, and recompute: 0.70 drops to
 6.29/3.62, AA but not AAA.
 
+## Presentations: featuring images in HTML decks
+
+Worked out on `~/Code/lectureScripts/lecture-chair-ness/chairness-deck.html`
+(2026-11-17), the first HTML talk deck built around pictures instead of text.
+The di200 decks put every image under a 0.80 brown scrim. That keeps the type
+legible, but the photo is mostly gone, so the image is decoration, not content.
+When the pictures are the argument (a talk about chairs is pictures of chairs),
+use these instead:
+
+- **Never dim the image.** Text does not sit on a photo. It sits on an opaque
+  paper card with an ink border (tilted a couple of degrees for a beat slide), or
+  beside the photo in a split. Contrast is then just ink on paper, 13.73:1, and
+  no worst-case scrim math is needed.
+- **Multiply object photos into the ground.** A museum or product shot on white
+  gets `mix-blend-mode: multiply` on the paper ground. The studio white turns
+  into paper and the object stands on the page, not in a white box. Level the
+  photo first so its background is true white (`magick in.jpg -level 0,90%`). A
+  light-gray background leaves a visible box. A **white object** on white
+  disappears entirely, so use a darker finish of the same object.
+- **Objects share a floor.** Chairs (or any standing object) in a row sit on one
+  ink rule, aligned bottom (`object-position: bottom`). Repetition gets one floor
+  per row. The rule is the brown line work doing structural work.
+- **Every image gets a museum label, in one format.** Three lines: the object's
+  name in bold; maker, year; then the photo credit in gray-6 ("Photo:
+  Daderot, CC0"). No description or argument in the label; that is spoken.
+  Leave a credit line out rather than guess it, and list the unknowns. On a full-bleed photo it sits in an opaque paper box in the bottom-left
+  corner. In a lineup it sits under the floor.
+- **Repetition is a layout.** The same image tiled (12 identical Chaise A chairs
+  under a search box reading "restaurant chair") says "everywhere, the same"
+  faster than a sentence can.
+- **Page screenshots are not images.** are.na Link-block previews are often a
+  screenshot of the page or a bot check. Crop the object out or skip it. Look at
+  a contact sheet before any image reaches a slide.
+
+Layout set for an image-led deck: `.title`, `.bleed`, `.split`, `.lineup`,
+`.repeat`, `.say`, `.list`, `.numbers`. The deck also keeps the di200 slot
+convention (missing images silent, D shows the slot and its brief) and adds A
+for a 25-second auto-advance with a pink progress bar.
+
 ## Presentations: sourcing, in this order
 
 Machine narrows, you choose, machine writes the credit line. The metaphorical
@@ -846,13 +885,20 @@ On macOS, WeasyPrint's pango dependency needs
 md2pdf.sh` sets this itself rather than assuming it's already in the
 shell environment.
 
-## Bjook: poems → HTML → WeasyPrint
+## Bjook: books → HTML → WeasyPrint
 
-Poetry books are built by `tools/bjook/`, a sibling of the `print/`
-pipeline with the same engine (WeasyPrint) and the same reasons: plain text
-in git, a design that is a CSS file, a rebuild in seconds. It skips pandoc.
-A poem is lines and stanzas, and Markdown's paragraph model fights that, so
-the tool writes one `<div class="line">` per line itself.
+Books are built by Bjook, which lives in its own repo, `~/Code/bjook`
+(moved out of `tools/bjook/` here on 2026-11-17, with its history). It is a
+sibling of the `print/` pipeline with the same engine (WeasyPrint) and the
+same reasons: plain text in git, a design that is a CSS file, a rebuild in
+seconds. `kind` in `book.toml` picks the kind of book: `poems` (the
+default) and `paper`, a newspaper (below). Like every other project it
+copies `kit.css` rather than linking here. The rules for books stay in this
+file.
+
+Poems skip pandoc. A poem is lines and stanzas, and Markdown's paragraph
+model fights that, so the tool writes one `<div class="line">` per line
+itself.
 
 A book is a folder outside this repo (this repo is public; a manuscript
 isn't the kit's to publish): `book.toml` for the page and type, `poems/`
@@ -951,6 +997,53 @@ Typesetting defaults, each one a line in `book.toml` or `book.css`:
   already opens with its own title, and a head above it is a second title.
   It earns its place in a prose book, where pages have no other label.
   `[head]` turns it on: author on the left page, title on the right.
+
+### Newspapers (`kind = "paper"`)
+
+First built for the Chair-ness paper (`~/Code/chair-ness/paper`), for the
+tabloid at printnewspaper.com: 260 × 370 mm on 60 gsm newsprint, digital
+inkjet at 600 dpi, CMYK, a multiple of four pages from 4 to 48, any quantity
+from one copy.
+
+- **Pages are composed, not flowed.** Each page (or spread) is a small HTML
+  file in `pages/`, listed in `order.txt`, laid out on a column grid
+  (`[paper] columns`, default 4, with `.span-N` and `.cols-N`). Running text
+  comes from Markdown with `<article data-md="../text/essay.md">`, through
+  pandoc, with the same typographer's marks as the poems. `data-until`
+  stops a draft at the line where its notes start.
+- **Stories don't jump.** A piece fits its page or spread, and anything long
+  runs on to the next page the way a poem does. No "continued on p. 6":
+  WeasyPrint has no box-to-box flow (CSS Regions).
+- **Long running text stays out of a grid.** WeasyPrint can't break a grid
+  item across pages (it crashes), so text that might run over goes in
+  `.cols-N` after the grid, not inside it.
+- **Single pages, in reading order, no bleed.** The printer imposes. Every
+  edge keeps 10 mm of white, the press's technical margin, except across
+  the fold of a spread; the build warns about any margin under that.
+- **A spread is one wide box on two pages** (`spread` in `order.txt`). Only
+  the middle sheet is one piece of paper, so the build warns when a spread
+  is anywhere else: something across that fold would print on two sheets.
+  It also says how far a spread runs past its foot, since the rest is cut.
+- **The paper is the ground.** Newsprint replaces the kit's warm ground; no
+  tint is printed over it.
+- **Text and rules are black ink only** (`device-cmyk(0 0 0 1)`), the
+  sharpest a press prints. No gray text: newsprint is darker than the kit's
+  ground and softens type, so a muted gray that passes on screen can fail on
+  paper.
+- **Large dark areas are four-colour black** (30/30/30/100), and there are
+  no flat gray or black-ink tint fills. An inkjet press bands on flat areas
+  of one ink. Structure comes from rules, as everywhere else in the kit.
+- **Black and white is a look, set at build.** Photos stay in colour at the
+  source; the build makes the press copy: black and white, then CMYK
+  through the CMYK profile (four inks hide a clogged nozzle, which shows as
+  a streak in a black-only image), capped at about 300 ppi across the page.
+  `[color] mode = "color"` keeps the colour instead. Colour is four tokens
+  (`--ink`, `--black`, `--accent`, `--paper`), with the accent equal to the
+  ink in gray mode, so going to colour after a proof changes `book.toml`
+  and no layout.
+- **Photos under 200 ppi at their printed size** are listed by the build.
+- **Captions and labels are 0.8 of the text size**, 8pt at 10pt text. The
+  printer's floor is 7–8pt.
 - **Contents puts the page number first**, then the title: no leaders, no
   eye-travel across the measure. An untitled poem is listed by its first
   line in italic.

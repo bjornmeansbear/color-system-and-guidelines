@@ -6,30 +6,46 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **Image-led HTML decks vs. the scrim** (2026-11-17). The chair-ness deck
+  features images (no scrim, multiply into paper, a shared floor line, museum
+  labels). See RULES.md "Presentations: featuring images in HTML decks". Open:
+  should the di200 beat slides move to the opaque-card approach, or is the
+  scrim right for a teaching deck where the image is only mood? And does
+  multiply work on a dark ground? It doesn't, because multiply darkens, so a
+  dark deck would need `screen` and objects shot on black, or a paper panel.
+
 - **One book tool, several kinds of book** (decided 2026-11-13). Poems and
   essays are different types of book, and the poetry book is the simplest
-  one. `tools/bjook/` sets poems (lines and stanzas, half letter, saddle
-  stitch). `~/Code/lectureScripts/book/` already sets essays (chapter `.md`
+  one. `~/Code/lectureScripts/book/` already sets essays (chapter `.md`
   files → pandoc → WeasyPrint, 6 × 9in, grouped footnotes) and built the
   nine-essay `booklet-new-design-commons`. The destination named 2026-11-10
   is a design essay collection, working title "The bits that make up a
-  design philosophy", from lectureScripts and Bjornpaedia. Path: `book.toml`
-  gains `kind = "poems"` (the default) or `"prose"`; prose reads Markdown
-  chapters through pandoc and borrows the essay pipeline's footnote
-  grouping; `bjook.py` splits into the book machinery and one small file per
-  kind when the second kind arrives, not before. Bjook moves out of this repo into its own
-  `bjook` repo at the same point (decided 2026-11-14): it already publishes
-  into a repo of its own, and it reuses the kit by copying `kit.css` like
-  every other project, so the move is small; this repo keeps the rules for
-  books in RULES.md. The essay pipeline stays
-  until Bjook has rebuilt `booklet-new-design-commons` to match. Prose needs
-  what poems never did: text flowing across pages (hyphenation, widows and
-  orphans), footnotes, images with captions. The website keeps one shape for every
+  design philosophy", from lectureScripts and Bjornpaedia. Done 2026-11-17:
+  the second kind arrived as a newspaper (`kind = "paper"`), so Bjook moved
+  to `~/Code/bjook` with its history and split into `book.py` (the
+  machinery), `poems.py`, `paper.py` and a small `bjook.py` for the
+  commands; it copies `kit.css`. Still to come: `kind = "prose"`, reading
+  Markdown chapters through pandoc (paper already does) and borrowing the
+  essay pipeline's footnote grouping. The essay pipeline stays until Bjook
+  has rebuilt `booklet-new-design-commons` to match. Prose needs what poems
+  never did: text flowing across pages (hyphenation, widows and orphans),
+  footnotes, images with captions. The website keeps one shape for every
   kind: the book's front page is its contents, and each poem or chapter is
   a page of its own with previous and next at the foot; only the inside of
-  that page differs (a chapter is long, with headings and notes). The
-  name stays. Not started; the poetry book comes first, and the first prose
-  test is a single essay.
+  that page differs (a chapter is long, with headings and notes). The first
+  prose test is a single essay.
+
+- **The Chair-ness paper: what the first proof has to answer** (2026-11-17).
+  Built in Bjook (`~/Code/chair-ness/paper`), 8-page tabloid, black and white
+  for the first edition. Open: how dark the black-and-white photos print on
+  newsprint (the CMYK conversion uses macOS's Generic CMYK profile; ask
+  printnewspaper.com whether they have a profile or an ink limit for their
+  press, since their site only says coverage is "limited"); whether the
+  CMY-heavy gray from that profile prints neutral or takes a cast; whether
+  to go to colour after the proof, which needs the kit's pink and browns as
+  CMYK values checked on newsprint; the typefaces (Newsreader and Libre
+  Franklin are placeholders, as Gentium was for the poems). A €31 single
+  copy is the proof.
 
 - **Should the shared player and channel-show merge?** `tools/slideshow/`
   bakes a snapshot (local files, offline, font rotation); `~/Code/wjall`
@@ -266,6 +282,25 @@ before starting a session, not just written to at the end of one.
   skipped under `prefers-reduced-motion`. See RULES.md "Motion".
 
 ## Changelog
+
+### 2026-11-17
+
+- **Bjook moved to `~/Code/bjook`** (history kept with `git subtree split`;
+  the commits before the rename to Bjook stay here) and split into
+  `book.py`, `poems.py`, `paper.py` and `bjook.py`. The poetry book builds
+  the same: PDF and booklet text compared equal by position, and the website
+  byte for byte. Fonts whose files leave the italic flag off (Libre
+  Franklin's OTFs) are now read as italic from the style name or slant, so
+  an Italic file can't take the regular slot.
+- **Newspapers in Bjook** (`kind = "paper"`, RULES.md "Bjook"). For the
+  printnewspaper.com tabloid. Checked before building: WeasyPrint 69 writes
+  `device-cmyk()` as DeviceCMYK, and embeds a CMYK JPEG as-is, rendering it
+  correctly. First paper: Chair-ness, 8 pages, black and white.
+- **Featuring images in HTML decks** (RULES.md, new section). From the Chair-ness
+  Research Open Mic deck: unscrimmed images, opaque cards for text, multiply for
+  object photos on paper, shared floor lines, museum labels, a tiled repeat
+  slide. Contrast on the light ground: ink 13.73:1, gray-6 7.34:1, pink-5
+  4.78:1 (large type and rules only).
 
 ### 2026-11-13
 

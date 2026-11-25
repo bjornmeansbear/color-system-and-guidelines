@@ -455,8 +455,10 @@ this roster: `build_manifest.py` rebuilds it from the 2018 list.
 **Treat type like a specimen, where useful.** Name the typeface, its
 designer or foundry, and its licence where the reader can see them (a
 colophon, a caption, a footer), and show the face doing what it's good
-at. The type is part of the content, not only the vehicle. Decided
-2026-11-24.
+at. The type is part of the content, not only the vehicle. Not in forms
+and app controls, where naming the face is noise, and never inside body
+text, where it would interrupt the reading: credit it in a colophon or
+footer instead. Decided 2026-11-24.
 
 **The current roster** (2026-11-24, his picks). All OFL, all in the
 library (EB Garamond added 2026-11-24). The jobs are

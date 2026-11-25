@@ -23,11 +23,8 @@ before starting a session, not just written to at the end of one.
     roster" (2026-11-24). The job column is Claude's guess: confirm or
     correct it, name Sligoil's and Anthony's jobs, and say how the four
     text serifs (Gentium, EB Garamond, Crimson Pro, Newsreader) divide
-    the work. EB Garamond is now in libreFontLibrary (2026-11-24). Still
-    to decide: whether its Garamond No. 8 (`unverified`) and URW Garamond
-    (`none-found`) stay.
-  - **Specimen treatment: where isn't it useful?** Probably forms and
-    app controls. Unconfirmed.
+    the work. EB Garamond is now in libreFontLibrary; Garamond No. 8 and
+    URW Garamond were removed (2026-11-24).
   - **A Wjerk offshoot of Tailwind.** Grow the Tailwind v4 recipe into a
     reusable preset rather than restating it per project.
   - **taste-translator without the blur.** Its look could be refined so

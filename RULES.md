@@ -39,6 +39,78 @@ rather than guessing"), 2026-11-24.
 Don't ask what a rule already settles. Too many questions is its own
 failure.
 
+## Tells: defaults nobody asked for
+
+A tell is a look the brief never asked for: the model's habit showing
+through. Each one is a **question to ask**, not a ban. These are
+guidelines, not immutable rules, and a tell with a real reason behind it
+isn't a tell. (Glass and blur were left off for that reason: sometimes a
+blur is right for a highlight.) The section each one points to says what
+to do instead. Reviewed line by line 2026-11-24.
+
+**From his own projects**
+
+- **A whole UI theme dropped in** (Skeleton, Bootstrap, any component
+  library's skin). *Why:* the fastest way to look finished. Never, apart
+  from Tailwind mapped to kit tokens ("Using the kit with Tailwind (v4)").
+- **Emoji and stock icon sets.** *Why:* free, instant meaning, and they
+  bring colors no token controls. An AI and younger-person giveaway.
+  Custom icons designed for specific things are fine ("Icons"). An icon
+  earns its place when it helps understanding or wayfinding, never as
+  decoration on every heading.
+- **Colors from somewhere else.** Stock HTML defaults are fine when
+  there's no reason to differ, except where they fail accessibility (the
+  browser's placeholder gray, 4.35:1). With a reason to differ, use a
+  Wjerk color that passes. The tell is a third-party theme's leftover
+  color (Bjornpaedia's ContrastLight green), not browser defaults.
+- **The kit on autopilot.** Cream ground, double frame, everything at
+  defaults: "too much cream" (toreallyappreciatedesignyou). *Why:* the
+  model learns the system and applies it as one more template. *Ask:* what
+  in this project's content should push the kit somewhere? Things should
+  go together without bland uniformity.
+- **The shrink tell.** Inline font-size overrides to fit more text on a
+  slide. *Why:* the model fits the script onto the slide instead of
+  cutting it. Slides carry one aphorism, a prompt for what he's saying,
+  and lean on images and graphics that show it ("Presentations: density,
+  and the shrink tell").
+
+**Standard AI defaults**
+
+- **Made-up stats and proof.** "10k+ users," "Trusted by," logo walls,
+  stock testimonials. Never. A number appears only if it can be looked up
+  and cited right now.
+- **Badges that claim something untrue.** "New," "Beta," "Popular" pills
+  added for liveliness. Only when it's actually true and necessary.
+- **Hollow button copy.** "Get started," "Unlock," "Seamless,"
+  "Supercharge." Write what the button actually does (the `bjorn-voice`
+  tells, in interface form).
+- **Hover lift, glow, scale.** Less hover, not more ("Structure: rules,
+  not chrome").
+- **Everything fades up on scroll.** No motion unless it conveys meaning
+  ("Motion").
+- **A gradient for mood.** Only when it carries data or meaning, and then
+  it's the preferred choice ("Structure").
+- **Rounded cards with soft shadows everywhere.** Cards themselves are
+  fine when the content makes sense as cards, as in oblique and onething.
+  Those are square-cornered, and that's the preference: square corners,
+  as little design as possible, to avoid the other tropes ("Structure":
+  radius only on floating content and pills, shadows last).
+- **Default blue (or purple) as the accent** ("Color: pink is the home
+  accent").
+- **Mid-gray "muted" text.** If it doesn't meet AA, it's off limits
+  ("Contrast").
+- **Tailwind's own palette** (`slate-500`, `blue-600`). Use Wjerk colors
+  ("Using the kit with Tailwind (v4)").
+- **Stock or placeholder photography.** Avoid where possible ("Images").
+- **A skinny centered column with empty sides** ("Layout: mobile-first,
+  the browser's own flexibility").
+- **The centered hero** (huge headline, subhead, two buttons, a blurred
+  color blob), **three or four equal feature cards** (icon, title, two
+  lines), and **a numbered label over every heading** ("01 — FEATURES").
+  Avoid. They look like every webpage ever made: not interesting, not
+  special, not particularly thoughtful. *Ask:* what does this project
+  show first, and how many things does it really have to say?
+
 ## Scope note: the ookb.co / wjerk.shop family
 
 Projects sit under two domain families — `ookb.co` (+ subdomains like
@@ -118,6 +190,9 @@ Gradients follow the same chrome/content line. A gradient that *encodes
 data* is content, not decoration — wjeather's sky bands (2026-09-10), one
 tint per forecast hour. Allowed. A gradient laid on for mood or depth is
 still not.
+
+More than allowed: wherever a gradient, or any other visual choice, can
+convey data or meaning, that is the preferred design choice (2026-11-24).
 
 Those bands started out blending into each other, softening by cloud cover.
 The blur came out on 2026-09-11: a fading edge reads as softness rather than
@@ -227,7 +302,7 @@ Optional, not owed: following a light-mode setting on a dark-by-design
 page, and a light/dark toggle (worth it on pages read at length; the recipe
 is in "Dark mode").
 
-## Color: pink is the accent, not blue
+## Color: pink is the home accent, not blue
 
 `--color-accent` is Wjerk pink (`--pink-5` / `--pink-6`), the color that's
 carried through every past iteration of this work. Blue showed up in
@@ -239,8 +314,74 @@ Pink is a deliberate choice for a.wjerk.shop specifically: the site is
 climate/sustainability-design work, and the expected accent for "eco" is
 green or blue. Pink reads as a surprise instead of the cliché — a
 subversion, and unmistakably "mine" across every past pass at this palette.
-Projects can still override `--color-accent` for a specific reason, but
-pink is the answer unless there's one.
+
+**Pink is the home accent, not the only one.** A project may take any
+bright Wjerk color as its accent (orange, red, goldenrod, cornflower) and
+override `--color-accent` with it, contrast-checked like any other pair.
+The palette should work so that any bright, interesting color in it can
+carry a layout. That lets a family of tools and apps vary while still
+living in the same aesthetic universe. What's still out is default blue,
+picked because nothing else was decided. Decided 2026-11-24.
+
+**Accent sets, measured.** An accent is six tokens, not one: accent, hover
+and pale tint, each in light and dark. Every set below uses the method
+pink's was chosen by (and reproduces pink's exactly): in light mode, the
+lightest step that passes AA on the White, hover one step darker, tint
+step 0. In dark mode, the darkest step that passes AAA on `--brown-9`,
+hover one step lighter, tint step 8. Ratios are against the ground; each
+accent and hover also carries ground-colored button text at the same
+ratio. Measured with `contrast.py`'s own parser, 2026-11-24.
+
+| Hue | Light: accent / hover / tint | Dark: accent / hover / tint |
+|---|---|---|
+| pink | `5` 4.78 · `6` 7.33 · `0` | `3` 8.80 · `2` 11.07 · `8` |
+| red | `5` 4.72 · `6` 7.86 · `0` | `3` 9.98 · `2` 12.45 · `8` |
+| orange | `5` 4.65 · `6` 7.71 · `0` | `3` 10.18 · `2` 13.17 · `8` |
+| purple | `5` 4.51 · `6` 7.55 · `0` | `3` 10.37 · `2` 13.67 · `8` |
+| goldenrod | `6` 7.34 · `7` 12.01 · `0` | `4` 7.06 · `3` 10.51 · `8` |
+| cornflower | `6` 7.38 · `7` 12.05 · `0` | `4` 7.02 · `3` 10.50 · `8` |
+| green | `6` 7.11 · `7` 11.80 · `0` | `4` 7.23 · `3` 10.76 · `8` |
+| blue | `6` 7.23 · `7` 11.90 · `0` | `4` 7.12 · `3` 10.58 · `8` |
+| yellow | `6` 7.20 · `7` 11.82 · `0` | `4` 7.13 · `3` 10.65 · `8` |
+
+- **Two families.** Pink, red, orange and purple pass at step 5. The
+  others' step 5 falls just short on the White (goldenrod 4.39,
+  cornflower 4.44, the rest 4.28–4.32), so their light accent is step 6,
+  noticeably darker. Goldenrod-6 (`rgb(101,80,0)`) and yellow-6
+  (`rgb(92,85,0)`) read olive-brown, not gold or yellow, and blue-6 is a
+  gray teal. Measured, they pass. Whether they still read as the color is
+  a judgement: ASK ME before using one. Purple-5 passes by a hair (4.51).
+- **Text on the tint.** In light mode, accent-colored text on the step-0
+  tint uses the hover step: the accent step fails there for pink (3.63),
+  red, orange and purple. Hover on tint is 5.57 (pink) and up. In dark
+  mode the accent on the step-8 tint passes for every hue (6.30 and up).
+  Ink on the tint is AAA everywhere (10.44+ light, 15.37+ dark).
+- **Override both modes.** A project override loaded after `kit.css` wins
+  in dark mode too, so setting the accent once gives dark mode the light
+  step (orange-5 is 4.13:1 on `--brown-9`, a fail). Set both:
+
+```css
+:root {
+  --color-accent: var(--orange-5);
+  --color-accent-hover: var(--orange-6);
+  --color-accent-subtle: var(--orange-0);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-accent: var(--orange-3);
+    --color-accent-hover: var(--orange-2);
+    --color-accent-subtle: var(--orange-8);
+  }
+}
+:root[data-theme="dark"] {
+  --color-accent: var(--orange-3);
+  --color-accent-hover: var(--orange-2);
+  --color-accent-subtle: var(--orange-8);
+}
+```
+
+The dark selectors outrank the plain `:root` override, and a page pinned
+with `data-theme="light"` keeps the light set.
 
 Which pink: the original Wjerk Pink's, softer and dustier than the hot pink
 the kit carried until 2026-09-11. The scale was rebuilt at the original's
@@ -295,6 +436,48 @@ does. Not every project needs a --font-display override — system-sans-only
 a fallback to feel bad about.
 
 ## Typography: the roster
+
+**Show how much open type there is.** Using a wide range of libre type is
+part of the argument, not a lack of discipline: "trying to show maximum
+open-source-ness where possible." Where a project allows, reach past the
+roster into the whole library. `~/Code/libreFontLibrary/fonts.toml` lists
+about 190 families, each with its licence checked upstream (`license =
+"unverified"` or `"none-found"` means don't ship it). New finds land in
+the libretype Are.na channel first. Don't treat its `favourite` field as
+this roster: `build_manifest.py` rebuilds it from the 2018 list.
+
+**Treat type like a specimen, where useful.** Name the typeface, its
+designer or foundry, and its licence where the reader can see them (a
+colophon, a caption, a footer), and show the face doing what it's good
+at. The type is part of the content, not only the vehicle. Decided
+2026-11-24.
+
+**The current roster** (2026-11-24, his picks). All OFL, all in the
+library except EB Garamond, which still needs adding. The jobs are
+Claude's first guesses, not yet confirmed: ASK ME before relying on one.
+
+| Workhorses: text, UI, code | Guessed job |
+|---|---|
+| Work Sans | workhorse sans |
+| Libre Franklin | sans, more traditional |
+| Gentium (SIL) | text serif, long reading |
+| EB Garamond | classic book serif (not yet in the library) |
+| Crimson Pro | old-style book serif |
+| Newsreader (Production Type) | screen and newspaper text serif |
+| IBM Plex Mono | workhorse mono: code, data |
+
+| Voices: headlines, posters, moments | Guessed job |
+|---|---|
+| Basteleur (Velvetyne) | headlines, the current favourite. `400` is Bold, `300` is Moonlight |
+| League Gothic | condensed, poster |
+| Le Murmure (Velvetyne) | display, tall and sharp |
+| Young Serif | display serif, heavy and warm |
+| Yatra One | display, Latin and Devanagari |
+| Space Mono | mono with personality |
+| Sligoil (Velvetyne) | ? |
+| Anthony (Velvetyne) | ? |
+
+The history below shows how the list got here.
 
 The recurring libre picks reached for across past projects, kept here as
 a starting shortlist rather than starting the license/pairing search from
@@ -361,6 +544,11 @@ state is told apart by shape and side (left/right, matching its button), not
 by a new color.
 
 ## Typography: baseline grid, not a ratio scale
+
+**A starting place, not the one true scale.** No single type scale is
+right for everything. The baseline grid below is where a project starts,
+and it should be easy to change project by project and app by app.
+Decided 2026-11-24; the bigger question is open in NOTES.md.
 
 `kit.css`'s `--text-*` / `--leading-*` tokens are a vertical-rhythm
 baseline grid (Bringhurst, *The Elements of Typographic Style*; Lupton,
@@ -1373,7 +1561,9 @@ bottom-up when you want to know what a section actually says.
 The palette is settled and measured. It needs no new colors: the dark
 pairing is the same brown scale with its ends swapped. `--brown-9` is the
 ground, `--brown-0` the text. Pink stays the one accent, at `--pink-3`
-rather than the light mode's `--pink-5`.
+rather than the light mode's `--pink-5`. A project with a different accent
+takes that hue's dark set from "Color: pink is the home accent" (Accent
+sets), and must override both modes.
 
 Measured against `--brown-9`:
 
@@ -1449,14 +1639,21 @@ theme on every full page load. The toggle component only reads the attribute
 back and changes it. With no saved choice there is no attribute and the
 `prefers-color-scheme` block decides.
 
-## Layout: mobile-first, two breakpoints
+## Layout: mobile-first, the browser's own flexibility
 
-Base styles are always the stacked/single-column mobile layout. Wider
-treatments layer on top via `min-width` media queries at two conventional
-breakpoints: `40rem` (tablet / two-column) and `55rem` (desktop / widest
-treatment). No custom-media variables — the kit has no build step and
-needs to work as a plain `<link>`, so these are documented values to reuse
-by hand, not a variable to reference.
+Base styles are always the stacked/single-column mobile layout, and wider
+treatments layer on top. Beyond that, use the natural flexibility of HTML,
+CSS and the DOM as much as possible: grids and flex rows that wrap and
+rearrange continuously as the space changes (`auto-fit`, `minmax()`,
+`flex-wrap`, `clamp()`), rather than a skinny column with empty space on
+both sides. Add as many breakpoints as the design needs to stay smart,
+and no more. Decided 2026-11-24.
+
+When a breakpoint is needed, `40rem` (tablet / two-column) and `55rem`
+(desktop / widest treatment) are the conventional starting values. No
+custom-media variables — the kit has no build step and needs to work as a
+plain `<link>`, so these are documented values to reuse by hand, not a
+variable to reference.
 
 ## Navigation: one bar, grouped, a second row for the group
 

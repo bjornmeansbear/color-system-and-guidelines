@@ -6,6 +6,28 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **From the tells review** (2026-11-24):
+  - **Type scale.** "I'm not totally into the idea that everything has a
+    single perfect type scale." The baseline grid is now a starting place;
+    what does changing it per project look like in practice?
+  - **The roster's jobs.** Fifteen picks are in "Typography: the
+    roster" (2026-11-24). The job column is Claude's guess: confirm or
+    correct it, name Sligoil's and Anthony's jobs, and say how the four
+    text serifs (Gentium, EB Garamond, Crimson Pro, Newsreader) divide
+    the work. Also: add EB Garamond to libreFontLibrary, and decide
+    whether its Garamond No. 8 (`unverified`) and URW Garamond
+    (`none-found`) stay.
+  - **Specimen treatment: where isn't it useful?** Probably forms and
+    app controls. Unconfirmed.
+  - **A Wjerk offshoot of Tailwind.** Grow the Tailwind v4 recipe into a
+    reusable preset rather than restating it per project.
+  - **taste-translator without the blur.** Its look could be refined so
+    it doesn't need blur.
+  - **Viewer settings, tested.** Accessibility doesn't need dark mode; it
+    needs the viewer's own settings honored (see "Viewer settings"). Build
+    checks for them into the tools: light/dark, increased contrast, forced
+    colors, reduced motion, 200% text.
+
 - **Image-led HTML decks vs. the scrim** (2026-11-17). The chair-ness deck
   features images (no scrim, multiply into paper, a shared floor line, museum
   labels). See RULES.md "Presentations: featuring images in HTML decks". Open:
@@ -291,8 +313,41 @@ before starting a session, not just written to at the end of one.
   judgement goes to him, and his answer is written back as a rule. New
   projects open with one message listing the ASK ME items. From reviewing
   third-party skills in `~/Code/z-skillz` (brand-identity, motion-graphics).
-  Still to consider from that review: a design tells list, a
-  defaults-and-exceptions table, a render-and-check loop for PDFs and decks.
+  Still to consider from that review: a defaults-and-exceptions table, a
+  render-and-check loop for PDFs and decks.
+- **Tells list** (RULES.md, "Tells: defaults nobody asked for"; summary in
+  SKILL.md). Reviewed line by line. Each tell is a question, not a ban:
+  "these are guidelines over fully fixed immutable rules." Glass and blur
+  left off for that reason. New rulings recorded with it: stock HTML is
+  fine unless it fails accessibility; custom icons yes, emoji and stock
+  icon sets no; made-up stats never.
+- **Pink is the home accent, not the only one** (RULES.md, renamed
+  "Color: pink is the home accent, not blue"). Any bright Wjerk color can
+  be a project's accent, contrast-checked.
+- **Accent sets for every bright hue** (RULES.md, same section, "Accent
+  sets"). Six tokens per hue, light and dark, chosen by the method that
+  reproduces pink's set exactly. Findings: pink, red, orange and purple
+  pass at step 5; goldenrod, cornflower, green, blue and yellow need step
+  6, which turns goldenrod and yellow olive-brown (ASK ME before using).
+  Accent text on the light tint must use the hover step. And a trap: an
+  accent override set once also lands in dark mode and fails there
+  (orange-5, 4.13:1), so the recipe overrides both modes.
+- **Breakpoints: the browser's own flexibility** (RULES.md, renamed
+  "Layout: mobile-first, the browser's own flexibility"). As many
+  breakpoints as the design needs; intrinsic, wrapping layouts over a
+  skinny centered column. 40rem / 55rem kept as starting values.
+- **Type scale is a starting place** (RULES.md, "Typography: baseline
+  grid"). See the open question above.
+- **Gradients and visual choices that carry meaning are preferred**, not
+  just allowed (RULES.md, "Structure").
+- **The roster, refreshed** (RULES.md, "Typography: the roster"). Fifteen
+  current picks in two groups, workhorses and voices, replacing the ~2018
+  snapshot as the starting list (the history stays below it). Two rules
+  with it: show how much open type there is, reaching into
+  libreFontLibrary's ~190 licence-checked families; and treat type like a
+  specimen where useful (name, foundry, licence, shown doing what it's
+  good at). Answers the Inter tell: Inter is fine, his picks are more
+  interesting.
 
 ### 2026-11-23
 

@@ -27,12 +27,17 @@ the style — not a budget constraint you'd lift if you could.
 These are the answer unless a project has a specific stated reason otherwise.
 "It's conventional" is not a reason.
 
-**Pink is the accent.** `--color-accent: var(--pink-5)` — the original Wjerk
+**Pink is the home accent.** `--color-accent: var(--pink-5)` — the original Wjerk
 Pink's softer, dustier pink (the scale was rebuilt at its chroma 2026-09-11). Not blue — blue only
 ever appeared as an undecided default, so it doesn't get to be the default.
 Pink is deliberate: on climate/sustainability work the expected accent is green
 or blue, and pink reads as a surprise instead of a cliché. It is the one thing
-that marks the work as his across every past pass.
+that marks the work as his across every past pass. A project may take any
+bright Wjerk color as its accent instead (orange, red, goldenrod, cornflower),
+contrast-checked, so a family of tools varies while staying in one aesthetic
+universe (2026-11-24). Take the measured set for that hue from `RULES.md`
+(Accent sets) and override light *and* dark, or dark mode inherits a light
+step that fails.
 
 **Warm ground, dark brown line work.** `--color-bg: var(--wjerk-white)`
 (#F8FAE7, a warm cream), `--color-text: var(--wjerk-black)` (#2D2826, a soft
@@ -68,11 +73,15 @@ proprietary webfont. `--font-sans` is the system-stack default; reach for it
 when a project doesn't need its own voice, and don't treat that as a failure.
 A project earns a `--font-display` by self-hosting an OFL face.
 
-**Mobile-first, two breakpoints.** Base styles are the stacked single column.
-`min-width: 40rem` (tablet) and `55rem` (desktop) layer on top. Written by hand
-— the kit has no build step and must work as a plain `<link>`.
+**Mobile-first, then the browser's own flexibility.** Base styles are the
+stacked single column. Wider layouts come from the natural flexibility of HTML
+and CSS (grids and flex rows that wrap and rearrange continuously), not a
+skinny column with empty space on both sides. As many breakpoints as the design
+needs; `40rem` and `55rem` are the conventional starting values. Written by
+hand — the kit has no build step and must work as a plain `<link>`.
 
-**Baseline grid, not a ratio scale.** Line-heights are multiples of 6px
+**Baseline grid, not a ratio scale — as a starting place.** No single scale
+is right for everything; start here and change it per project. Line-heights are multiples of 6px
 (18/24/30/36/42/54); font-sizes are chosen to pair with a rung, not generated
 by applying a ratio. Everything in rem so the root scales the whole system.
 The size/leading ratio sawtooths as sizes share a rung — that's correct, not a
@@ -116,6 +125,14 @@ Never ask what a rule already settles. When he answers an ASK ME, write the
 answer back (below), so the same question doesn't come up twice. That's how a
 judgement becomes a rule.
 
+**Tells to catch.** Looks the brief never asked for: a whole UI theme dropped
+in, emoji and stock icons, made-up stats, untrue badges, hollow button copy
+("Get started," "Unlock"), the centered hero, three equal feature cards,
+numbered section labels, hover glow, fade-on-scroll, mood gradients, a skinny
+centered column, and the kit itself on autopilot. Each is a question to ask,
+not a ban. The full list, with why each happens, is `RULES.md` "Tells:
+defaults nobody asked for."
+
 **Starting a project:** before building, list in one message what `RULES.md`
 doesn't settle for it — accent or ground override, display face, whether it's
 projected (see "An open tension") — each marked ASK ME.
@@ -126,7 +143,8 @@ Load the section from `RULES.md` before working in that area.
 
 | Working on | Read |
 |---|---|
-| Colors, accent, palette | "Color: pink is the accent", "Color: yellowish-gray background" |
+| Colors, accent, palette | "Color: pink is the home accent", "Color: yellowish-gray background" |
+| Anything that might look generic | "Tells: defaults nobody asked for" |
 | Contrast, focus, a11y | "Contrast: high-contrast pairs only" |
 | Panels, buttons, borders | "Structure: rules, not chrome" |
 | Choosing a typeface | "Typography: open/libre first", "Typography: the roster" |
@@ -140,7 +158,7 @@ Load the section from `RULES.md` before working in that area.
 | PDF, print, posters | "PDF generation: Markdown → pandoc → WeasyPrint" |
 | Dark mode | "Dark mode" |
 | Token naming | "Naming" |
-| Breakpoints | "Layout: mobile-first, two breakpoints" |
+| Breakpoints, layout | "Layout: mobile-first, the browser's own flexibility" |
 | The pre-kit palette, adding colors | "Color: the original Wjerk palette" |
 | Tints behind text, pale fills | "Color: tints behind text" |
 | Charts, data layers, gradients as data | "Data on screen" |

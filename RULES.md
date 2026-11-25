@@ -453,7 +453,7 @@ at. The type is part of the content, not only the vehicle. Decided
 2026-11-24.
 
 **The current roster** (2026-11-24, his picks). All OFL, all in the
-library except EB Garamond, which still needs adding. The jobs are
+library (EB Garamond added 2026-11-24). The jobs are
 Claude's first guesses, not yet confirmed: ASK ME before relying on one.
 
 | Workhorses: text, UI, code | Guessed job |
@@ -461,7 +461,7 @@ Claude's first guesses, not yet confirmed: ASK ME before relying on one.
 | Work Sans | workhorse sans |
 | Libre Franklin | sans, more traditional |
 | Gentium (SIL) | text serif, long reading |
-| EB Garamond | classic book serif (not yet in the library) |
+| EB Garamond (Georg Duffner, Octavio Pardo) | classic book serif |
 | Crimson Pro | old-style book serif |
 | Newsreader (Production Type) | screen and newspaper text serif |
 | IBM Plex Mono | workhorse mono: code, data |

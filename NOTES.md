@@ -14,8 +14,8 @@ before starting a session, not just written to at the end of one.
     roster" (2026-11-24). The job column is Claude's guess: confirm or
     correct it, name Sligoil's and Anthony's jobs, and say how the four
     text serifs (Gentium, EB Garamond, Crimson Pro, Newsreader) divide
-    the work. Also: add EB Garamond to libreFontLibrary, and decide
-    whether its Garamond No. 8 (`unverified`) and URW Garamond
+    the work. EB Garamond is now in libreFontLibrary (2026-11-24). Still
+    to decide: whether its Garamond No. 8 (`unverified`) and URW Garamond
     (`none-found`) stay.
   - **Specimen treatment: where isn't it useful?** Probably forms and
     app controls. Unconfirmed.

@@ -6,6 +6,15 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **Someday, with lots of time: restructure** (2026-11-24). Split NOTES.md
+  (changelog out to its own file, open questions stay) and RULES.md (about
+  10 topic files in `rules/`, headings kept word for word, RULES.md kept as
+  an index so old "RULES.md, section X" pointers still work). Watch: the
+  site's `/rules` page imports RULES.md directly
+  (`site/src/routes/rules/+page.server.ts`); about 25 files in 11 other
+  projects point at RULES.md sections; `scripts/package-skill.sh` copies
+  both files.
+
 - **From the tells review** (2026-11-24):
   - **Type scale.** "I'm not totally into the idea that everything has a
     single perfect type scale." The baseline grid is now a starting place;

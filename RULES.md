@@ -17,6 +17,28 @@ Same instinct as the `bjorn-voice` skill's writing rules — compress,
 don't shrink; cut color that does no conceptual work. One ethos, two
 mediums.
 
+## Decisions: measured, ruled, or asked
+
+Every design decision an agent makes in this system is one of three kinds,
+and it says which. **Measured**: a number from a script, quoted (a contrast
+ratio from `scripts/contrast.py`). **Ruled**: a section of this file
+settles it, and the section is named. **Judgement**: nothing measures or
+rules it. Aesthetic judgements are not the agent's to make. They're marked
+ASK ME, with two or three options inside the system, and the answer is
+written back here so it becomes a rule.
+
+Why: taste that isn't written down gets replaced by the model's defaults,
+quietly, one reasonable-looking choice at a time. And a claim that isn't
+measured gets eyeballed. The "muted" token that shipped at 4.35:1 (see
+"Contrast") looked fine. The rule makes the gaps visible: each ASK ME marks
+a place where this file doesn't yet say what he'd do. Pattern borrowed from
+the brand-identity skill ("every claim is either measured by a script or
+labelled as judgement") and motion-graphics' brand-intake ("write ASK ME
+rather than guessing"), 2026-11-24.
+
+Don't ask what a rule already settles. Too many questions is its own
+failure.
+
 ## Scope note: the ookb.co / wjerk.shop family
 
 Projects sit under two domain families — `ookb.co` (+ subdomains like

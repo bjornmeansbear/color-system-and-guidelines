@@ -98,6 +98,28 @@ longer match `kit.css` — in this repo by default, or in another project.
 Standing bar is WCAG AA; prefer AAA for body text, which most of this palette
 already clears.
 
+## Measured, ruled, or asked
+
+Every color, type, or layout decision is one of three kinds. Say which.
+
+- **Measured.** A number from a script: `contrast.py` for any text-on-ground
+  pair. Quote the ratio. A pairing with no number hasn't been checked.
+- **Ruled.** `RULES.md` already settles it. Name the section. This is his
+  taste, written down. Apply it without asking.
+- **Judgement.** No number or rule covers it. If it's aesthetic (an accent or
+  ground override, a display face, an image, a new token or tint, a layout the
+  rules don't describe, breaking a rule), don't pick. Mark it **ASK ME**, offer
+  two or three options inside the system, and wait. Mechanical calls (file
+  names, implementation details) don't need asking.
+
+Never ask what a rule already settles. When he answers an ASK ME, write the
+answer back (below), so the same question doesn't come up twice. That's how a
+judgement becomes a rule.
+
+**Starting a project:** before building, list in one message what `RULES.md`
+doesn't settle for it — accent or ground override, display face, whether it's
+projected (see "An open tension") — each marked ASK ME.
+
 ## Where to read
 
 Load the section from `RULES.md` before working in that area.
@@ -150,8 +172,9 @@ Tailwind theme rather than restating hex values in a config — the recipe is in
 
 **Write back.** Any design decision made in another project that touches this
 system — a new token or tint, an icon convention, a data-viz pattern, a stack
-recipe, a palette finding — gets recorded here as part of the work: the rule in
-`RULES.md`, the finding or open question in `NOTES.md`, plus a changelog entry.
+recipe, a palette finding, an answered ASK ME — gets recorded here as part of
+the work: the rule in `RULES.md`, the finding or open question in `NOTES.md`,
+plus a changelog entry.
 
 ## An open tension
 

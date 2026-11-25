@@ -283,6 +283,17 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-11-24
+
+- **Measured, ruled, or asked** (RULES.md, "Decisions: measured, ruled, or
+  asked"; SKILL.md, same title). Every design decision is labelled: a
+  measured number, a named rule, or an ASK ME with options. Aesthetic
+  judgement goes to him, and his answer is written back as a rule. New
+  projects open with one message listing the ASK ME items. From reviewing
+  third-party skills in `~/Code/z-skillz` (brand-identity, motion-graphics).
+  Still to consider from that review: a design tells list, a
+  defaults-and-exceptions table, a render-and-check loop for PDFs and decks.
+
 ### 2026-11-23
 
 - **wjeather's sky: day/night for light, not for weather** (RULES.md, "Data

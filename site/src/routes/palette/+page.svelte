@@ -123,15 +123,16 @@
 		}
 	}
 
+	/* Flex, not grid, so a short last row stretches instead of leaving a hole
+	   inside the border. */
 	.originals {
 		margin-top: 1.5rem;
-		grid-template-columns: repeat(2, 1fr);
+		display: flex;
+		flex-wrap: wrap;
 	}
 
-	@media (min-width: 40rem) {
-		.originals {
-			grid-template-columns: repeat(4, 1fr);
-		}
+	.originals li {
+		flex: 1 1 10rem;
 	}
 
 	.swatch {

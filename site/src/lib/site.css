@@ -44,10 +44,14 @@ code {
 	white-space: nowrap;
 }
 
+/* No overall cap: content runs to the gutters and the grids fill the width.
+   Paragraphs keep their own measure (.lede, footer p, the rules prose). */
 .wrap {
-	max-width: 72rem;
-	margin: 0 auto;
 	padding: 0 1rem;
+}
+
+main p {
+	max-width: 40rem;
 }
 
 @media (min-width: 40rem) {
@@ -115,4 +119,20 @@ main h1 {
 	font-family: var(--font-mono);
 	font-size: var(--text-sm);
 	line-height: var(--leading-sm);
+}
+
+/* Basteleur, from Velvetyne (OFL-1.1, license in /fonts). The vote poster's
+   face, the same one oblique sets its cards in. */
+@font-face {
+	font-family: 'Basteleur';
+	src: url('/fonts/Basteleur-Bold.woff2') format('woff2');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* Cards leaving the vote pile slide past the edge of the screen; clip keeps
+   that from ever adding a sideways scroll. */
+body {
+	overflow-x: clip;
 }

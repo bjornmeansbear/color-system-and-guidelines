@@ -47,12 +47,12 @@
 		<p><a href="/contrast">The step cheat sheet</a></p>
 	</section>
 	<section>
-		<h2>Readable isn't the same as good</h2>
+		<h2>Readable? Legible? Good?</h2>
 		<p>
 			Thousands of sets pass AA. Which ones do people want to look at? Vote yes or no on random
 			sets of ground, text and accent.
 		</p>
-		<p><a href="/vote">Start voting</a></p>
+		<p><a href="/vote">Vote</a></p>
 	</section>
 	<section>
 		<h2>Use it</h2>
@@ -115,13 +115,16 @@
 		margin-top: 0.75rem;
 	}
 
+	/* Wrap as the space allows; a short last row stretches to fill. */
 	.cards {
-		display: grid;
+		display: flex;
+		flex-wrap: wrap;
 		gap: 0 2rem;
 		margin-top: 3rem;
 	}
 
 	.cards section {
+		flex: 1 1 18rem;
 		border-top: 2px solid var(--color-border);
 		padding-top: 1.125rem;
 	}
@@ -130,12 +133,6 @@
 		font-size: var(--text-lg);
 		line-height: var(--leading-lg);
 		margin-bottom: 0.75rem;
-	}
-
-	@media (min-width: 55rem) {
-		.cards {
-			grid-template-columns: repeat(3, 1fr);
-		}
 	}
 
 	.originals {

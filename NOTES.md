@@ -316,6 +316,29 @@ before starting a session, not just written to at the end of one.
 
 ### 2026-11-24
 
+- **Wjavelength's voter rebuilt around one decision** (`site/`): the set is
+  the only thing on screen, and you answer it with a gesture. From oblique:
+  the card fills the screen, the poster line is big fluid type, and it's set
+  in Basteleur (Velvetyne, OFL), copied from oblique. From onething: the next
+  two sets sit tilted behind (pile tilt 1.5–4deg, front card a third of
+  that), and a vote stamps YES/NO at 8deg in the set's own accent (already
+  ≥4.5:1 on its ground) before the card leaves toward the answer's side.
+  Under reduced motion the stamp shows and the card goes. The type never changes
+  between cards, so the vote stays about color. After each vote, one line
+  with the answer and the two contrast numbers; the "you said yes to" list
+  is gone. Decided with it: the visual record of taste belongs on Results,
+  not the voter (open: make Results more visual).
+- **Tells open with the worry** (RULES.md): "The worry behind every tell: a
+  design the average decided." His words.
+- **No overall page cap** (RULES.md, "Layout: mobile-first, the browser's
+  own flexibility"). Answered for Wjavelength: its 72rem centered wrapper
+  is gone, content runs to the gutters, and paragraphs keep a ~40rem
+  measure. Its fixed-count grids (home cards, palette originals, results
+  two-up) now wrap with flex so a short last row stretches.
+- **Equal columns of plain text aren't the feature-card tell** (RULES.md,
+  "Tells"). Answered while checking Wjavelength against the skills: its
+  home page has three equal sections (heading, paragraph, link, under a
+  rule) and that's fine. The tell is the icon-and-box card.
 - **Measured, ruled, or asked** (RULES.md, "Decisions: measured, ruled, or
   asked"; SKILL.md, same title). Every design decision is labelled: a
   measured number, a named rule, or an ASK ME with options. Aesthetic

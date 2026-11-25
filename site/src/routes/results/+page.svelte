@@ -191,15 +191,16 @@
 		text-align: right;
 	}
 
+	/* Side by side when both fit, stacked when they don't. */
 	.two {
-		display: grid;
+		display: flex;
+		flex-wrap: wrap;
 		gap: 0 2rem;
 	}
 
-	@media (min-width: 55rem) {
-		.two {
-			grid-template-columns: 1fr 1fr;
-		}
+	.two > section {
+		flex: 1 1 24rem;
+		min-width: 0;
 	}
 
 	.note {

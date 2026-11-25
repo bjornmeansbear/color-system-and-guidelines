@@ -158,8 +158,9 @@
 		{/if}
 	</div>
 	<p class="muted note">
-		The numbers are symmetric; the eye isn't. Light text on a dark ground reads heavier and can
-		bloom, so a dark twin may want a lighter weight or a little more letter-spacing.
+		A contrast ratio doesn't care which color is the text. Pink on cream and cream on pink both
+		measure 4.78:1. Your eye does care. Light text on a dark ground looks heavier and can glow or
+		blur at the edges, even at the same ratio.
 	</p>
 </section>
 

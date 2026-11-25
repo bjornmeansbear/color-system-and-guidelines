@@ -41,6 +41,8 @@ failure.
 
 ## Tells: defaults nobody asked for
 
+The worry behind every tell: a design the average decided.
+
 A tell is a look the brief never asked for: the model's habit showing
 through. Each one is a **question to ask**, not a ban. These are
 guidelines, not immutable rules, and a tell with a real reason behind it
@@ -110,6 +112,10 @@ to do instead. Reviewed line by line 2026-11-24.
   Avoid. They look like every webpage ever made: not interesting, not
   special, not particularly thoughtful. *Ask:* what does this project
   show first, and how many things does it really have to say?
+  Equal columns of mostly plain text are fine: a heading, a short
+  paragraph and a link, each under a rule, with no icon and no boxed
+  card. The tell is the decorated card, not the column count.
+  (Wjavelength's home page, ruled 2026-11-24.)
 
 ## Scope note: the ookb.co / wjerk.shop family
 
@@ -1648,6 +1654,12 @@ rearrange continuously as the space changes (`auto-fit`, `minmax()`,
 `flex-wrap`, `clamp()`), rather than a skinny column with empty space on
 both sides. Add as many breakpoints as the design needs to stay smart,
 and no more. Decided 2026-11-24.
+
+**No overall page cap.** The page's content runs out to its side gutters
+on any screen; grids and rows fill the width. Paragraphs keep their own
+measure (about 40rem) so lines stay readable. The measure belongs to the
+text, not to the page. First applied to Wjavelength, replacing a 72rem
+centered wrapper (2026-11-24).
 
 When a breakpoint is needed, `40rem` (tablet / two-column) and `55rem`
 (desktop / widest treatment) are the conventional starting values. No

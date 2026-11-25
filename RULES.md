@@ -758,7 +758,9 @@ use these instead:
 - **Every image gets a museum label, in one format.** Three lines: the object's
   name in bold; maker, year; then the photo credit in gray-6 ("Photo:
   Daderot, CC0"). No description or argument in the label; that is spoken.
-  Leave a credit line out rather than guess it, and list the unknowns. On a full-bleed photo it sits in an opaque paper box in the bottom-left
+  Leave a credit line out rather than guess it, and list the unknowns.
+  When every image on a slide shares one source, credit it once for the
+  slide ("Photos: Vitra Design Museum") instead of under each object. On a full-bleed photo it sits in an opaque paper box in the bottom-left
   corner. In a lineup it sits under the floor.
 - **Repetition is a layout.** The same image tiled (12 identical Chaise A chairs
   under a search box reading "restaurant chair") says "everywhere, the same"
@@ -766,6 +768,35 @@ use these instead:
 - **Page screenshots are not images.** are.na Link-block previews are often a
   screenshot of the page or a bot check. Crop the object out or skip it. Look at
   a contact sheet before any image reaches a slide.
+
+- **The slide fills the window. No letterboxing.** A fixed 16:9 stage leaves
+  bars on any other screen shape. The stage is `100vw × 100vh`, and type is
+  sized in `--u: min(1cqw, 1.7778cqh)`, so on a wide or tall window it scales
+  to whichever side runs out first. Photos keep `object-fit: cover`, so they
+  bleed to the window edge on any screen.
+
+- **Hang the opening quotation mark.** `hanging-punctuation` only works in
+  Safari, so wrap the opening “ in a span with `margin-left: -0.42em` (Work
+  Sans; measure again for another face). The first letter lines up with the
+  lines and the citation below it.
+
+- **Knockout type is allowed when the photo has room for it, and you measure.**
+  Big, bold, paper-colored type set straight on the photo, with no card and no
+  scrim, works when the text can sit on a dark, even part of the picture. On
+  the Chair-ness Ono slide the quote splits into two columns either side of
+  the fire. The test is the brightest 2% of pixels under the text, not the
+  average: there it was 3.16:1, which passes AA for large bold text (3:1).
+  Bright areas (the flames) fail. When the type has to cross them, give it an
+  ink outline (`-webkit-text-stroke: 0.14em` with `paint-order: stroke fill`,
+  so the outline sits under the letters). Paper on ink is 13.73:1 whatever
+  the photo does, and an offset outline comes before a shadow in the kit.
+
+- **A word cloud rotates faces, not colors.** On the Chair-ness deck, twelve
+  words set in one face read as a sentence, and alternating bold or pink
+  wasn't enough. Four libre faces in rotation (Basteleur Moonlight, Work Sans
+  800, Le Murmure, Sligoil Micro Bold) make it read as a cloud. Size each face
+  to a similar visual weight (Le Murmure about 1.15em, Sligoil about 0.8em),
+  keep everything in ink, and self-host the fonts beside the deck.
 
 Layout set for an image-led deck: `.title`, `.bleed`, `.split`, `.lineup`,
 `.repeat`, `.say`, `.list`, `.numbers`. The deck also keeps the di200 slot
@@ -1571,6 +1602,32 @@ rather than prose:
   KPI row, 2026-10-06.
 - **Texture is line work:** wind as hatching, stars as stipple. The etching
   trope, and a way to add a variable without adding a hue.
+- **The sky splits by day and night; falling weather doesn't.** In a
+  weather encoding, conditions that are about light (clear, cloudy) get a
+  day tint and a night tint, since a clear noon and a clear midnight really
+  look different. Conditions that are about what falls (rain, snow, storm)
+  keep one tint at any hour: "it's raining" is the fact, whatever the
+  time, and a separate mark (the sunrise/sunset rule, below) carries day
+  and night. It also saves tints: in light mode a night tint can't get
+  darker than step 2, because the pink line drops under 3:1 on step 3, so
+  a night version of a pale tint only gets grayer or shifts hue (wjeather's
+  trial rainy night came out a brighter periwinkle, which reads as the
+  opposite of night). In the key, show it as a table: By day | At night
+  columns, the light skies in two cells, the falling weather spanning both,
+  swatches touching with shared 1px ink lines (no gaps, so pale tints keep
+  an edge against the page). wjeather, 2026-11-23: six sky tints.
+- **A moment is a rule, not a tint.** When the thing to show is an instant
+  (sunrise, sunset) rather than a span, draw a 1px solid rule edge to edge
+  (in wjeather, Golden Rod for the sun: `goldenrod-6`, `goldenrod-3` dark), labelled in words ("sunset 4:42 PM") beside the time ticks, and drop
+  any tick it would crowd. Snap the rule to the data's own grain (in
+  wjeather, the hour break where the sky's colour turns) and let the label
+  carry the exact time. The picture is a painting of likely weather, not a
+  timetable, and a rule off the grid would leave a sliver of mismatched
+  colour. Straight, solid and full-bleed, it
+  can't be read as a data series (those curve) or as texture (hatching is
+  faint dashes). wjeather, 2026-11-23: day versus night is better shown by a
+  line than by giving every sky a second, night-time colour, because the
+  palette has few distinct pale tints left.
 - **Anything drawn gets a spoken summary** for screen readers. Color and
   position are never the only carrier.
 - **A progress bar is a bordered track and a flat fill,** square, no gradient

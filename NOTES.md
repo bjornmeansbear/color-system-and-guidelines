@@ -283,6 +283,50 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-11-23
+
+- **wjeather's sky: day/night for light, not for weather** (RULES.md, "Data
+  on screen": the sky splits by day and night; falling weather doesn't).
+  Clear and cloudy keep day and night tints; rain, snow and the new
+  thunderstorm (WMO 95–99, `orange-1` / `orange-8`, a warning hue and the one
+  warm hue the skies didn't use) are one tint at any hour. Six tints. Rainy
+  and snowy night were tried (`cornflower-2` / `-8`, `cornflower-0` / `-7`)
+  and dropped. Finding: in light mode every night tint is already at the
+  darkness floor (L* ~85: `purple-2`, `blue-2`), since step 3 drops the pink
+  line under 3:1. A dark storm slate fails the same way (about 2.6:1). The
+  key is a By day | At night table, swatches touching with shared 1px lines;
+  a 3 × 3 grid was tried and dropped.
+- **Sunrise/sunset rule in wjeather** (RULES.md, "Data on screen": a moment
+  is a rule, not a tint). Golden Rod rule (`--color-sun`: `goldenrod-6`,
+  `goldenrod-3` dark; weakest 5.23 / 6.52:1, so the label passes as text)
+  across the sky where the sun rises or sets, snapped to the hour break
+  where the sky turns, with the exact minute in the label.
+- **Open: cloudy night tint.** `purple-gray-1` now; `purple-gray-2` (same
+  lightness as clear night) and a mauve gray (`rgb(220 210 220)`, clear
+  night mixed halfway to `gray-2`, not a kit tint) on wjeather's /preview.
+
+### 2026-11-20
+
+- **Static variant of the Tailwind 4 recipe** (`~/Code/teaching-site`): same
+  `layout.css` mapping as wjeather, with `@sveltejs/adapter-static` and
+  `prerender = true` instead of the Cloudflare adapter, since the site is
+  built from committed JSON. `max-w-desktop` works off `--container-desktop`.
+  Not yet promoted to RULES.md; promote if a second static site uses it.
+
+### 2026-11-18
+
+- **Word cloud in four faces** (RULES.md, featuring images): Basteleur, Work
+  Sans, Le Murmure and Sligoil in rotation on the Chair-ness word slide.
+- **Knockout quote on a photo** (RULES.md, featuring images): the Ono slide
+  sets cream type straight on the photo, measured at the brightest 2% of
+  pixels under it (3.16:1, AA large).
+- **HTML decks fill the window** (RULES.md, "Presentations: featuring images
+  in HTML decks"). No letterbox bars: the stage is the full viewport and type
+  uses `--u: min(1cqw, 1.7778cqh)`. Checked at 4:3, 16:10 and 20:9 on the
+  Chair-ness deck.
+- **Hanging quotation marks** in HTML decks, done by hand (RULES.md, same
+  section): the opening “ gets `margin-left: -0.42em`.
+
 ### 2026-11-17
 
 - **Bjook moved to `~/Code/bjook`** (history kept with `git subtree split`;

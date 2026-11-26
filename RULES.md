@@ -10,8 +10,12 @@ oblique.ookb.co, wjerk.shop, whatever's next). Nothing here is precious.
 ## Ethos: do more with less
 
 The governing instinct behind every rule below: solid rules instead of
-shadows, a handful of tokens instead of an open-ended palette, one accent
-color instead of a rotating cast. Restraint is the style.
+shadows, kit tokens instead of made-up colours, and colour that grows with
+the project. Start with one accent (the home pink, or navy) carrying links
+and focus; as a project gets more complex, lean into the whole Wjerk palette
+for objects, labels, stamps and data, since the family of colours seen again
+and again is part of the identity (see "Signatures"). Restraint is the
+style: in the number of moves, not in ambition.
 
 Same instinct as the `bjorn-voice` skill's writing rules — compress,
 don't shrink; cut color that does no conceptual work. One ethos, two
@@ -124,6 +128,125 @@ Projects sit under two domain families — `ookb.co` (+ subdomains like
 `bjornpaedia.wjerk.shop`, `stuff.wjerk.shop`). The intent is modular: shared tokens/rules here,
 each project free to pick its own typeface and emphasis on top. The old
 `ookb.co` repo should get pulled down and checked against this doc too.
+
+## Signatures: what makes it a Wjerk project
+
+The projects are one aesthetic universe that keeps evolving. It should be
+obvious that something is a Wjerk project **without** relying on the palette:
+dark ink on warm cream is the ground everything stands on, not the identity.
+The identity is a set of recurring moves (signatures) that travel from
+project to project, each changing a little as it goes.
+
+**Match the depth to the time.** A quick page gets the *five-minute
+version*: the house default rolled out the same way every time (kit.css,
+system stack, cream and ink, ink-ruled controls, a compact header beside the
+content, the footer order and Elsewhere list, one signature). A project that
+gets hours gets the *deep version*: find the content's metaphor, compose the
+whole screen, try many things. Either way it should look like family.
+
+**Avant-garde, and still intuitive.** The aim is work that looks ahead of the
+average web, not like it, while staying obvious to use. The bridge between
+the two is a novel metaphor that people already understand physically, plus
+the whole screen used as one composition. Prime example: *wjeather*, where
+the screen *is* the forecast: time runs down the page, temperature across
+it, the current temperature set large over the line, the sky's colour the
+time of day. No widgets, no cards of numbers, and nobody needs instructions.
+
+Signatures come from **designing, not arranging**: the visual language is
+derived from a metaphor in the project's own content (a library has shelves,
+planks, spines and shelf labels; a vote has stamps), and space is a material
+(what bleeds to the edge, what's inset, what overlaps, what tilts). "Do more
+with less" means restraint in the number of moves, not settling for the
+average layout. When a bold idea is too much, shrink it to a smaller form of
+the same metaphor; don't fall back on the generic. Try many things: the wild
+versions that don't ship are how the better ones turn up, so keep each
+attempt cheap enough to make the next.
+
+**Use the space to reach the content.** When a screen is wide, spend the
+width: put the tools beside the title rather than under it, so the real
+content starts high on the first screen. Compose the whole layout so it's
+interesting and beautiful, not a functional, austere default stack of UI.
+Before adding a line or a box, see if the information can live in text
+that's already there (the library's blurb doubles as the live description
+of the filter).
+
+**The rule:**
+1. Every project uses at least two existing signatures, adapted to it rather
+   than pasted in.
+2. Every project tries to contribute one new signature, or a new version of
+   an old one, and records it here with its source.
+3. Before inventing a control, check the list (and the projects behind it).
+   Name the source when borrowing.
+
+**The signatures so far** (source project first):
+
+- **The stamp.** Basteleur, uppercase, tilted about -8deg, a solid fill and a
+  2px rule; lands with a quick scale-down. For the one loud action. *wjavelength*
+  (yes/no votes) → *library* ("Show all the books", cream on navy).
+- **The tilted card on its pile.** A card in its own colour, rotated about
+  -1deg, with a cream card offset behind it instead of a drop shadow.
+  *onething* (pile), *oblique* (tilt) → *library* (book card).
+- **Objects keep their own paper and ink.** Things that stand for physical
+  objects (book covers, spines, cards, stamps) keep fixed colours in dark mode,
+  like the object would. *bjook* → *library*.
+- **Drawn to scale.** Represent real objects at their real proportions (book
+  spines from measured heights and thicknesses). *library*.
+- **The plank.** A structural rule that runs wall to wall under inset content:
+  padding stops the content, a clip on the outer box stops the decoration.
+  *bjornmeansbook* → *library* (boards).
+- **The label on the structure.** A small paper card fixed to the structure,
+  carrying the caption, the way a library labels a shelf. Real-world
+  conventions before UI conventions. *library* (shelf label).
+- **Ink-ruled controls.** Inputs and buttons get a 2px ink rule on the ground,
+  no radius, and invert when pressed. Hover changes colour by default;
+  movement only when the project's metaphor calls for it (something you'd
+  pick up or pull out), not as decoration. *onething* (`.btn`).
+- **The face named in itself.** A colophon sets each typeface's name in that
+  face. *library*; see "Typography: the roster".
+- **The linked list of elsewhere.** Where-else links as plain text grouped by
+  kind, no icons. *kristian.bjornard.com* → *library* footer.
+- **The palette at full breadth.** The Wjerk originals and their ramps,
+  seen over and over across projects, are part of the identity; cream and
+  ink are only the ground. A project carries several of them, not one
+  accent: the library's spines use 33 tints, its stamp is cream on navy.
+  Pick pairings from a drawn, contrast-checked lineup, and lean on the
+  wjavelength vote results for which ones he likes. *library*, *wjavelength*.
+- **The footer order.** Who / how it's made (honestly: hosting, weight,
+  source, licences) / where else / credits. *a.wjerk.shop* → *library*.
+
+When a signature changes in a new project, update its entry: the list
+records how each one has evolved, not just where it started.
+
+## Open by default: the design commons and the family web
+
+Every project gives something back and points at the others.
+
+**The design commons, where it's possible and intellectually safe:**
+- Say how it's made: a short "how it works" in plain words, and a colophon
+  (typefaces named in themselves, hosting, sources of data and images).
+- Open licences, stated in the footer and in the repo: text and design
+  CC BY-SA 4.0; code Apache 2.0 or AGPL-3.0 (wjeather), or public domain
+  (wjavelength).
+  Public source where the repo can be public.
+- Share the data when it's ours to share (the library's book list is
+  already a plain JSON file in a public repo; say so).
+- Safe means: credit every source; say plainly what belongs to others
+  ("the books, their titles and details belong to their authors and
+  publishers"); never publish private fields, people's details or
+  anything that came in confidence.
+
+**The family web: every project links in and is linked to.**
+- Each project's footer carries the "Elsewhere" list: grouped links to the
+  studio, the index of projects, kristian.bjornard.com, teaching, writing,
+  the colour system, the archives.
+- Launching a project isn't done until the hubs point back to it:
+  kristian.bjornard.com's list, a.wjerk.shop's footer and index, and, if
+  it's a case study, `a.wjerk.shop/connections.json` (its per-page
+  Elsewhere block). Older projects get a link to the new one when they're
+  next touched.
+- Link generously between related projects in the body too, not only in
+  footers: the more paths in, the more likely someone finds it and gets
+  excited.
 
 ## Structure: rules, not chrome
 

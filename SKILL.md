@@ -18,9 +18,11 @@ and design, both apply.
 
 ## The ethos
 
-**Do more with less.** Solid rules instead of shadows. A handful of tokens
-instead of an open palette. One accent instead of a rotating cast. Restraint is
-the style — not a budget constraint you'd lift if you could.
+**Do more with less.** Solid rules instead of shadows. Kit tokens instead of
+made-up colours. Start with one accent (the home pink, or navy) for links and
+focus; as a project grows more complex, lean into the whole Wjerk palette for
+objects, labels, stamps and data. Every colour still does conceptual work.
+Restraint is the style — in the number of moves, not in ambition.
 
 ## The non-negotiables
 
@@ -135,7 +137,85 @@ defaults nobody asked for."
 
 **Starting a project:** before building, list in one message what `RULES.md`
 doesn't settle for it — accent or ground override, display face, whether it's
-projected (see "An open tension") — each marked ASK ME.
+projected (see "An open tension") — each marked ASK ME. In the same message,
+name which **signatures** (RULES.md "Signatures: what makes it a Wjerk
+project") the project will carry, and what new one it might add. Cream and ink
+alone don't make a page a Wjerk project; the signatures do.
+
+**Working with him on a page** (learned building library.wjerk.shop):
+- **Match the depth to the time.** Two modes, and say which one at kickoff
+  (ask if it isn't clear):
+  - *The five-minute version*, for something that just needs to exist: the
+    house default, rolled out the same way every time. kit.css, system
+    stack, cream and ink, ink-ruled controls, a compact header beside the
+    content, the footer order with the Elsewhere list, and one signature
+    (the stamp for its one action, say). No exploration rounds.
+  - *The deep version*, for anything getting hours: everything below
+    applies. Find the metaphor, use the whole screen, try many things.
+  A five-minute page should still look like family, not like any site.
+- **Avant-garde, and still intuitive.** Aim ahead of the average web, not at
+  it, and keep it obvious to use: a novel metaphor people already know
+  physically, and the whole screen as one composition. The model is
+  wjeather (the screen *is* the forecast: time down, temperature across,
+  no widgets). If a layout could be any site's, it isn't done.
+- **Design, don't arrange.** He isn't after the average answer ("put the text
+  in order, left-aligned"). Derive the visual language from the content's own
+  metaphor (a library has shelves, boards, spines, labels, bookends) and use
+  space as a material: what's full-bleed, what's inset, what overlaps, what
+  is tilted. Ask what the physical version of the thing does.
+- Check his own projects before inventing a control, and name the source.
+- **When an idea is too much, shrink it; don't retreat to the generic.** He
+  enjoys the bold version, then often says "too clever" or "too much room".
+  The fix that worked was a smaller form of the same metaphor (outlined
+  ghosts → one shelf-label card), not a plain counter in the header. A
+  metaphor that already carries the content gets noisy when repeated for
+  navigation, so pick a different, smaller one there. Build bold ideas where
+  they're easy to drop.
+- **Try many things.** The wild versions are worth building even when they
+  won't ship: they're how the better idea shows up (asking where the count
+  could live led through outline ghosts to the shelf label, which stayed).
+  Expect several rounds: make, screenshot, react,
+  shrink or swap. Keep each round cheap (a switch in the URL, a scratch
+  comparison page) so there's appetite for the next one.
+- **Use the whole palette.** The family of Wjerk colours seen again and
+  again is identity too, not just ink on cream. Reach for the originals
+  (`--wjerk-*`: goldenrod, navy, red, cornflower, green, purple…) and
+  their ramps for controls, labels, objects and data, and let a project
+  carry several of them. The wjavelength results show which pairings he
+  likes; use them.
+- Colour choices come as a drawn lineup of 4–6 contrast-checked options
+  from across the palette. Rule out pairs that are AA-large only when the
+  element can get small.
+- Hover changes colour by default (swap or invert). Movement, scale or tilt
+  on hover only when the project's metaphor calls for it (a card you'd
+  actually pick up, a book that slides off the shelf), not as decoration.
+- Rules sparingly in secondary areas (footers, lists): group with space.
+- **Use the space; get to the real content fast.** On a wide screen, the
+  room is there to be used: tools beside the title, not stacked under it,
+  so the content (the books) starts high on the first screen. The layout
+  itself should be interesting and beautiful, composed rather than a
+  default stack of austere UI. Put new information into text already on
+  the page (the blurb became the live description of the filter) before
+  adding a line or a box.
+- **Open by default, and linked in.** Every project says how it's made,
+  states open licences, shares its data where safe, and credits what
+  belongs to others. Launch isn't done until the hubs link to it
+  (kristian.bjornard.com, a.wjerk.shop footer and index) and its footer
+  links out to the family. RULES.md "Open by default".
+- Screenshot phone and desktop after every visual change, before reporting.
+- **Small steps, each its own commit, so backtracking is cheap.** Seeing an
+  idea often shows him it was wrong and sparks a different one, which can
+  mean going back a step or two and setting off on another vector. Keep
+  one commit per visual step with a plain message, so "go back two steps"
+  is a clean revert, and offer the recent steps by name when he wants to
+  backtrack. When a correction is ambiguous, undo the smallest thing it
+  could mean and say exactly what changed.
+- **Ask for the why, briefly.** When he keeps or rejects a design, ask one
+  short ASK ME with a few likely reasons as options (e.g. "too much room",
+  "too clever", "not ours / generic", "wrong mood", "hard to read", plus
+  his own words), so the reason can steer the next round and go into
+  NOTES.md. Skip it when he's already said why. A reason in his words
+  ("too clever") is worth more than a guess; record it verbatim.
 
 ## Where to read
 
@@ -145,6 +225,8 @@ Load the section from `RULES.md` before working in that area.
 |---|---|
 | Colors, accent, palette | "Color: pink is the home accent", "Color: yellowish-gray background" |
 | Anything that might look generic | "Tells: defaults nobody asked for" |
+| Starting a project, choosing a control | "Signatures: what makes it a Wjerk project" |
+| Footers, licences, launching, linking projects | "Open by default: the design commons and the family web" |
 | Contrast, focus, a11y | "Contrast: high-contrast pairs only" |
 | Panels, buttons, borders | "Structure: rules, not chrome" |
 | Choosing a typeface | "Typography: open/libre first", "Typography: the roster" |

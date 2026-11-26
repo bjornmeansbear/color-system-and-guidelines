@@ -311,8 +311,139 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-11-26
+
+- **Open, for a future day: a tool-page template.** One plain HTML file
+  (like `slideshow-template.html`) that rolls out the five-minute version:
+  kit.css linked, header with title and blurb beside the tools, the content
+  area, the footer order with About / Colophon / Elsewhere and small print,
+  and the stamp for the one action (Basteleur is already in
+  `tools/slideshow/fonts/`). Also a place to explain the tools in plain
+  words, which Kristian is still working out how to do.
+- **New RULES.md section, "Signatures: what makes it a Wjerk project."**
+  Kristian: the projects are one aesthetic universe that should evolve its
+  own look, so a Wjerk project is recognisable without leaning on cream and
+  ink. Catalogued ten recurring moves with their source projects (the stamp,
+  the tilted card on its pile, objects keeping their own paper and ink, drawn
+  to scale, the plank, the label on the structure, ink-ruled controls, the
+  face named in itself, the elsewhere list, the footer order). Rule: use at
+  least two, contribute one, record how each evolves. The bjorn-design
+  skill now names the signatures at every project kickoff.
+- **Library (`~/Code/library`, library.wjerk.shop): books as spines.**
+  bjornmeansbook's shelf (bjook.css: flex row that wraps, each item
+  carrying its own piece of board) reused with the covers turned into
+  spines. Findings worth keeping:
+  - **Every 1–3 step tint passes with Wjerk Black**, so 33 spine colours are
+    free: all AAA at 7.15:1 or better except pink-3 at 6.30:1 (AA).
+    Spines keep their paper and ink in dark mode, like bjook covers.
+  - **Colour by series, then publisher, never two neighbours the same hue.**
+    A run (Dirty Furniture 1–6, Are.na Annuals, Codex) is one tint, the way
+    matched sets look on a real shelf; a publisher keeps its hue with the
+    step varying.
+  - **In `writing-mode: vertical-rl`, `flex-direction: row` runs down the
+    spine.** `column` runs sideways and overlaps title and author.
+  - **Spines are drawn to scale** (inches × a clamp()ed `--inch`), from
+    caliper measurements in Notion first, then Open Library dimensions,
+    then page count; widened to 24px minimum for WCAG 2.5.8 targets.
+  - Open: a display face for the site title and spines (system stack for
+    now), and whether the board colours should become kit tokens, since
+    two projects now share them.
+  - **Spines rotate through 13 roster faces** (Work Sans, Libre Franklin,
+    Gentium, EB Garamond, Crimson Pro, Newsreader, Plex Mono, League
+    Gothic, Young Serif, Space Mono, Bricolage, Fraunces, Basteleur), one
+    weight each via Fontsource, chosen like the colour: a series shares a
+    face, a publisher keeps a "house face", neighbours differ. A
+    `--spine-scale` per face evens out apparent size (League Gothic 1.35,
+    Space Mono 0.9). Credited in the footer with each name set in its face,
+    per "Typography: the roster". Kristian's idea. The site title stays system
+    sans on purpose: "let the spines have all the fun" (answered 2026-11-26).
+  - **Boards run wall to wall while the books keep a margin:** each item's
+    board is an `::after` at `left: -100vw; right: -100vw` behind the
+    books (all one colour, so the overlaps don't show), and the clipping
+    (`overflow-x: clip`) sits on the padded outer container, not on the
+    list inside the padding. Padding sets where content stops; the clip
+    sets where decoration stops. Reusable for any full-bleed rule under
+    inset content.
+  - **Tags as browsable shelves: tried three ways, kept the plainest.** A
+    wrapping link list took a screen of height on a phone; tag "spines" on
+    their own mini board (height from book count, square-root scaled) were
+    charming but still crowded and forced long names onto two lines. Shipped:
+    a native `<select>` ("Browse a shelf"), styled like the search input
+    (2px ink rule), one line on every screen. Lesson: a metaphor that
+    already carries the main content (spines) gets noisy when repeated for
+    navigation. From 55rem the header is two columns: title and blurb left,
+    search and shelf menu right.
+  - **The count lives on the shelf, as a library shelf label:** a small
+    paper-and-ink card (`--wjerk-white` / `--wjerk-black`, rim in the
+    board's lighter top) centred on the first board's front edge:
+    "Typography · 34 of 441", or "All 441 books, A to Z". Takes no header
+    space and borrows a real library convention instead of a UI one. Tried
+    and dropped the same day: filtered-out books kept as faint outlines
+    (matches slid to the front with `animate:flip`, or stayed in place to
+    show where they fall A–Z). Striking, but too clever: a page of empty
+    outlines to scroll past. The card was enough.
+  - **"Show all the books" as a wjavelength stamp:** the vote stamp's recipe
+    (Basteleur bold, uppercase, `0.12em` rule in currentColor, -8deg, a
+    150ms scale-in from 1.6) reused as a button, `position: fixed` over the
+    top-left corner so the way out of a filter stays in reach while
+    scrolling. Colours from the wjavelength results (214 votes, 2 people,
+    2026-11-26): best accent goldenrod 94% yes, dark grounds 82% vs light
+    59%. First tried `--wjerk-goldenrod` on `--wjerk-black` (6.50:1), fixed
+    top-left over the title; then moved under the search tools it resets,
+    with a 2px rule instead of 0.12em, and six AA colourways compared
+    (pink 3.75:1 and orange 4.12:1 on black ruled out: AA-large only, and
+    the stamp gets small on a phone). Kept: cream (`--wjerk-white`) on
+    `--wjerk-navy`, 9.55:1, the one cool colour on a warm page. Hover and
+    press swap the pair. First a plain onething `.btn`, which was clear but
+    forgettable. Candidate: the stamp as the kit's "one loud thing" control,
+    for a single escape or confirm action per page.
+- **`scripts/contrast.py find` crashes on `wjerk-black`** (KeyError on
+  `var(--wjerk-white)` while resolving the semantic layer). `pair` works.
+  Not fixed yet.
+
+### 2026-11-25
+
+- **Scroll drift, revived from 2013. Shelved the same day:** the draft didn't
+  work, and the idea waits until the brief is clearer. The Worker is
+  deleted; the source stays. (It was at
+  kristian-bjornard-com-draft.ookb.workers.dev, source in
+  `~/Code/kristian-bjornard-com/draft/`). `ookb.co/ideate.html` (Aug 2013)
+  moved each section at its own speed and jumped back to the top at the
+  bottom, so the scroll felt endless. The draft keeps the idea and fixes
+  what 2013 missed:
+  - It's on only at `55rem` and up, with motion allowed. Reduced motion
+    gets the static page (RULES.md "Viewer settings").
+  - The loop only fires for wheel and touch scrolling. Pressing Tab turns
+    the drift off for the visit, so keyboard users are never thrown back
+    to the top.
+  - Plain JavaScript, no jQuery.
+  - Tuning: the first try had rows rushing up into the bio (2013's
+    converging speeds), and the text overlapped. Now the header rushes up
+    and each row lags a little more than the one above it, so the list
+    opens up and stays readable while it moves.
+  - Second "Motion" case where the motion is the page's identity, not a
+    meaningful-state cue like wjeather's wind or onething's stamp. Open
+    question: does RULES.md "Motion" need a line for that kind?
+- **The 2013 personal page used the OOKB palette:** pink `rgb(236,64,121)` on
+  `@ookb-gray` with brown line work. That palette is already recorded in
+  RULES.md "Color: the original Wjerk palette", so this only confirms its
+  date.
+- **Front-door links set to `cornflower-6`**, following a.wjerk.shop (7.38:1
+  on the White). In dark mode they use `cornflower-3` (10.50:1 on
+  `brown-9`). The page had been showing the browser's default blue, which is
+  one of the RULES.md "Tells".
+
 ### 2026-11-24
 
+- **Link rows on subgrid** (kristian.bjornard.com front door,
+  `~/Code/kristian-bjornard-com`): a list of links is stacked on a phone
+  (label, link, note), and from `40rem` each `<li>` becomes a
+  `grid-template-columns: subgrid` row of a `max-content max-content
+  minmax(0,1fr)` list grid, so the columns line up down the whole list
+  and the note column takes the rest of the width. No page cap; the
+  bio paragraphs keep the 40rem measure. Candidate pattern for the
+  teaching-site rows. Label is `--color-text-muted` on `--color-bg`:
+  7.34:1 light, 10.49:1 dark.
 - **Wjavelength's voter rebuilt around one decision** (`site/`): the set is
   the only thing on screen, and you answer it with a gesture. From oblique:
   the card fills the screen, the poster line is big fluid type, and it's set

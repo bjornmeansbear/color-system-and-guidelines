@@ -18,9 +18,9 @@ function wilson(yes: number, n: number, z = 1.96) {
 	if (n === 0) return { low: 0, high: 1 };
 	const p = yes / n;
 	const denom = 1 + (z * z) / n;
-	const centre = p + (z * z) / (2 * n);
+	const center = p + (z * z) / (2 * n);
 	const spread = z * Math.sqrt((p * (1 - p)) / n + (z * z) / (4 * n * n));
-	return { low: (centre - spread) / denom, high: (centre + spread) / denom };
+	return { low: (center - spread) / denom, high: (center + spread) / denom };
 }
 
 const familyOf = (name: string) => {

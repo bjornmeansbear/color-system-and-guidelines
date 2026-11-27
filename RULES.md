@@ -10,10 +10,10 @@ oblique.ookb.co, wjerk.shop, whatever's next). Nothing here is precious.
 ## Ethos: do more with less
 
 The governing instinct behind every rule below: solid rules instead of
-shadows, kit tokens instead of made-up colours, and colour that grows with
+shadows, kit tokens instead of made-up colors, and color that grows with
 the project. Start with one accent (the home pink, or navy) carrying links
 and focus; as a project gets more complex, lean into the whole Wjerk palette
-for objects, labels, stamps and data, since the family of colours seen again
+for objects, labels, stamps and data, since the family of colors seen again
 and again is part of the identity (see "Signatures"). Restraint is the
 style: in the number of moves, not in ambition.
 
@@ -85,7 +85,7 @@ to do instead. Reviewed line by line 2026-11-24.
   model learns the system and applies it as one more template. *Ask:* what
   in this project's content should push the kit somewhere? Things should
   go together without bland uniformity.
-- **A highlight with no reason.** Part of the content coloured or filled
+- **A highlight with no reason.** Part of the content colored or filled
   to give the piece visual interest: *A Library*'s black spines for the
   books about the commons. *Why:* "I wanted visual interest, but it didn't
   really seem to make sense once we were working on it." It's hard to say
@@ -178,7 +178,7 @@ average web, not like it, while staying obvious to use. The bridge between
 the two is a novel metaphor that people already understand physically, plus
 the whole screen used as one composition. Prime example: *wjeather*, where
 the screen *is* the forecast: time runs down the page, temperature across
-it, the current temperature set large over the line, the sky's colour the
+it, the current temperature set large over the line, the sky's color the
 time of day. No widgets, no cards of numbers, and nobody needs instructions.
 
 Signatures come from **designing, not arranging**: the visual language is
@@ -223,11 +223,11 @@ are how he designs generally (draft, 2026-11-26, his words to come):
 - **The stamp.** Basteleur, uppercase, tilted about -8deg, a solid fill and a
   2px rule; lands with a quick scale-down. For the one loud action. *wjavelength*
   (yes/no votes) → *library* ("Show all the books", cream on navy).
-- **The tilted card on its pile.** A card in its own colour, rotated about
+- **The tilted card on its pile.** A card in its own color, rotated about
   -1deg, with a cream card offset behind it instead of a drop shadow.
   *onething* (pile), *oblique* (tilt) → *library* (book card).
 - **Objects keep their own paper and ink.** Things that stand for physical
-  objects (book covers, spines, cards, stamps) keep fixed colours in dark mode,
+  objects (book covers, spines, cards, stamps) keep fixed colors in dark mode,
   like the object would. *bjook* → *library*.
 - **Drawn to scale.** Represent real objects at their real proportions (book
   spines from measured heights and thicknesses). *library*.
@@ -238,7 +238,7 @@ are how he designs generally (draft, 2026-11-26, his words to come):
   carrying the caption, the way a library labels a shelf. Real-world
   conventions before UI conventions. *library* (shelf label).
 - **Ink-ruled controls.** Inputs and buttons get a 2px ink rule on the ground,
-  no radius, and invert when pressed. Hover changes colour by default;
+  no radius, and invert when pressed. Hover changes color by default;
   movement only when the project's metaphor calls for it (something you'd
   pick up or pull out), not as decoration. *onething* (`.btn`).
 - **The face named in itself.** A colophon sets each typeface's name in that
@@ -252,7 +252,7 @@ are how he designs generally (draft, 2026-11-26, his words to come):
   Pick pairings from a drawn, contrast-checked lineup, and lean on the
   wjavelength vote results for which ones he likes. *library*, *wjavelength*.
 - **The footer order.** Who / how it's made (honestly: hosting, weight,
-  source, licences) / where else / credits. *a.wjerk.shop* → *library*.
+  source, licenses) / where else / credits. *a.wjerk.shop* → *library*.
 
 When a signature changes in a new project, update its entry: the list
 records how each one has evolved, not just where it started.
@@ -264,7 +264,7 @@ Every project gives something back and points at the others.
 **The design commons, where it's possible and intellectually safe:**
 - Say how it's made: a short "how it works" in plain words, and a colophon
   (typefaces named in themselves, hosting, sources of data and images).
-- Open licences, stated in the footer and in the repo: text and design
+- Open licenses, stated in the footer and in the repo: text and design
   CC BY-SA 4.0; code Apache 2.0 or AGPL-3.0 (wjeather), or public domain
   (wjavelength).
   Public source where the repo can be public.
@@ -284,7 +284,7 @@ Every project gives something back and points at the others.
 **The family web: every project links in and is linked to.**
 - Each project's footer carries the "Elsewhere" list: grouped links to the
   studio, the index of projects, kristian.bjornard.com, teaching, writing,
-  the colour system, the archives.
+  the color system, the archives.
 - Launching a project isn't done until the hubs point back to it:
   kristian.bjornard.com's list, a.wjerk.shop's footer and index, and, if
   it's a case study, `a.wjerk.shop/connections.json` (its per-page
@@ -293,6 +293,13 @@ Every project gives something back and points at the others.
 - Link generously between related projects in the body too, not only in
   footers: the more paths in, the more likely someone finds it and gets
   excited.
+- **When two projects hold the same things, link the things, both ways.**
+  The library's books and bjornpaedia's book and author pages: each book
+  card says "My notes on bjornpaedia", each wiki page has a "Library" row.
+  Match once, in one script, and write both directions from it
+  (`library-links.py`, like `case-study-links.py` and
+  `connections.json`), never by hand. Link only to what's published
+  (2026-11-27).
 
 ## Structure: rules, not chrome
 
@@ -585,7 +592,7 @@ so the color story has range without leaving it:
 - **`white-0` → `white-9`, papers.** `white-0` is the White exactly; each step
   warmer and creamier, to a butter cream (#E1D3A0). The Black holds on every
   one (≥9.72:1), and so do `gray-6` labels (≥5.20), the pink line (≥3.48) and
-  the green line (≥3.03). Neighbouring steps are close (ΔE ~1.4) — paper
+  the green line (≥3.03). Neighboring steps are close (ΔE ~1.4) — paper
   stocks, not a ramp.
 - **`black-0` → `black-9`, inks.** `black-9` is the Black exactly; lighter
   warm charcoals below it, every one AA as text on the White (`black-0`
@@ -616,13 +623,13 @@ a fallback to feel bad about.
 part of the argument, not a lack of discipline: "trying to show maximum
 open-source-ness where possible." Where a project allows, reach past the
 roster into the whole library. `~/Code/libreFontLibrary/fonts.toml` lists
-about 190 families, each with its licence checked upstream (`license =
+about 190 families, each with its license checked upstream (`license =
 "unverified"` or `"none-found"` means don't ship it). New finds land in
 the libretype Are.na channel first. Don't treat its `favourite` field as
 this roster: `build_manifest.py` rebuilds it from the 2018 list.
 
 **Treat type like a specimen, where useful.** Name the typeface, its
-designer or foundry, and its licence where the reader can see them (a
+designer or foundry, and its license where the reader can see them (a
 colophon, a caption, a footer), and show the face doing what it's good
 at. The type is part of the content, not only the vehicle. Not in forms
 and app controls, where naming the face is noise, and never inside body
@@ -645,7 +652,7 @@ Claude's first guesses, not yet confirmed: ASK ME before relying on one.
 
 | Voices: headlines, posters, moments | Guessed job |
 |---|---|
-| Basteleur (Velvetyne) | headlines, the current favourite. `400` is Bold, `300` is Moonlight |
+| Basteleur (Velvetyne) | headlines, the current favorite. `400` is Bold, `300` is Moonlight |
 | League Gothic | condensed, poster |
 | Le Murmure (Velvetyne) | display, tall and sharp |
 | Young Serif | display serif, heavy and warm |
@@ -677,11 +684,11 @@ display sizes), weights 400–800, for the wordmark and headings over the
 system-sans body. Self-hosted as the Latin-subset variable woff2 (~77 KB).
 
 PicNic carries a flag the others don't. It is published under Velvetyne's
-**CUTE** licence (Conditions d'utilisations typographiques engageantes), not
-the OFL — an ethical-use licence with conditions on who may use the font,
+**CUTE** license (Conditions d'utilisations typographiques engageantes), not
+the OFL — an ethical-use license with conditions on who may use the font,
 rather than an unrestricted libre one. That is not a reason to avoid it, and
 the politics are probably congenial, but it is a different category from the
-rest of this roster, where "the constant is the licence" has meant OFL. Read
+rest of this roster, where "the constant is the license" has meant OFL. Read
 the CUTE terms before PicNic goes into anything shared or client-facing.
 
 Friz Quadrata, a longtime personal pick, deliberately stays off this
@@ -702,7 +709,7 @@ Two sizes of it, from onething (2026-10-07) and oblique:
 - **The accent tilt, 7–12deg,** stays for the one loud thing: onething's
   "✓ Done" stamp (8deg) and its stack-complete sticker (−8deg).
 - **The pile tilt, 1.5–4deg,** makes a set of cards read as a deck or a pile
-  of notes. Random per card, alternating sides so neighbours never line up,
+  of notes. Random per card, alternating sides so neighbors never line up,
   fixed for the card's life. The card being read gets about a third of its
   tilt — enough to belong to the pile, straight enough to read. Pivot the
   tilt near whatever must stay put (onething: `transform-origin: 25% 0`, by
@@ -790,7 +797,7 @@ jumping at a breakpoint: the `clamp()` ramps above.
 **Winslow Homer recurs.** He appears in all three 2026 decks — *Mending the
 Nets* (1882), *Art Students and Copyists in the Louvre Gallery* (1864),
 *Blackboard* (1877), *The Veteran in a New Field* (1865). Working people,
-plain light, no rhetoric. Worth checking him first when a brief involves labour,
+plain light, no rhetoric. Worth checking him first when a brief involves labor,
 attention, or instruction.
 
 **Style**: Victorian etchings are a recurring source material — their
@@ -824,7 +831,7 @@ photo, never on a gradient scrim. You cannot know what is behind it — half
 the chair-ness images are museum shots on white, where light type
 disappears. An opaque block holds its ratio whatever the image does.
 
-Anchor that block to a corner, a full edge, or dead centre. A panel at an
+Anchor that block to a corner, a full edge, or dead center. A panel at an
 arbitrary offset reads as a rendering tear rather than a layer.
 
 **Weight, shown**: a site that states its page weight should also publish the
@@ -847,7 +854,7 @@ projects need it, but the starting rule is: ignore motion unless a
 specific idea calls for it.
 
 Auto-advancing media is the exception — a slideshow left running is motion
-as the medium, not as a flourish. It carries two obligations. Honour
+as the medium, not as a flourish. It carries two obligations. Honor
 `prefers-reduced-motion: reduce`, slowing the thing down rather than
 stripping it out. And scale dwell time to content length: a 30-character
 line and a 270-character passage do not need the same time on screen.
@@ -1015,7 +1022,7 @@ and you pick **one**:
   been used deliberately yet — see the "or don't declare one" note below.
 - **Kind.** All paintings, all prints, all etchings. Coarser, and it does
   double duty: it is also a noise filter, because keyword searches otherwise
-  return vessels, daggers and reliquaries whose catalogue text merely mentions
+  return vessels, daggers and reliquaries whose catalog text merely mentions
   the word.
 
 **The fallback: declare no axis at all.** "On Making Stuff" was built with one
@@ -1109,7 +1116,7 @@ is silent about its own gaps. All five of its beat images are still
 missing, which is what that silence buys.
 
 **Every background image carries a credit line** — source, collection,
-year, licence — written at pick time, not deferred.
+year, license — written at pick time, not deferred.
 
 **Scrim and verify against the worst case.** Contrast over an image
 cannot be eyeballed, because the image is not knowable in advance.
@@ -1218,7 +1225,7 @@ below only tops that up.
 correction that matters, and it was measured:
 
 - **A concept** ("ordinary labor in a working interior") goes to the museum
-  APIs. They have curated subject metadata. Commons matches raw catalogue
+  APIs. They have curated subject metadata. Commons matches raw catalog
   keywords and returns a recording studio for *Aeron*.
 - **A named artist or artwork** ("Sorolla mending nets") goes to Commons. The
   museum APIs can only return what they own, which is a severe bias:
@@ -1250,7 +1257,7 @@ local files.
 Image caches stay out of git. `chair-ness` gitignores `images/`,
 `links/`, and `vitra/`, holding 423 images and 348MB on disk against a
 5.5MB `.git`. The canonical record is the are.na channel plus a
-`manifest.csv` — id, title, source URL, licence, `image_url_large`,
+`manifest.csv` — id, title, source URL, license, `image_url_large`,
 `local_path`.
 
 The cache should be shared across projects rather than living inside one
@@ -1310,7 +1317,7 @@ Books are built by Bjook, which lives in its own repo, `~/Code/bjook`
 sibling of the `print/` pipeline with the same engine (WeasyPrint) and the
 same reasons: plain text in git, a design that is a CSS file, a rebuild in
 seconds. `kind` in `book.toml` picks the kind of book: `poems` (the
-default), `paper`, a newspaper, and `shelf`, a catalogue drawn as spines
+default), `paper`, a newspaper, and `shelf`, a catalog drawn as spines
 (both below). Like every other project it
 copies `kit.css` rather than linking here. The rules for books stay in this
 file.
@@ -1377,7 +1384,16 @@ Typesetting defaults, each one a line in `book.toml` or `book.css`:
   Straight quotes become curly, `'` becomes a real apostrophe (including the
   leading ones: ’90s, ’em), and three dots become one ellipsis. This covers
   the title, contents, running heads and colophon too.
-- **Em dashes are spaced.** A dash stands clear of its neighbours: `word —
+  It covers data too: catalog titles and names arrive with straight marks
+  and get the same treatment, on the page and on the site (*A Library*,
+  2026-11-27). Search folds the marks back, so a typed `'` still finds `’`.
+- **Vertical type on screen: `text-orientation: sideways`.** With
+  `writing-mode: vertical-rl` the default (`mixed`) stands curly quotes and
+  apostrophes upright, full width, in a fallback face ("The ABC ’ s"), in
+  every face on the roster. `sideways` turns each character with the line,
+  like type set on its side. (The library's spines, 2026-11-27. Bjook's
+  printed spines rotate the label instead, so they never had it.)
+- **Em dashes are spaced.** A dash stands clear of its neighbors: `word —
   word`, never `word—word`. At build, `--`, a spaced hyphen and a spaced en
   dash all become a spaced em dash, and an unspaced one gets its spaces. The
   space before is a no-break one, so a turned-over line never starts with the
@@ -1386,7 +1402,7 @@ Typesetting defaults, each one a line in `book.toml` or `book.css`:
 - **A book is also a website** (`bjook site`). Same text, same typefaces,
   same typographer's marks; only the stylesheet changes. One poem to a page
   as in print, with the running head as the link back up and the poem's
-  number, set like the folio, between previous and next. Colours, dark mode
+  number, set like the folio, between previous and next. Colors, dark mode
   and the focus ring come from `kit.css` unchanged, so the ink on screen is
   the kit's brown, not print's solid black. Sizes are rem on the kit's 6px
   rhythm (poems 18/30). The print-only signs stay in print: no continues
@@ -1454,16 +1470,16 @@ from one copy.
   sharpest a press prints. No gray text: newsprint is darker than the kit's
   ground and softens type, so a muted gray that passes on screen can fail on
   paper.
-- **Large dark areas are four-colour black** (30/30/30/100), and there are
+- **Large dark areas are four-color black** (30/30/30/100), and there are
   no flat gray or black-ink tint fills. An inkjet press bands on flat areas
   of one ink. Structure comes from rules, as everywhere else in the kit.
-- **Black and white is a look, set at build.** Photos stay in colour at the
+- **Black and white is a look, set at build.** Photos stay in color at the
   source; the build makes the press copy: black and white, then CMYK
   through the CMYK profile (four inks hide a clogged nozzle, which shows as
   a streak in a black-only image), capped at about 300 ppi across the page.
-  `[color] mode = "color"` keeps the colour instead. Colour is four tokens
+  `[color] mode = "color"` keeps the color instead. Color is four tokens
   (`--ink`, `--black`, `--accent`, `--paper`), with the accent equal to the
-  ink in gray mode, so going to colour after a proof changes `book.toml`
+  ink in gray mode, so going to color after a proof changes `book.toml`
   and no layout.
 - **Photos under 200 ppi at their printed size** are listed by the build.
 - **Captions and labels are 0.8 of the text size**, 8pt at 10pt text. The
@@ -1478,7 +1494,7 @@ flip on the short edge, fold, staple. It does not correct for creep.
 ### Shelves (`kind = "shelf"`)
 
 First built for *A Library* (`~/Code/library/book`, 2026-11-26): the 439
-books in library.wjerk.shop's catalogue, drawn as spines on one shelf, A to
+books in library.wjerk.shop's catalog, drawn as spines on one shelf, A to
 Z, half letter, published at bjornmeansbook.com/a-library.
 
 - **Planned by spread.** A shelf runs the width of a spread, straight
@@ -1488,7 +1504,7 @@ Z, half letter, published at bjornmeansbook.com/a-library.
   the gutter because they're a gesture, not text to read (Bjook: "A
   gesture can cross the fold").
 - **Drawn to scale from the data.** Heights and thicknesses come from the
-  catalogue; a title that won't fit drops its subtitle, then cuts back to
+  catalog; a title that won't fit drops its subtitle, then cuts back to
   its last whole word with an ellipsis.
 - **Every word is a text file.** The essay, colophon and back cover are
   Markdown beside `book.toml`; counts and dates fill in from the data
@@ -1524,26 +1540,29 @@ the MICA riso.
   the mark, the picture, and the spines of the books the essay names). That's this book's logic, not a rule: each piece
   finds its own. The green is a callback to *I Seem to Be a Verb*, whose
   giant sentence through the spreads the running line references; it isn't
-  a house second colour.
+  a house second color.
 - **Accent comes from better material, not a highlight.** Visual interest
-  from a better quote or a better image beats colouring part of the record
-  to have something coloured (see the tell "A highlight with no reason").
+  from a better quote or a better image beats coloring part of the record
+  to have something colored (see the tell "A highlight with no reason").
 - **Keep the second ink away from the black**, so registration doesn't
-  matter: its own band, its own page. *A Library*'s green spines break
-  this (each stands between black-outlined neighbours); see NOTES.
+  matter: its own band, its own page. When the two have to meet,
+  **overprint** instead: the second ink as a plain block under the black,
+  which prints its line work and type over it as usual. Each drum is whole
+  on its own, so a slip only moves the block under lines already there.
+  *A Library*'s green spines (2026-11-27).
 - **French fold for one-sided printing.** Each leaf is two facing pages
   side by side, printed on one side and folded at the outer edge. Nothing
   has to back up, and wet ink never touches the back of the next sheet.
 - **Print on paper that's already waiting** (Ethos: reuse collected
   materials first). Old one-sided sheets go blank side out; the old
   printing folds inside the leaf. One 11 × 8.5 leaf
-  centred on old 11 × 17 leaves room for the riso's unprinted edge (about
+  centered on old 11 × 17 leaves room for the riso's unprinted edge (about
   ⅕in) and the cuts.
 - **Masters are always black**, one per drum, from the same layout so they
-  register, with a preview in the real ink colours. Screen colours for riso
+  register, with a preview in the real ink colors. Screen colors for riso
   inks are stand-ins (green `#00A95C`, gold `#C2A14D`), kept in each book's
   `book.toml`, not the kit: riso is one output method among several.
-- **Coloured paper is a master like any other.** *A Library*'s cover is
+- **Colored paper is a master like any other.** *A Library*'s cover is
   gold ink on black paper, mastered black on white; what's white on the
   master is the paper showing. Thin rules go a little heavier (0.6pt)
   for a pale ink on a dark paper.
@@ -1599,7 +1618,7 @@ the generalized, drop-in version: no build step, edit the `CONFIG`,
   in the file and it becomes unreadable on the wall.
 - **Credit the type, and point at where to get it.** Every quote carries a
   small "Type: Spectral 500, Production Type (SIL OFL)" line: face and the
-  weight or axis value actually shown, designer or foundry, licence. On the
+  weight or axis value actually shown, designer or foundry, license. On the
   deck it takes the image caption's bottom-left corner and the name links to
   the download page; on the ambient card it's plain text at the foot of the
   panel (the card takes no clicks). Set in the base stack and the caption
@@ -2101,13 +2120,13 @@ rather than prose:
   (sunrise, sunset) rather than a span, draw a 1px solid rule edge to edge
   (in wjeather, Golden Rod for the sun: `goldenrod-6`, `goldenrod-3` dark), labelled in words ("sunset 4:42 PM") beside the time ticks, and drop
   any tick it would crowd. Snap the rule to the data's own grain (in
-  wjeather, the hour break where the sky's colour turns) and let the label
+  wjeather, the hour break where the sky's color turns) and let the label
   carry the exact time. The picture is a painting of likely weather, not a
   timetable, and a rule off the grid would leave a sliver of mismatched
-  colour. Straight, solid and full-bleed, it
+  color. Straight, solid and full-bleed, it
   can't be read as a data series (those curve) or as texture (hatching is
   faint dashes). wjeather, 2026-11-23: day versus night is better shown by a
-  line than by giving every sky a second, night-time colour, because the
+  line than by giving every sky a second, night-time color, because the
   palette has few distinct pale tints left.
 - **Anything drawn gets a spoken summary** for screen readers. Color and
   position are never the only carrier.
@@ -2260,7 +2279,7 @@ verbatim copy; the project's own CSS maps it in:
   name the kit doesn't use (`.picker`, `.picker-header`).
 - **Self-hosting an OFL face through Fontsource counts as self-hosted.**
   `npm i -D @fontsource-variable/<face>` and `@import` it in the app CSS: Vite
-  bundles the woff2 into the build, so no third-party request and the licence
+  bundles the woff2 into the build, so no third-party request and the license
   ships in `node_modules`. Quicker than hand-copying files into `static/fonts`
   as wjeather does, and it replaces a Google Fonts `<link>` one-for-one.
 - **Next.js works the same way** (Wjaffle, `~/Code/fridgechef`, 2026-11-06):
@@ -2287,9 +2306,9 @@ from a *palette*, not from CSS variables, so the kit goes in at two levels:
   White), `wjerk-accent` = `--pink-5` (read as `--color-accent`, so focus rings,
   nav hover and the pill stay pink while links are blue), `muted-foreground` =
   `--gray-6`, table header = `--white-4`. Literals, not `var(--…)`, because
-  TiddlyWiki does colour math on palette values (tag pills, contrast).
+  TiddlyWiki does color math on palette values (tag pills, contrast).
 - **A stylesheet tiddler exposes them as kit tokens.** `Wjerk Tokens` (tagged
-  `$:/tags/Stylesheet`) writes `--color-bg: <<colour background>>;` and so on,
+  `$:/tags/Stylesheet`) writes `--color-bg: <<color background>>;` and so on,
   so the project's own CSS uses `var(--color-*)` and the hex lives in one
   place. Gotcha: TiddlyWiki wikitext turns `--` into an en-dash, which
   silently breaks every custom-property name — start that tiddler with
@@ -2388,7 +2407,7 @@ a.wjerk.shop's etched globe breaks the frame — see NOTES.md.
 taste-translator (2026-10-15) keeps the frame and takes a custom fill: a
 dusty rose, `#C98F8E`, darker than any kit pink step 0–2. The brown line work
 measures 6.74:1 on it. Its mark is the app's own subject, a hub of radiating
-nodes, with a "TT" monogram at the centre.
+nodes, with a "TT" monogram at the center.
 
 Wjaffle (2026-11-06) takes a kit tint: `goldenrod-1` (#FFEAAE), toast-colored
 for an app named after a toasted sandwich, the brown at 15.23:1 on it. The
@@ -2407,7 +2426,7 @@ sentence. A mark drawn from shapes skips the outlining step.
 |---|---|---|
 | Browser tab | `favicon.svg` | The source SVG as-is |
 | iOS home screen | `apple-touch-icon.png`, 180×180 | Opaque; `<link rel="apple-touch-icon">`. iOS rounds the corners — don't pre-round. iOS keeps the icon from when a site was added; re-add it to see a new one |
-| Android / installable web app | 192×192 and 512×512 PNG, in a web manifest | Keep the mark inside the centre ~80% (the maskable safe zone) |
+| Android / installable web app | 192×192 and 512×512 PNG, in a web manifest | Keep the mark inside the center ~80% (the maskable safe zone) |
 | App Store, if ever native | 1024×1024 PNG | Opaque, square, no rounding |
 
 On macOS the PNGs render straight from the SVG with Quick Look —

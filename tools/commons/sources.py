@@ -400,7 +400,7 @@ def wikimedia(query, limit=25):
     and has all of them.
 
     The precision caveat still holds and is about *concepts*, not artists.
-    Searching a concept ("ordinary labor") matches catalogue keywords and
+    Searching a concept ("ordinary labor") matches catalog keywords and
     returns junk — a recording studio for "Aeron". Searching a named artwork or
     artist ("Sorolla mending nets") is where Commons is unbeatable. Route
     accordingly: concepts to the museums, names to Commons."""
@@ -445,7 +445,7 @@ class Material:
         "etching; 1837-1901"         ...and Victorian
 
     The coarse grade matters more than it looks: without it, searches return
-    vessels, daggers and reliquaries whose catalogue text merely mentions the
+    vessels, daggers and reliquaries whose catalog text merely mentions the
     keyword. "paintings" is both a look and a noise filter.
     """
 

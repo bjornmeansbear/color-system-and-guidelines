@@ -119,7 +119,7 @@ every subject.
 The cache lives **outside any repo**. `chair-ness` is the model: 423 images and
 348MB on disk against a 5.5MB `.git`, because the caches are gitignored. The
 canonical record is the are.na channel plus `manifest.csv` — id, title, source
-URL, licence, `full_url`, `local_path`, dimensions.
+URL, license, `full_url`, `local_path`, dimensions.
 
 ## Not done yet
 

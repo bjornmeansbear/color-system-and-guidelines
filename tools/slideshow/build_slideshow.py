@@ -54,7 +54,7 @@ def load_quotes(path):
 def image_size(path):
     """(width, height) from the file header -- no Pillow/sips dependency.
 
-    Returns None if the format isn't recognised; callers treat that as
+    Returns None if the format isn't recognized; callers treat that as
     "unknown, keep it" rather than dropping the image.
     """
     with open(path, "rb") as f:
@@ -242,7 +242,7 @@ UNSPLASH_BY = re.compile(r"[Pp]hoto by ([^\u2014|]+?) on Unsplash")
 def unsplash_credits(manifest_rows):
     """Unsplash photo id -> photographer.
 
-    The licence does not require attribution, but these are people's
+    The license does not require attribution, but these are people's
     photographs and the show is public, so they get named. Older saves are
     Link blocks whose title are.na captured as "Photo by NAME on Unsplash";
     newer ones are Image blocks with only descriptive alt text. Both carry the
@@ -821,7 +821,7 @@ function destroySlide(i) {
 }
 
 // Distance between two slides going the short way round the loop, so the
-// wrap from the last slide back to the first does not tear down its neighbours.
+// wrap from the last slide back to the first does not tear down its neighbors.
 function ringDistance(a, b) {
   const d = Math.abs(a - b);
   return Math.min(d, SLIDES.length - d);
@@ -863,7 +863,7 @@ function show(i) {
   if (!elements[current]) buildSlide(current);
   const nxt = (current + 1) % SLIDES.length;
   if (!elements[nxt]) buildSlide(nxt);
-  // inert keeps links on the invisible neighbouring slides out of the tab order.
+  // inert keeps links on the invisible neighboring slides out of the tab order.
   elements.forEach((el, idx) => {
     if (el) { el.classList.toggle('active', idx === current); el.inert = idx !== current; }
   });
@@ -948,7 +948,7 @@ __FONT_FACES__
     font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
     overflow: hidden;
   }
-  /* The stage centres its one in-flow child, the text panel. The image
+  /* The stage centers its one in-flow child, the text panel. The image
      layers and the caption are absolutely positioned, so they sit outside
      this centring and keep their own placement. */
   #stage {
@@ -987,7 +987,7 @@ __FONT_FACES__
      so contrast holds whatever is behind it. Size comes from the length of
      the quote: a short line covers a corner, a long passage covers most of
      the screen. */
-  /* A centred card, in flow, shrink-wrapped to its text -- so how much of the
+  /* A centered card, in flow, shrink-wrapped to its text -- so how much of the
      frame it covers comes from the length of the quote rather than from a
      fixed footprint. */
   #overlay {
@@ -1022,7 +1022,7 @@ __FONT_FACES__
     letter-spacing: 0.02em;
     color: rgb(158,151,147);
   }
-  /* Three footprints, picked by quote length. The card is centred and in
+  /* Three footprints, picked by quote length. The card is centered and in
      flow, so width and type size are what vary -- a short line takes a small
      card, a long passage takes most of the frame. */
   .sz-s { max-width: 44vw; }

@@ -9,9 +9,9 @@ before starting a session, not just written to at the end of one.
 - **A source to read against the rules: Paterson & Tinker, *How to Make
   Type Readable* (1940)**, https://archive.org/details/HowToMakeTypeReadable
   (2026-11-27). Early measured experiments on legibility: type size, line
-  length, leading, bold, italic, all caps, ink and paper colour. Read it
+  length, leading, bold, italic, all caps, ink and paper color. Read it
   against "Typography: baseline grid" (sizes and leading), the 36rem measure,
-  the stamp's uppercase Basteleur, and "Contrast" (their colour pairs
+  the stamp's uppercase Basteleur, and "Contrast" (their color pairs
   predate WCAG). Where the evidence and a rule disagree, note it here; where
   it backs a rule, cite it in RULES.md. A user upload on archive.org, so
   link it for reading, not as a free-to-share copy.
@@ -37,10 +37,10 @@ before starting a session, not just written to at the end of one.
     essay's books in green were "a good reason to mark something", where
     the commons tag wasn't. The difference may be that the mark points at
     something else in the piece itself.
-  - **Green spines next to black lines.** Open: on the riso, does the
-    green shift visibly against its neighbours' outlines (a sliver of paper
-    or a dark overlap at the spine edges)? Check the first proof; accept it
-    as riso character, or rethink the treatment.
+  - **Green spines next to black lines.** Settled the same day: overprint.
+    The green is a block under the spine; the outline and title stay in
+    black over it, so registration hardly matters. Still worth a look on
+    the first proof: how dark black reads over the green.
   - **"Make it from what's true"** (Signatures) is a draft of habits he
     called general; needs his words.
 
@@ -108,7 +108,7 @@ before starting a session, not just written to at the end of one.
   printnewspaper.com whether they have a profile or an ink limit for their
   press, since their site only says coverage is "limited"); whether the
   CMY-heavy gray from that profile prints neutral or takes a cast; whether
-  to go to colour after the proof, which needs the kit's pink and browns as
+  to go to color after the proof, which needs the kit's pink and browns as
   CMYK values checked on newsprint; the typefaces (Newsreader and Libre
   Franklin are placeholders, as Gentium was for the poems). A €31 single
   copy is the proof.
@@ -217,11 +217,11 @@ before starting a session, not just written to at the end of one.
   it in? Also: wjeather's peach fill (#FFCCA0) isn't a kit tint (nearest
   `orange-1`, pinker) — check whether the other icons' fills are. RULES.md
   "Icons".
-- **Deck colour and kit colour have never been reconciled.** `kit.css` says
+- **Deck color and kit color have never been reconciled.** `kit.css` says
   pink accent on a warm yellowish-gray ground with dark brown line work. The
   AY26 lecture decks are black, white and grayscale, with per-lecture semantic
   accents (green marks "preferable" on the futures cone) and no pink anywhere.
-  RULES.md "Presentations: imagery" documents the deck side and the Colour
+  RULES.md "Presentations: imagery" documents the deck side and the Color
   sections document the kit side, and neither references the other. Raised
   2026-09-02: this is an accident of the two being written separately, not a
   decision. Worth deciding whether projection is its own context with its own
@@ -295,7 +295,7 @@ before starting a session, not just written to at the end of one.
   blueprint lanes with an accented dashed line of visibility, built one lane
   per slide) and `.margin` (an object box shrinking across a three-frame
   build). Open: are those archetypes, or one-lecture diagrams?
-- **Deck archive pending.** Kristian is selecting ~8 favourite decks
+- **Deck archive pending.** Kristian is selecting ~8 favorite decks
   (Figma exports and old PDFs) as evidence for the Presentations rules —
   PDFs, one per deck, year in the filename, with a note on which he'd
   actually defend. To extract: layout archetypes and how many recur,
@@ -351,17 +351,37 @@ before starting a session, not just written to at the end of one.
 
 ### 2026-11-27
 
-- **A Library: the essay's books as green spines.** The eight books the
-  essay names that are in the catalogue (the three Jerome Agel books,
+- **A Library: the essay's books as green spines.** The books the
+  essay names that are in the catalog (the three Jerome Agel books,
   *Climates*, *Eternally Yours*, *How Buildings Learn*, the two Eno
-  records) print as solid green spines, titles knocked out to the paper.
-  Bjook's new `[shelf] second_spines` (a list of slugs); the cover, one
-  ink, stays plain. RULES: the highlight tell gets the reason that passed;
+  records, and Bayard's *How to Talk About Books You Haven't Read* once
+  the essay quoted it) get a green block under the spine, overprinted by
+  the black outline and title. Knocked-out solid spines came first; he
+  switched to overprint so the drums needn't register. Bjook's new
+  `[shelf] second_spines` (a list of slugs); the cover, one ink, stays
+  plain. RULES: the highlight tell gets the reason that passed;
   the riso green's list grows; the registration rule notes the exception.
 - **US English is the house spelling.** New tell, "British spelling by
   default": he writes in US English, and another spelling needs a reason
-  from the project. The library repo was converted the same day. This
-  repo still spells "colour," "catalogue," "centre" in places.
+  from the project. The library repo and this one were converted the same
+  day, apart from the rule's own examples and the Are.na `favourite` field.
+- **Typographer's marks reach the data.** Book titles, authors and
+  publishers get curly quotes, apostrophes and spaced em dashes in the
+  library's sync (`scripts/lib/typeset.mjs`) and in Bjook's shelf loader,
+  so spines, index, cover and site match. RULES.md "Typographer's marks
+  are set at build" now says so.
+- **Library ↔ bjornpaedia links.** His idea: each book on the library
+  links to its bjornpaedia page, and the wiki's book and author pages link
+  back. `sentence-a-day/sad2021tw/scripts/library-links.py` matches by
+  ISBN, then title; 28 book pages and 47 people on the first run. RULES
+  "The family web" gets the pattern.
+- **Links are underlined, for now.** The library had none: Tailwind's reset
+  takes the underline off and nothing put it back, so a link and plain text
+  in the same ink looked the same (fails WCAG 1.4.1). Plain HTML underlines
+  site-wide for now. Open: an art-directed Wjerk link style, his to design.
+- **The book card's "see also".** Notes / Buy / Borrow / Look up as a ruled
+  two-column list under the details, like the cross-references at the foot
+  of a catalog card.
 
 ### 2026-11-26
 
@@ -378,12 +398,12 @@ before starting a session, not just written to at the end of one.
   what's true") under Signatures. Tried and cut: black spines for the
   commons books, an Ex Libris page (the seal exists in Dropbox).
 - **Decided** (same day): the book counts every book in the Notion
-  catalogue, not only the office shelves; the cover prints gold on black
+  catalog, not only the office shelves; the cover prints gold on black
   paper from a black-on-white master (Bjook `[cover] riso`); riso inks
   don't become kit tokens: "Risograph is just an output method."
 - **Answers to the WHYs** (same day): ink-as-voice is *A Library*'s logic,
   not a rule; green was a callback to *I Seem to Be a Verb*, not a house
-  second colour; reusing collected materials first is a standing rule and
+  second color; reusing collected materials first is a standing rule and
   a climate design goal (Ethos); a gesture can cross the fold, reading text
   can't (Bjook); the system exists to be a design intelligence, and the
   rules can be the work, as in conceptual art (Ethos).
@@ -396,8 +416,8 @@ before starting a session, not just written to at the end of one.
   words, which Kristian is still working out how to do.
 - **New RULES.md section, "Signatures: what makes it a Wjerk project."**
   Kristian: the projects are one aesthetic universe that should evolve its
-  own look, so a Wjerk project is recognisable without leaning on cream and
-  ink. Catalogued ten recurring moves with their source projects (the stamp,
+  own look, so a Wjerk project is recognizable without leaning on cream and
+  ink. Catalogd ten recurring moves with their source projects (the stamp,
   the tilted card on its pile, objects keeping their own paper and ink, drawn
   to scale, the plank, the label on the structure, ink-ruled controls, the
   face named in itself, the elsewhere list, the footer order). Rule: use at
@@ -407,10 +427,10 @@ before starting a session, not just written to at the end of one.
   bjornmeansbook's shelf (bjook.css: flex row that wraps, each item
   carrying its own piece of board) reused with the covers turned into
   spines. Findings worth keeping:
-  - **Every 1–3 step tint passes with Wjerk Black**, so 33 spine colours are
+  - **Every 1–3 step tint passes with Wjerk Black**, so 33 spine colors are
     free: all AAA at 7.15:1 or better except pink-3 at 6.30:1 (AA).
     Spines keep their paper and ink in dark mode, like bjook covers.
-  - **Colour by series, then publisher, never two neighbours the same hue.**
+  - **Color by series, then publisher, never two neighbors the same hue.**
     A run (Dirty Furniture 1–6, Are.na Annuals, Codex) is one tint, the way
     matched sets look on a real shelf; a publisher keeps its hue with the
     step varying.
@@ -420,20 +440,20 @@ before starting a session, not just written to at the end of one.
     caliper measurements in Notion first, then Open Library dimensions,
     then page count; widened to 24px minimum for WCAG 2.5.8 targets.
   - Open: a display face for the site title and spines (system stack for
-    now), and whether the board colours should become kit tokens, since
+    now), and whether the board colors should become kit tokens, since
     two projects now share them.
   - **Spines rotate through 13 roster faces** (Work Sans, Libre Franklin,
     Gentium, EB Garamond, Crimson Pro, Newsreader, Plex Mono, League
     Gothic, Young Serif, Space Mono, Bricolage, Fraunces, Basteleur), one
-    weight each via Fontsource, chosen like the colour: a series shares a
-    face, a publisher keeps a "house face", neighbours differ. A
+    weight each via Fontsource, chosen like the color: a series shares a
+    face, a publisher keeps a "house face", neighbors differ. A
     `--spine-scale` per face evens out apparent size (League Gothic 1.35,
     Space Mono 0.9). Credited in the footer with each name set in its face,
     per "Typography: the roster". Kristian's idea. The site title stays system
     sans on purpose: "let the spines have all the fun" (answered 2026-11-26).
   - **Boards run wall to wall while the books keep a margin:** each item's
     board is an `::after` at `left: -100vw; right: -100vw` behind the
-    books (all one colour, so the overlaps don't show), and the clipping
+    books (all one color, so the overlaps don't show), and the clipping
     (`overflow-x: clip`) sits on the padded outer container, not on the
     list inside the padding. Padding sets where content stops; the clip
     sets where decoration stops. Reusable for any full-bleed rule under
@@ -449,7 +469,7 @@ before starting a session, not just written to at the end of one.
     search and shelf menu right.
   - **The count lives on the shelf, as a library shelf label:** a small
     paper-and-ink card (`--wjerk-white` / `--wjerk-black`, rim in the
-    board's lighter top) centred on the first board's front edge:
+    board's lighter top) centered on the first board's front edge:
     "Typography · 34 of 441", or "All 441 books, A to Z". Takes no header
     space and borrows a real library convention instead of a UI one. Tried
     and dropped the same day: filtered-out books kept as faint outlines
@@ -460,14 +480,14 @@ before starting a session, not just written to at the end of one.
     (Basteleur bold, uppercase, `0.12em` rule in currentColor, -8deg, a
     150ms scale-in from 1.6) reused as a button, `position: fixed` over the
     top-left corner so the way out of a filter stays in reach while
-    scrolling. Colours from the wjavelength results (214 votes, 2 people,
+    scrolling. Colors from the wjavelength results (214 votes, 2 people,
     2026-11-26): best accent goldenrod 94% yes, dark grounds 82% vs light
     59%. First tried `--wjerk-goldenrod` on `--wjerk-black` (6.50:1), fixed
     top-left over the title; then moved under the search tools it resets,
-    with a 2px rule instead of 0.12em, and six AA colourways compared
+    with a 2px rule instead of 0.12em, and six AA colorways compared
     (pink 3.75:1 and orange 4.12:1 on black ruled out: AA-large only, and
     the stamp gets small on a phone). Kept: cream (`--wjerk-white`) on
-    `--wjerk-navy`, 9.55:1, the one cool colour on a warm page. Hover and
+    `--wjerk-navy`, 9.55:1, the one cool color on a warm page. Hover and
     press swap the pair. First a plain onething `.btn`, which was clear but
     forgettable. Candidate: the stamp as the kit's "one loud thing" control,
     for a single escape or confirm action per page.
@@ -578,8 +598,8 @@ before starting a session, not just written to at the end of one.
   current picks in two groups, workhorses and voices, replacing the ~2018
   snapshot as the starting list (the history stays below it). Two rules
   with it: show how much open type there is, reaching into
-  libreFontLibrary's ~190 licence-checked families; and treat type like a
-  specimen where useful (name, foundry, licence, shown doing what it's
+  libreFontLibrary's ~190 license-checked families; and treat type like a
+  specimen where useful (name, foundry, license, shown doing what it's
   good at). Answers the Inter tell: Inter is fine, his picks are more
   interesting.
 
@@ -1093,7 +1113,7 @@ before starting a session, not just written to at the end of one.
   "step 6 passes on the ground" true for every hue at once.
 - **Card-stack depth by ground step** (onething). Front card `yellow-0`, cards
   underneath `yellow-1`…`yellow-4`, one step per card back — oblique's card
-  colour as a family. Tried the `white` scale first: `white-2`→`white-9`
+  color as a family. Tried the `white` scale first: `white-2`→`white-9`
   spans only 1.31:1, invisible on a 3px offset sliver. Yellow reaches 2.5:1
   by `yellow-4`. Capped there: ink border on `yellow-5` falls to 3.18:1.
   Skip tabs step by *tab*, not by card, counted from the back: the
@@ -1153,7 +1173,7 @@ before starting a session, not just written to at the end of one.
 - **Bjornpaedia homepage: doors in place of the full index** (RULES.md
   "Using the kit in a TiddlyWiki static site"). Reuses the nav's
   divider-grid; no new colors or tokens. Checked in headless Chrome at 390px
-  (no horizontal overflow) and 1280px, and the search/show-all behaviour
+  (no horizontal overflow) and 1280px, and the search/show-all behavior
   tested by script. Not yet seen by Kristian in a real browser, not
   published. **Open:** about 840 of 1,900 pages carry none of the twelve door
   tags, and 86 untagged pages have nothing linking to them, so they are
@@ -1298,7 +1318,7 @@ before starting a session, not just written to at the end of one.
 - **Every quote credits its typeface.** Small "Type: …" line: face and
   weight/axis shown, designer, SIL OFL, linked to the download page on the
   deck. See RULES.md "Slideshows / unattended players". Also made the deck's
-  off-screen slides `inert`, so a link on a hidden neighbour can't take focus.
+  off-screen slides `inert`, so a link on a hidden neighbor can't take focus.
 - **Caption filter catches tab-count prefixes.** "(3) Instagram" was
   projected as a caption; the junk-title pattern now allows a leading
   "(N) ".
@@ -1358,7 +1378,7 @@ before starting a session, not just written to at the end of one.
   so the change could not alter any existing rendering. Only two `kit.css`
   copies exist — di200-fieldnotes and wjeather — and both were re-synced from
   canonical; di200's had also drifted, missing the `purple-gray` scale.
-  di200-fieldnotes dropped its local one-line patch in favour of the kit's.
+  di200-fieldnotes dropped its local one-line patch in favor of the kit's.
 - **di200-fieldnotes hit the Notion select-option wall and got a `NOTES.md`.**
   Notion never invents a `select` option on write, so every student's first note
   was a 400 during the 2026-09-14 visit; the same property exists on two
@@ -1593,7 +1613,7 @@ before starting a session, not just written to at the end of one.
   half, which the old list (photography-weighted — FSA, Flickr Commons)
   did not cover for paintings.
 
-  The division of labour: machine narrows, you choose, machine writes the
+  The division of labor: machine narrows, you choose, machine writes the
   credit line. Metaphorical judgement does not automate; filtering four
   million objects to forty does.
 

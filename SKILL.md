@@ -19,9 +19,9 @@ and design, both apply.
 ## The ethos
 
 **Do more with less.** Solid rules instead of shadows. Kit tokens instead of
-made-up colours. Start with one accent (the home pink, or navy) for links and
+made-up colors. Start with one accent (the home pink, or navy) for links and
 focus; as a project grows more complex, lean into the whole Wjerk palette for
-objects, labels, stamps and data. Every colour still does conceptual work.
+objects, labels, stamps and data. Every color still does conceptual work.
 Restraint is the style — in the number of moves, not in ambition.
 
 ## The non-negotiables
@@ -177,16 +177,16 @@ alone don't make a page a Wjerk project; the signatures do.
   Expect several rounds: make, screenshot, react,
   shrink or swap. Keep each round cheap (a switch in the URL, a scratch
   comparison page) so there's appetite for the next one.
-- **Use the whole palette.** The family of Wjerk colours seen again and
+- **Use the whole palette.** The family of Wjerk colors seen again and
   again is identity too, not just ink on cream. Reach for the originals
   (`--wjerk-*`: goldenrod, navy, red, cornflower, green, purple…) and
   their ramps for controls, labels, objects and data, and let a project
   carry several of them. The wjavelength results show which pairings he
   likes; use them.
-- Colour choices come as a drawn lineup of 4–6 contrast-checked options
+- Color choices come as a drawn lineup of 4–6 contrast-checked options
   from across the palette. Rule out pairs that are AA-large only when the
   element can get small.
-- Hover changes colour by default (swap or invert). Movement, scale or tilt
+- Hover changes color by default (swap or invert). Movement, scale or tilt
   on hover only when the project's metaphor calls for it (a card you'd
   actually pick up, a book that slides off the shelf), not as decoration.
 - Rules sparingly in secondary areas (footers, lists): group with space.
@@ -198,7 +198,7 @@ alone don't make a page a Wjerk project; the signatures do.
   the page (the blurb became the live description of the filter) before
   adding a line or a box.
 - **Open by default, and linked in.** Every project says how it's made,
-  states open licences, shares its data where safe, and credits what
+  states open licenses, shares its data where safe, and credits what
   belongs to others. Launch isn't done until the hubs link to it
   (kristian.bjornard.com, a.wjerk.shop footer and index) and its footer
   links out to the family. RULES.md "Open by default".
@@ -226,7 +226,7 @@ Load the section from `RULES.md` before working in that area.
 | Colors, accent, palette | "Color: pink is the home accent", "Color: yellowish-gray background" |
 | Anything that might look generic | "Tells: defaults nobody asked for" |
 | Starting a project, choosing a control | "Signatures: what makes it a Wjerk project" |
-| Footers, licences, launching, linking projects | "Open by default: the design commons and the family web" |
+| Footers, licenses, launching, linking projects | "Open by default: the design commons and the family web" |
 | Contrast, focus, a11y | "Contrast: high-contrast pairs only" |
 | Panels, buttons, borders | "Structure: rules, not chrome" |
 | Choosing a typeface | "Typography: open/libre first", "Typography: the roster" |
@@ -239,7 +239,7 @@ Load the section from `RULES.md` before working in that area.
 | Auto-advancing / ambient screens | "Slideshows / unattended players" |
 | PDF, print, posters | "PDF generation: Markdown → pandoc → WeasyPrint" |
 | Risograph, two-ink print, French fold | "Risograph" |
-| A book drawn from a catalogue (spines) | "Bjook", "Shelves" |
+| A book drawn from a catalog (spines) | "Bjook", "Shelves" |
 | Dark mode | "Dark mode" |
 | Token naming | "Naming" |
 | Breakpoints, layout | "Layout: mobile-first, the browser's own flexibility" |

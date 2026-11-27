@@ -41,4 +41,4 @@ Font Name clause.
 
 Which faces are display (short quotes only) is set in `QUOTE_FACES` in
 `build_slideshow.py`. The
-Google-hosted four are all OFL; see fonts.google.com for each family's licence.
+Google-hosted four are all OFL; see fonts.google.com for each family's license.

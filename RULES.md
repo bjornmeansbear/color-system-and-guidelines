@@ -21,6 +21,17 @@ Same instinct as the `bjorn-voice` skill's writing rules — compress,
 don't shrink; cut color that does no conceptual work. One ethos, two
 mediums.
 
+**Reuse collected materials first.** If I'm making something and can reuse
+what's already collected (the stack of one-sided paper in the office, the
+offcuts, the old stock), that comes before anything new. It's a win and a
+climate design goal. (2026-11-26)
+
+**Why this system exists.** To build a design intelligence: as much of my
+starting-place taste built into the tools as possible, so the first draft
+already starts where I would. It's also the conceptual-art idea that the
+rules for the system can be the work, not only the outputs. *A Library*'s
+essay: "I wrote the rules, and the rules made the pages." (2026-11-26)
+
 ## Decisions: measured, ruled, or asked
 
 Every design decision an agent makes in this system is one of three kinds,
@@ -74,6 +85,24 @@ to do instead. Reviewed line by line 2026-11-24.
   model learns the system and applies it as one more template. *Ask:* what
   in this project's content should push the kit somewhere? Things should
   go together without bland uniformity.
+- **A highlight with no reason.** Part of the content coloured or filled
+  to give the piece visual interest: *A Library*'s black spines for the
+  books about the commons. *Why:* "I wanted visual interest, but it didn't
+  really seem to make sense once we were working on it." It's hard to say
+  exactly what was missing (a je ne sais quoi); his own wording is still to
+  come. *Ask:* does it
+  answer what the piece is about? If not, find the accent in better
+  material: a better quote, better supporting images. *The reason that
+  passed* (2026-11-27): the books the essay talks about, as green spines,
+  so the text and the shelf point at each other. "That's a good reason to
+  mark something."
+- **British spelling by default.** "Catalogue," "colour," "centred" in
+  copy, comments and docs. *Why:* he writes in US English; *A Library*
+  and its site had drifted into British spelling, and he had the whole
+  repo converted (2026-11-27). *Ask:* does this project have its own
+  reason for another spelling (a UK client, a quoted source, a title)?
+  That reason comes from the project, never from habit. Other people's
+  text keeps its own spelling: book titles, catalog data, quotes.
 - **The shrink tell.** Inline font-size overrides to fit more text on a
   slide. *Why:* the model fits the script onto the slide instead of
   cutting it. Slides carry one aphorism, a prompt for what he's saying,
@@ -170,6 +199,17 @@ Before adding a line or a box, see if the information can live in text
 that's already there (the library's blurb doubles as the live description
 of the filter).
 
+**Make it from what's true.** Habits from *A Library* that Kristian says
+are how he designs generally (draft, 2026-11-26, his words to come):
+- Plan the whole, not the piece: a spread, not a page; a site, not a screen.
+- Draw things to scale, from the data.
+- Let numbers come from the data, and check every claim against it.
+- Size things by measuring, not by eye: the running line fills the shelf
+  exactly because the type was measured.
+- Show the whole once, then walk it: the cover holds every book, the
+  pages go through them.
+- Nothing is only padding: a page or a space that has to exist gets a job.
+
 **The rule:**
 1. Every project uses at least two existing signatures, adapted to it rather
    than pasted in.
@@ -230,6 +270,12 @@ Every project gives something back and points at the others.
   Public source where the repo can be public.
 - Share the data when it's ours to share (the library's book list is
   already a plain JSON file in a public repo; say so).
+- **One source, many outputs** (CAPE: create anywhere, publish
+  everywhere). The library's Notion data becomes the website, the open
+  `library.json`, the printed book, its riso masters and the book's web
+  page, each built from the same source by a script, never retyped.
+- Give away the files to make the thing: *A Library*'s riso masters are
+  on its page, so anyone with a riso can print one.
 - Safe means: credit every source; say plainly what belongs to others
   ("the books, their titles and details belong to their authors and
   publishers"); never publish private fields, people's details or
@@ -1264,7 +1310,8 @@ Books are built by Bjook, which lives in its own repo, `~/Code/bjook`
 sibling of the `print/` pipeline with the same engine (WeasyPrint) and the
 same reasons: plain text in git, a design that is a CSS file, a rebuild in
 seconds. `kind` in `book.toml` picks the kind of book: `poems` (the
-default) and `paper`, a newspaper (below). Like every other project it
+default), `paper`, a newspaper, and `shelf`, a catalogue drawn as spines
+(both below). Like every other project it
 copies `kit.css` rather than linking here. The rules for books stay in this
 file.
 
@@ -1295,6 +1342,11 @@ book:
   is commenting it out. The poem file is never deleted to drop it.
 
 Typesetting defaults, each one a line in `book.toml` or `book.css`:
+
+- **A gesture can cross the fold; reading text can't.** Something there as
+  a gesture (a shelf of spines, a line of display type, an image) can run
+  through the gutter and lose a little to the binding. Small text meant to
+  be read, a paragraph, stays out of it. (*A Library*, 2026-11-26.)
 
 - **Everything vertical is a multiple of the leading**, the print form of
   the baseline grid above. Lines on facing pages, and on the two sides of a
@@ -1422,6 +1474,79 @@ from one copy.
 
 The booklet PDF is imposed two-up for saddle stitch: print double-sided,
 flip on the short edge, fold, staple. It does not correct for creep.
+
+### Shelves (`kind = "shelf"`)
+
+First built for *A Library* (`~/Code/library/book`, 2026-11-26): the 439
+books in library.wjerk.shop's catalogue, drawn as spines on one shelf, A to
+Z, half letter, published at bjornmeansbook.com/a-library.
+
+- **Planned by spread.** A shelf runs the width of a spread, straight
+  through the fold, at the same height on every page, so it reads as one
+  shelf from the first spread to the last (`mode = "endless"`), or as one
+  bookcase two shelves high per spread (`"wall"`). The spines can cross
+  the gutter because they're a gesture, not text to read (Bjook: "A
+  gesture can cross the fold").
+- **Drawn to scale from the data.** Heights and thicknesses come from the
+  catalogue; a title that won't fit drops its subtitle, then cuts back to
+  its last whole word with an ellipsis.
+- **Every word is a text file.** The essay, colophon and back cover are
+  Markdown beside `book.toml`; counts and dates fill in from the data
+  (`{books}`, `{date}`, `{sizes}`). Check every claim against the data: the
+  first draft said "I measured some with a ruler" when the data had no
+  measured books.
+- **The running line** (`[shelf] running`): one line of type across the top
+  of every shelf spread, sized by measuring the type so it starts on the
+  first spread and ends on the last. It breaks at spaces wherever the paper
+  is cut and runs on wherever it isn't. After Jerome Agel's paperbacks with
+  Quentin Fiore (*I Seem to Be a Verb*, 1970), an inspiration more than a
+  rule.
+- **The cover shows the whole collection at once**, every book packed into
+  one bookcase at the largest scale that fits, with the title and back text
+  on label cards (the website's shelf label, in print). Inside, the book
+  walks the shelf.
+- **No page is only padding.** The page count is padded to even so the
+  colophon lands last; the padding page became a picture page instead of
+  a blank.
+- **Outputs:** pages in reading order (to look at and share), the same as
+  spreads, and the cover; with `[riso]`, a master per drum and the French
+  fold (below). `bjook site` gives the book a page: the cover, every spread
+  in one row that scrolls sideways, and every file to download, riso
+  masters included.
+
+## Risograph
+
+A starting ideology for riso printing, from *A Library* (2026-11-26), on
+the MICA riso.
+
+- **Give the second ink a reason.** In *A Library*, black is the record
+  (the data, the structure, the text) and green is the voice (the quote,
+  the mark, the picture, and the spines of the books the essay names). That's this book's logic, not a rule: each piece
+  finds its own. The green is a callback to *I Seem to Be a Verb*, whose
+  giant sentence through the spreads the running line references; it isn't
+  a house second colour.
+- **Accent comes from better material, not a highlight.** Visual interest
+  from a better quote or a better image beats colouring part of the record
+  to have something coloured (see the tell "A highlight with no reason").
+- **Keep the second ink away from the black**, so registration doesn't
+  matter: its own band, its own page. *A Library*'s green spines break
+  this (each stands between black-outlined neighbours); see NOTES.
+- **French fold for one-sided printing.** Each leaf is two facing pages
+  side by side, printed on one side and folded at the outer edge. Nothing
+  has to back up, and wet ink never touches the back of the next sheet.
+- **Print on paper that's already waiting** (Ethos: reuse collected
+  materials first). Old one-sided sheets go blank side out; the old
+  printing folds inside the leaf. One 11 × 8.5 leaf
+  centred on old 11 × 17 leaves room for the riso's unprinted edge (about
+  ⅕in) and the cuts.
+- **Masters are always black**, one per drum, from the same layout so they
+  register, with a preview in the real ink colours. Screen colours for riso
+  inks are stand-ins (green `#00A95C`, gold `#C2A14D`), kept in each book's
+  `book.toml`, not the kit: riso is one output method among several.
+- **Coloured paper is a master like any other.** *A Library*'s cover is
+  gold ink on black paper, mastered black on white; what's white on the
+  master is the paper showing. Thin rules go a little heavier (0.6pt)
+  for a pale ink on a dark paper.
 
 ## Slideshows / unattended players
 

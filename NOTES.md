@@ -6,6 +6,44 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **A source to read against the rules: Paterson & Tinker, *How to Make
+  Type Readable* (1940)**, https://archive.org/details/HowToMakeTypeReadable
+  (2026-11-27). Early measured experiments on legibility: type size, line
+  length, leading, bold, italic, all caps, ink and paper colour. Read it
+  against "Typography: baseline grid" (sizes and leading), the 36rem measure,
+  the stamp's uppercase Basteleur, and "Contrast" (their colour pairs
+  predate WCAG). Where the evidence and a rule disagree, note it here; where
+  it backs a rule, cite it in RULES.md. A user upload on archive.org, so
+  link it for reading, not as a free-to-share copy.
+
+- **And Armin Hofmann, *Graphic Design Manual: Principles and Practice*
+  (1965)**, https://archive.org/details/hofmann_201807 (2026-11-27). The
+  Basel school's foundations course as a book: the point, the line, the
+  contrast of the two, letters, and exercises that build composition from
+  a few elements. Read it against "Ethos: do more with less" and
+  "Structure: rules, not chrome" (the same restraint, taught as method), and
+  for teaching foundations. Also a user upload, and Hofmann is in copyright:
+  link for reading only.
+
+- **From *A Library*** (2026-11-26):
+  - **The antilibrary: mark the unread.** Kristian: "there's then a REASON
+    for some other layer of information that's universal to books and
+    bookness" (unlike the commons highlight). Open: is the Read? box (78 of
+    439 ticked) kept up, should read status be public (site and
+    library.json), and how to draw it.
+  - **The highlight tell in his words.** "We'll have to come back to that,
+    I'm not sure how to explain it yet." Ask again after the next project
+    where a highlight comes up. A first half-answer (2026-11-27): the
+    essay's books in green were "a good reason to mark something", where
+    the commons tag wasn't. The difference may be that the mark points at
+    something else in the piece itself.
+  - **Green spines next to black lines.** Open: on the riso, does the
+    green shift visibly against its neighbours' outlines (a sliver of paper
+    or a dark overlap at the spine edges)? Check the first proof; accept it
+    as riso character, or rethink the treatment.
+  - **"Make it from what's true"** (Signatures) is a draft of habits he
+    called general; needs his words.
+
 - **Someday, with lots of time: restructure** (2026-11-24). Split NOTES.md
   (changelog out to its own file, open questions stay) and RULES.md (about
   10 topic files in `rules/`, headings kept word for word, RULES.md kept as
@@ -311,8 +349,44 @@ before starting a session, not just written to at the end of one.
 
 ## Changelog
 
+### 2026-11-27
+
+- **A Library: the essay's books as green spines.** The eight books the
+  essay names that are in the catalogue (the three Jerome Agel books,
+  *Climates*, *Eternally Yours*, *How Buildings Learn*, the two Eno
+  records) print as solid green spines, titles knocked out to the paper.
+  Bjook's new `[shelf] second_spines` (a list of slugs); the cover, one
+  ink, stays plain. RULES: the highlight tell gets the reason that passed;
+  the riso green's list grows; the registration rule notes the exception.
+- **US English is the house spelling.** New tell, "British spelling by
+  default": he writes in US English, and another spelling needs a reason
+  from the project. The library repo was converted the same day. This
+  repo still spells "colour," "catalogue," "centre" in places.
+
 ### 2026-11-26
 
+- **A Library, the shelf book** (`~/Code/library/book`, Bjook's new `shelf`
+  kind; bjornmeansbook.com/a-library). Every book in the library as a spine
+  on one shelf through the whole book, the 13 roster faces as an undercover
+  type specimen, the Pratchett "library" quote as a running line after
+  Agel and Fiore, the bear-and-book Bjorn Means Book mark, an index with
+  page numbers first, and a cover of the whole library at once. Riso in
+  black and green, French fold on old one-sided 11 × 17. RULES.md: new
+  "Shelves" (under Bjook) and "Risograph" sections; "one source, many
+  outputs" and giving away the files under "Open by default"; the tell "A
+  highlight with no reason"; a draft of general habits ("Make it from
+  what's true") under Signatures. Tried and cut: black spines for the
+  commons books, an Ex Libris page (the seal exists in Dropbox).
+- **Decided** (same day): the book counts every book in the Notion
+  catalogue, not only the office shelves; the cover prints gold on black
+  paper from a black-on-white master (Bjook `[cover] riso`); riso inks
+  don't become kit tokens: "Risograph is just an output method."
+- **Answers to the WHYs** (same day): ink-as-voice is *A Library*'s logic,
+  not a rule; green was a callback to *I Seem to Be a Verb*, not a house
+  second colour; reusing collected materials first is a standing rule and
+  a climate design goal (Ethos); a gesture can cross the fold, reading text
+  can't (Bjook); the system exists to be a design intelligence, and the
+  rules can be the work, as in conceptual art (Ethos).
 - **Open, for a future day: a tool-page template.** One plain HTML file
   (like `slideshow-template.html`) that rolls out the five-minute version:
   kit.css linked, header with title and blurb beside the tools, the content

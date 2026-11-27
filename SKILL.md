@@ -238,6 +238,8 @@ Load the section from `RULES.md` before working in that area.
 | Talk vs. teaching deck | "Slide decks: talks vs. teaching support" |
 | Auto-advancing / ambient screens | "Slideshows / unattended players" |
 | PDF, print, posters | "PDF generation: Markdown → pandoc → WeasyPrint" |
+| Risograph, two-ink print, French fold | "Risograph" |
+| A book drawn from a catalogue (spines) | "Bjook", "Shelves" |
 | Dark mode | "Dark mode" |
 | Token naming | "Naming" |
 | Breakpoints, layout | "Layout: mobile-first, the browser's own flexibility" |

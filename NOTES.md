@@ -379,6 +379,23 @@ before starting a session, not just written to at the end of one.
   takes the underline off and nothing put it back, so a link and plain text
   in the same ink looked the same (fails WCAG 1.4.1). Plain HTML underlines
   site-wide for now. Open: an art-directed Wjerk link style, his to design.
+- **A Library: the green spines point back from the text.** Each book the
+  essay names in italics is underlined in green (black words, green line,
+  a drum each); in the index, a small green spine beside the entry. Five
+  index marks were rendered side by side: spine (chosen: "simple,
+  noticeable, non-intrusive"), a disc under the page number ("a little
+  heavy"), a ring, an asterisk ("too little"), an underline ("too much").
+  Index titles stay roman: every entry is a title, so italics would mark
+  nothing. Open: whether 6.5pt survives the riso (proof sheets 18–19).
+- **Precise data, gathered display.** His call on the library's tags: keep
+  each tag exact in the source (Copyright, Public Domain), and gather small
+  ones under a broader shelf on the site only (The Commons). The menu lists
+  shelves of five books or more; the long tail stays one click away from
+  any card. The data stays true; the browsing gets readable.
+- **The empty shelf.** When a search matches nothing, the message stands
+  on the bare plank where the books would be, in Basteleur, big
+  (clamp 2.25–5.5rem), lined up with the page title: the emptiness is
+  the content. His call, 2026-11-27.
 - **The book card's "see also".** Notes / Buy / Borrow / Look up as a ruled
   two-column list under the details, like the cross-references at the foot
   of a catalog card.

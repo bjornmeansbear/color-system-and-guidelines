@@ -387,6 +387,9 @@ before starting a session, not just written to at the end of one.
   heavy"), a ring, an asterisk ("too little"), an underline ("too much").
   Index titles stay roman: every entry is a title, so italics would mark
   nothing. Open: whether 6.5pt survives the riso (proof sheets 18–19).
+  The cover (one ink, gold on black paper) marks the same books as solid
+  gold spines, titles knocked out: gold is opaque on black, translucent
+  green wouldn't show, and a second cover layer wasn't wanted.
 - **Precise data, gathered display.** His call on the library's tags: keep
   each tag exact in the source (Copyright, Public Domain), and gather small
   ones under a broader shelf on the site only (The Commons). The menu lists

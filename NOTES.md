@@ -6,6 +6,17 @@ before starting a session, not just written to at the end of one.
 
 ## Open questions / next steps
 
+- **Prose books: type questions to answer** (2026-11-28). `type-questions.md`
+  lists the 24 decisions a `kind = "prose"` book needs that RULES.md doesn't
+  settle yet (trim, margins, measure, house text face, x-height matching,
+  justification, paragraph indent, headings, numerals, notes, running heads),
+  each with a guess. Three faster routes are listed there too: react to a
+  specimen, name books whose pages you like, or mark up a proof. The first
+  prose specimen showed one real problem: at the same 10pt, EB Garamond and
+  Crimson Pro set much smaller than Gentium or Work Sans (shorter x-height),
+  so "10pt" isn't one size across the roster. Fraunces is on the roster but
+  not in `libreFontLibrary/Families` yet, so the specimen couldn't set it.
+
 - **A source to read against the rules: Paterson & Tinker, *How to Make
   Type Readable* (1940)**, https://archive.org/details/HowToMakeTypeReadable
   (2026-11-27). Early measured experiments on legibility: type size, line
@@ -348,6 +359,18 @@ before starting a session, not just written to at the end of one.
   skipped under `prefers-reduced-motion`. See RULES.md "Motion".
 
 ## Changelog
+
+### 2026-11-28
+
+- **Three new Bjook books from the wiki and the Sentence-a-Day files**, in
+  `~/Code/sentence-a-day/books/` (outside this repo, by the Bjook rule that
+  manuscripts aren't the kit's to publish): *A Sentence A Day, 2019* and
+  *2021* (poems: each month a poem, each day a stanza) and *The
+  Sustainabilitist Manifesto* (poems: one principle per page). Plus *The
+  Libre Designer No. 1* as a paper. Prose set in the poems kind needs the
+  hanging indent off (`.line { padding-left: 0; text-indent: 0; }` in the
+  book's `style.css`). That workaround is the first concrete argument for
+  `kind = "prose"`. Added `type-questions.md`.
 
 ### 2026-11-27
 
